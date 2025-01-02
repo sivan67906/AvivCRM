@@ -1,0 +1,137 @@
+@model AvivCRM.UI.Areas.Configuration.ViewModels.BusinessLocationVM;
+
+<script type="text/javascript">
+	   function loadState(obj) {
+		   var value = obj.value;
+		var actionName = "GetStatesByCountryId";
+		var currentUrl = window.location.href;
+		currentUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/") + 1);
+		var url = currentUrl + actionName;
+
+	   $.post(url, { countryId: value }, function (data) {
+			PopulateDropDown("#StateId", data);
+		   });
+	   }
+	   function loadCity(obj) {
+		   var value = obj.value;
+		var actionName = "GetCitiesByStateId";
+		var currentUrl = window.location.href;
+		currentUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/") + 1);
+		var url = currentUrl + actionName;
+
+	$.post(url, { stateId: value }, function (data) {
+			PopulateDropDown("#CityId", data);
+		   });
+	   }
+
+	   function PopulateDropDown(dropDownId, list) {
+		   $(dropDownId).empty();
+		   $(dropDownId).append("<option>--</option>")
+		   $.each(list, function (index, row) {
+			   $(dropDownId).append("<option value='" + row.id + "'>" + row.name + "</option>")
+		   });
+	   }
+</script>
+<div class="modal-content">
+	<div class="modal-header">
+		<h5 class="modal-title mt-0" id="">BusinessLocation Setup</h5>
+	</div>
+	<div class="modal-body">
+		<form action="Create">
+			<div class="row mt-3">
+				<div class="col-lg-4">Company <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Name <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Address1 <span class="text-danger">*</span></div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					@Html.DropDownListFor(c => c.CompanyId, new SelectList(ViewBag.CompanyList, "Id", "Name"), "--", new { @class = "form-control" })
+				</div>
+				<div class="col-lg-4">
+					<input id="txtName" type="text" class="form-control" name="Name" placeholder="enter Name" value="">
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+				<div class="col-lg-4">
+					<input id="txtAddress1" type="text" class="form-control" name="Address1" placeholder="enter Address1" value="">
+					<span asp-validation-for="Address1" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-lg-4">Address2 <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Country <span class="text-danger">*</span></div>
+				<div class="col-lg-4">State <span class="text-danger">*</span></div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-4">
+					<input id="txtAddress2" type="text" class="form-control" name="Address2" placeholder="enter Address2" value="">
+					<span asp-validation-for="Address2" class="text-danger"></span>
+				</div>
+				<div class="col-lg-4">
+					@Html.DropDownListFor(c => c.CountryId,
+											new SelectList(ViewBag.CountryList, "Id", "Name"),
+											"--", new
+											{
+												@class = "form-control"
+											,
+												onchange = "loadState(this)"
+											})
+				</div>
+				<div class="col-lg-4">
+					<select class="form-control" name="StateId" id="StateId" onchange="loadCity(this)">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-lg-4">City <span class="text-danger">*</span></div>
+				<div class="col-lg-4">ZipCode <span class="text-danger">*</span></div>
+				<div class="col-lg-4">TaxName</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<select class="form-control" name="CityId" id="CityId">
+						<option value="">--</option>
+					</select>
+				</div>
+				<div class="col-lg-4">
+					<input id="txtZipCode" type="text" class="form-control" name="ZipCode" placeholder="enter ZipCode" value="">
+				</div>
+				<div class="col-lg-4">
+					<input id="txtTaxName" type="text" class="form-control" name="TaxName" placeholder="enter TaxName" value="">
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-lg-4">TaxNumber <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Latitude <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Longitude</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<input id="txtTaxNumber" type="text" class="form-control" name="TaxNumber" placeholder="enter TaxNumber" value="">
+					@* <span asp-validation-for="TaxNumber" class="text-danger"></span> *@
+				</div>
+				<div class="col-lg-4">
+					<input id="txtLatitude" type="text" class="form-control" name="Latitude" placeholder="enter Latitude" value="">
+					@* <span asp-validation-for="Latitude" class="text-danger"></span> *@
+				</div>
+				<div class="col-lg-4">
+					<input id="txtLongitude" type="text" class="form-control" name="Longitude" placeholder="enter Longitude" value="">
+					@* <span asp-validation-for="Longitude" class="text-danger"></span> *@
+				</div>
+			</div>
+			<div class="row mt-4 text-end ">
+				<div class="col-lg-12 ">
+					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
+					<button type="button" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+</script>
+
+
+

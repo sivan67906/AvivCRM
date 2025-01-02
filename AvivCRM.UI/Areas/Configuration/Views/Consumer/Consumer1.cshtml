@@ -1,0 +1,311 @@
+@model IEnumerable<AvivCRM.UI.Areas.Configuration.ViewModels.ConsumerVM>;
+@section Styles {
+	<link href="~/matrica/assets/libs/vanillajs-datepicker/css/datepicker.min.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="modal fade" id="mdlConsumerShow" style="">
+	<div class="modal-dialog modal-xl" id="PlaceHolderHere">
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-12 col-lg-12">
+		<div class="card" style="">
+			<div class="card-header">
+				<div class="row align-items-center">
+					<div class="col">
+						<h4 class="card-title">Consumer Index</h4>
+					</div><!--end col-->
+					<div class="col-auto">
+						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+								data-target="#mdlConsumerShow" data-url="@Url.Action("Create")">
+							<i class="fas fa-plus me-2"></i>Add Consumer
+						</button>
+					</div><!--end col-->
+				</div>  <!--end row-->
+			</div><!--end card-header-->
+
+			<div class="card-body">
+				<form action="Search">
+					<div class="row col-lg-12 mt-2">
+						<div class="col-lg-4">
+							<label for="example-text-input">
+								Search Filter
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+							<select id="filterDropdown" onchange="updateSearchFields()" class="form-select mt-2">
+								<option value="" selected>--</option>
+								<option value="name">Name Search</option>
+								<option value="date">Date Search</option>
+								<option value="dateBetween">Date Between Search</option>
+								<option value="phoneNumber">Phone Number Search</option>
+							</select>
+						</div>
+						<div class="col-lg-4">
+							<div class="row" id="searchFields">
+								<div class="col-lg-12" id="divNameSearch">
+									<div class="mb-3 text-start">
+										<label for="nameSearch">
+											By Name
+											<span class="f-14 mr-1 text-danger">*</span>
+										</label>
+
+										<input name="nameSearch" class="form-control mt-2" type="text" value="" id="nameSearch">
+
+									</div>
+								</div>
+								<div class="col-lg-12" id="divDateSearch">
+									<div class="mb-3 text-start">
+										<label for="dateSearch">
+											Date
+											<span class="f-14 mr-1 text-danger">*</span>
+										</label>
+
+										<input class="form-control mt-2" type="text" name="foo" value="" id="dateSearch">
+
+									</div>
+								</div>
+								<div class="col-lg-12" id="divDateBetweenSearch">
+									<div class="mb-3 text-start">
+										<label for="startDate endDate">
+											Date Between
+											<span class="f-14 mr-1 text-danger">*</span>
+										</label>
+										<div class="row ">
+											<div class="col-lg-6">
+												<input class="form-control mt-2" type="text" name="foo1" value="" id="startDate">
+											</div>
+											<div class="col-lg-6">
+												<input class="form-control mt-2" type="text" name="foo2" value="" id="endDate">
+											</div>
+										</div>
+
+									</div>
+								</div>
+								<div class="col-lg-12" id="divPhoneNumberSearch">
+									<div class="mb-3 text-start">
+										<label for="phoneNumberSearch">
+											Phone Number
+											<span class="f-14 mr-1 text-danger">*</span>
+										</label>
+
+										<input name="phoneNumberSearch" class="form-control mt-2" type="tel" value="" id="phoneNumberSearch">
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-2"></div>
+						<div class="col-lg-2 text-start">
+							<button id="consumerSearch" type="button" class="btn btn-warning"><i class="mdi mdi-filter me-2"></i>Filter</button>
+						</div>
+					</div>
+				</form>
+				<div class="table-responsive mt-4">
+					<table class="table mb-0">
+						<thead class="thead-light">
+							<tr>
+								<th class="d-none">@Html.DisplayNameFor(m => m.Id)</th>
+								<th>FirstName</th>
+								<th>LastName</th>
+								<th>Email</th>
+								<th>Password</th>
+								<th>PlanType</th>
+								<th>PhoneNumber</th>
+								<th>Website</th>
+								@* <th>Description</th> *@
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
+									<td>@item.FirstName</td>
+									<td>@item.LastName</td>
+									<td>@item.Email</td>
+									<td>@item.Password</td>
+									<td>@item.PlanTypeName</td>
+									<td>@item.PhoneNumber</td>
+									<td>@item.Website</td>
+									@* <td>@item.Description</td> *@
+									<td>
+										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+												data-target="#mdlConsumerShow" data-url="@Url.Action($"Edit/{item.Id}")">
+											<i class="las la-pen text-secondary font-16"></i>
+										</button>
+										<a id="deleteBC" name="Id" href="#" class="ms-2"
+										   data-target="#mdlConsumerShow" data-url="@Url.Action($"Delete/{item.Id}")">
+											<i class="las la-trash-alt text-secondary font-16"></i>
+										</a>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@section Scripts {
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+	<script src="~/matrica/assets/libs/vanillajs-datepicker/js/datepicker-full.min.js"></script>
+	<script src="~/matrica/assets/js/pages/forms-advanced.js"></script>
+
+	<script type="text/javascript">
+		$(window).on('load', function() {
+		 $('#mdlConsumerShow').modal({backdrop: 'static', keyboard: false});
+		});
+	</script>
+	<script type="text/javascript">
+			$(document).ready (function () {
+			// Hide all input fields initially
+			  document.getElementById("searchFields").classList.add('d-none');
+			});
+
+			function updateSearchFields() {
+			const dropdown = document.getElementById("filterDropdown");
+			const selectedValue = dropdown.value;
+			  document.getElementById("searchFields").classList.remove('d-none');
+
+				// Show relevant input fields based on selected value
+				if (selectedValue === "name") {
+					document.getElementById("divNameSearch").classList.remove("d-none");
+					document.getElementById("divDateSearch").classList.add("d-none");
+					document.getElementById("divDateBetweenSearch").classList.add("d-none");
+					document.getElementById("divPhoneNumberSearch").classList.add("d-none");
+				} else if (selectedValue === "date") {
+					document.getElementById("divNameSearch").classList.add("d-none");
+					document.getElementById("divDateSearch").classList.remove("d-none");
+					document.getElementById("divDateBetweenSearch").classList.add("d-none");
+					document.getElementById("divPhoneNumberSearch").classList.add("d-none");
+				} else if (selectedValue === "dateBetween") {
+					document.getElementById("divNameSearch").classList.add("d-none");
+					document.getElementById("divDateSearch").classList.add("d-none");
+					document.getElementById("divDateBetweenSearch").classList.remove("d-none");
+					document.getElementById("divPhoneNumberSearch").classList.add("d-none");
+				} else if (selectedValue === "phoneNumber") {
+					document.getElementById("divNameSearch").classList.add("d-none");
+					document.getElementById("divDateSearch").classList.add("d-none");
+					document.getElementById("divDateBetweenSearch").classList.add("d-none");
+					document.getElementById("divPhoneNumberSearch").classList.remove("d-none");
+				}
+		}
+			$(document).ready(function() {
+		$("#consumerSearch").click(function(){
+			$("#divBlocker").removeClass("d-none").addClass("screenblocker");
+
+
+			var name = $("#nameSearch").val().toString();
+			var phoneNumberSearch = $("#phoneNumberSearch").val().toString();
+			var dateSearch = $("#dateSearch").val().toString();
+			var startDate = $("#startDate").val().toString();
+			var endDate = $("#endDate").val().toString();
+			var actionName = "";
+			var currentUrl = window.location.href;
+			currentUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/") + 1);
+			var url = "";
+
+			if(name != "")
+			{
+				actionName = "SearchByName";
+				url = currentUrl + actionName + "/" + "?searchByName=" +name;
+				// url = currentUrl + "?searchByName=" + name;
+			}
+			if(phoneNumberSearch != "")
+			{
+				actionName = "SearchByPhoneNumber";
+				url = currentUrl + actionName + "/" + "?searchByPhoneNumber=" +phoneNumberSearch;
+			}
+			if(dateSearch != "")
+			{
+				actionName = "SearchByDate";
+				url = currentUrl + actionName + "/" + "?searchByDate=" +dateSearch;
+			}
+			if(startDate != "" && endDate != "")
+			{
+				actionName = "SearchByDateBetween";
+				url = currentUrl + actionName + "/" + "?startDate=" +startDate + "/" + "?endDate=" +endDate;
+			}
+			$.get(url).done(function (data, status) {
+				$("#divBlocker").addClass("d-none").removeClass("screenblocker");
+			})
+		});
+		});
+
+			$(document).on("click", "#deleteBC", function (e) {
+		   e.preventDefault();
+
+		   const swalWithBootstrapButtons = Swal.mixin({
+			  customClass: {
+				 confirmButton: "btn btn-de-primary",
+				 cancelButton: "btn btn-de-danger me-2"
+			  },
+			  buttonsStyling: false
+		   });
+		   swalWithBootstrapButtons.fire({
+			  title: "Are you sure?",
+			  text: "Do You want to delete this?",
+			  icon: "warning",
+			  showCancelButton: true,
+			  confirmButtonText: '<i class="mdi mdi-check-all me-2"></i>Delete',
+			  cancelButtonText: '<i class="mdi mdi-window-close me-2"></i>Close',
+			  // confirmButtonText: "Yes, delete it!",
+			  // cancelButtonText: "No, cancel!",
+			  reverseButtons: true,
+			  allowOutsideClick: false
+		   }).then((result) => {
+			  if (result.isConfirmed) {
+				 delBusinessLocation(this);
+			  } else if (
+				 result.dismiss === Swal.DismissReason.cancel
+			  ) {
+				 // swalWithBootstrapButtons.fire({
+				 // title: "Cancelled",
+				 // text: "Your imaginary file is safe :)",
+				 // icon: "error",
+				 // 	allowOutsideClick: false
+				 // });
+			  }
+		   });
+
+		   function delBusinessLocation() {
+			  var url = $("#deleteBC")[0].dataset.url;
+			  url = decodeURIComponent(url);
+			  var sendData = "Id=" + url.split('/').filter(Boolean).pop() + "";
+			  url = url.substring(0, url.lastIndexOf("/"));
+			  var currentUrl = window.location.origin;
+			  url = currentUrl + url;
+			  $.post(url, sendData).done(function (data, status) {
+				 $("#divBlocker").addClass("d-none").removeClass("screenblocker");
+				 if (status == "success") {
+							 swalWithBootstrapButtons.fire({ title: "Deleted!",
+		 text: "Deleted successfully!",
+		 icon: "success",
+			  allowOutsideClick: false}).then(okay => {
+		   if (okay) {
+			location.reload();
+		  }
+		});
+
+				 }
+				 else{
+					 swalWithBootstrapButtons.fire({
+				 title: "Error Occured",
+				 text: "Error Occured while Data deletion",
+				 icon: "error",
+					allowOutsideClick: false
+				 });
+				 }
+			  })
+		   }
+		});
+	</script>
+}
+
+
+

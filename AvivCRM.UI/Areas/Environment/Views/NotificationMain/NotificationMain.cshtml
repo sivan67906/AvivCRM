@@ -1,0 +1,393 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model NotificationMainVM
+<div class="row">
+	<div class="col-12 col-lg-10 mx-auto">
+
+		<div class="card">
+			<div class="card-body">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" href="#tbsms" role="tab">SMS</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbNotification" role="tab">Notification</a>
+					</li>
+				</ul>
+			</div><!--end card-body-->
+			<div class="card-body pt-0">
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active show" id="tbsms" role="tabpanel">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+									<div class="toast-header">
+										<img src="assets/images/logo-sm.png" alt="" height="20" class="me-1">
+										<h5 class="me-auto my-0">Aviv</h5>
+										<small>11 mins ago</small>
+										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+									</div>
+									<div class="toast-body ">
+										Development InProgress
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-pane" id="tbNotification" role="tabpanel">
+						<div class="card">
+							<div class="card-header">
+								<div class="row align-items-center">
+									<div class="col-lg-12">
+										<h4 class="card-title">Notification Index</h4>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Common</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<input id="txtNotificationMainsId" type="hidden" name="Id" value="@Model.Id" />
+
+								<form id="CommonNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.CommonNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="CommonNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_CommonNotificationMains_@Model.CommonNotificationMains[i].Id" name="CommonNotificationMains[@i].IsChecked" value="true" @(Model.CommonNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_CommonNotificationMains_@Model.CommonNotificationMains[i].Id">@Model.CommonNotificationMains[i].Name</label>
+													<input type="hidden" name="CommonNotificationMains[@i].Id" value="@Model.CommonNotificationMains[i].Id" />
+													<input type="hidden" name="CommonNotificationMains[@i].Name" value="@Model.CommonNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+
+								<div class="row">
+									<div class="col-lg-12 mt-3 ">
+										<h4 class="header-title">Leave</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="LeaveNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.LeaveNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="LeaveNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_LeaveNotificationMains_@Model.LeaveNotificationMains[i].Id" name="LeaveNotificationMains[@i].IsChecked" value="true" @(Model.LeaveNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_LeaveNotificationMains_@Model.LeaveNotificationMains[i].Id">@Model.LeaveNotificationMains[i].Name</label>
+													<input type="hidden" name="LeaveNotificationMains[@i].Id" value="@Model.LeaveNotificationMains[i].Id" />
+													<input type="hidden" name="LeaveNotificationMains[@i].Name" value="@Model.LeaveNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Proposal</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="ProposalNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.ProposalNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="ProposalNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_ProposalNotificationMains_@Model.ProposalNotificationMains[i].Id" name="ProposalNotificationMains[@i].IsChecked" value="true" @(Model.ProposalNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_ProposalNotificationMains_@Model.ProposalNotificationMains[i].Id">@Model.ProposalNotificationMains[i].Name</label>
+													<input type="hidden" name="ProposalNotificationMains[@i].Id" value="@Model.ProposalNotificationMains[i].Id" />
+													<input type="hidden" name="ProposalNotificationMains[@i].Name" value="@Model.ProposalNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Invoice</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="InvoiceNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.InvoiceNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="InvoiceNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_InvoiceNotificationMains_@Model.InvoiceNotificationMains[i].Id" name="InvoiceNotificationMains[@i].IsChecked" value="true" @(Model.InvoiceNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_InvoiceNotificationMains_@Model.InvoiceNotificationMains[i].Id">@Model.InvoiceNotificationMains[i].Name</label>
+													<input type="hidden" name="InvoiceNotificationMains[@i].Id" value="@Model.InvoiceNotificationMains[i].Id" />
+													<input type="hidden" name="InvoiceNotificationMains[@i].Name" value="@Model.InvoiceNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Payment</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="PaymentNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.PaymentNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="PaymentNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_PaymentNotificationMains_@Model.PaymentNotificationMains[i].Id" name="PaymentNotificationMains[@i].IsChecked" value="true" @(Model.PaymentNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_PaymentNotificationMains_@Model.PaymentNotificationMains[i].Id">@Model.PaymentNotificationMains[i].Name</label>
+													<input type="hidden" name="PaymentNotificationMains[@i].Id" value="@Model.PaymentNotificationMains[i].Id" />
+													<input type="hidden" name="PaymentNotificationMains[@i].Name" value="@Model.PaymentNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Task</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="TaskNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.TaskNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="TaskNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_TaskNotificationMains_@Model.TaskNotificationMains[i].Id" name="TaskNotificationMains[@i].IsChecked" value="true" @(Model.TaskNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_TaskNotificationMains_@Model.TaskNotificationMains[i].Id">@Model.TaskNotificationMains[i].Name</label>
+													<input type="hidden" name="TaskNotificationMains[@i].Id" value="@Model.TaskNotificationMains[i].Id" />
+													<input type="hidden" name="TaskNotificationMains[@i].Name" value="@Model.TaskNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Ticket</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="TicketNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.TicketNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="TicketNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_TicketNotificationMains_@Model.TicketNotificationMains[i].Id" name="TicketNotificationMains[@i].IsChecked" value="true" @(Model.TicketNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_TicketNotificationMains_@Model.TicketNotificationMains[i].Id">@Model.TicketNotificationMains[i].Name</label>
+													<input type="hidden" name="TicketNotificationMains[@i].Id" value="@Model.TicketNotificationMains[i].Id" />
+													<input type="hidden" name="TicketNotificationMains[@i].Name" value="@Model.TicketNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Project</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="ProjectNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.ProjectNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="ProjectNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_ProjectNotificationMains_@Model.ProjectNotificationMains[i].Id" name="ProjectNotificationMains[@i].IsChecked" value="true" @(Model.ProjectNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_ProjectNotificationMains_@Model.ProjectNotificationMains[i].Id">@Model.ProjectNotificationMains[i].Name</label>
+													<input type="hidden" name="ProjectNotificationMains[@i].Id" value="@Model.ProjectNotificationMains[i].Id" />
+													<input type="hidden" name="ProjectNotificationMains[@i].Name" value="@Model.ProjectNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Reminder</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="ReminderNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.ReminderNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="ReminderNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_ReminderNotificationMains_@Model.ReminderNotificationMains[i].Id" name="ReminderNotificationMains[@i].IsChecked" value="true" @(Model.ReminderNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_ReminderNotificationMains_@Model.ReminderNotificationMains[i].Id">@Model.ReminderNotificationMains[i].Name</label>
+													<input type="hidden" name="ReminderNotificationMains[@i].Id" value="@Model.ReminderNotificationMains[i].Id" />
+													<input type="hidden" name="ReminderNotificationMains[@i].Name" value="@Model.ReminderNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-lg-12 mt-3">
+										<h4 class="header-title">Request</h4>
+										<i class="arrow bi bi-chevron-right" data-target="section-1"></i>
+									</div>
+								</div>
+								<form id="RequestNotificationMainsUpdate">
+									<div class="row">
+										@for (var i = 0; i < Model.RequestNotificationMains.Count; i++)
+										{
+											<div class="col-lg-4">
+												<div class="form-check custom-control custom-checkbox mt-2">
+													<input type="hidden" name="RequestNotificationMains[@i].IsChecked" value="false" />
+													<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_RequestNotificationMains_@Model.RequestNotificationMains[i].Id" name="RequestNotificationMains[@i].IsChecked" value="true" @(Model.RequestNotificationMains[i].IsChecked ? "checked" : "") />
+													<label class="custom-control-label labelcustom" for="checkbox_RequestNotificationMains_@Model.RequestNotificationMains[i].Id">@Model.RequestNotificationMains[i].Name</label>
+													<input type="hidden" name="RequestNotificationMains[@i].Id" value="@Model.RequestNotificationMains[i].Id" />
+													<input type="hidden" name="RequestNotificationMains[@i].Name" value="@Model.RequestNotificationMains[i].Name" />
+												</div>
+											</div>
+										}
+									</div>
+								</form>
+							</div>
+							<div class="card-footer">
+								<div class="row">
+									<div class="col-lg-12 text-end">
+										<button id="updateNotificationMain" type="button" class="btn btn-de-primary "><i class="mdi mdi-check-all me-2"></i>Update</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--end card-body-->
+		</div><!--end card-->
+
+	</div>
+</div>
+<script type="text/javascript">
+			function fnGenerateJsonString(cbData){
+				var items = [];
+					cbData.forEach(function(field) {
+						var indexMatch = field.name.match(/\d+/);
+						if (indexMatch) {
+							var index = indexMatch[0];
+							if (!items[index]) {
+								items[index] = { Id: 0, Name: "", IsChecked: false };
+							}
+							if (field.name.includes("IsChecked")) {
+								items[index].IsChecked = field.value === "true";
+							} else if (field.name.includes("Id")) {
+								items[index].Id = parseInt(field.value);
+							} else if (field.name.includes("Name")) {
+								items[index].Name = field.value;
+							}
+						}
+					});
+					items = items.filter(item => item != null);
+					return JSON.stringify(items);
+		}
+
+
+	$(document).ready(function() {
+				$('#updateNotificationMain').click(function() {
+
+					const swalWithBootstrapButtons = Swal.mixin({
+			  customClass: {
+				 confirmButton: "btn btn-de-primary",
+				 cancelButton: "btn btn-de-danger me-2"
+			  },
+			  buttonsStyling: false
+		   });
+
+
+				var Id = $("#txtNotificationMainsId").val();
+
+				var cbCommonNotificationMainsData = $('#CommonNotificationMainsUpdate').serializeArray();
+				var cbLeaveNotificationMainsData = $('#LeaveNotificationMainsUpdate').serializeArray();
+				var cbProposalNotificationMainsData = $('#ProposalNotificationMainsUpdate').serializeArray();
+				var cbInvoiceNotificationMainsData = $('#InvoiceNotificationMainsUpdate').serializeArray();
+				var cbPaymentNotificationMainsData = $('#PaymentNotificationMainsUpdate').serializeArray();
+				var cbTaskNotificationMainsData = $('#TaskNotificationMainsUpdate').serializeArray();
+				var cbTicketNotificationMainsData = $('#TicketNotificationMainsUpdate').serializeArray();
+				var cbProjectNotificationMainsData = $('#ProjectNotificationMainsUpdate').serializeArray();
+				var cbReminderNotificationMainsData = $('#ReminderNotificationMainsUpdate').serializeArray();
+				var cbRequestNotificationMainsData = $('#RequestNotificationMainsUpdate').serializeArray();
+
+				var jsonCBCommonNotificationMainsData = fnGenerateJsonString(cbCommonNotificationMainsData);
+				var jsonCBLeaveNotificationMainsData = fnGenerateJsonString(cbLeaveNotificationMainsData);
+				var jsonCBProposalNotificationMainsData = fnGenerateJsonString(cbProposalNotificationMainsData);
+				var jsonCBInvoiceNotificationMainsData = fnGenerateJsonString(cbInvoiceNotificationMainsData);
+				var jsonCBPaymentNotificationMainsData = fnGenerateJsonString(cbPaymentNotificationMainsData);
+				var jsonCBTaskNotificationMainsData = fnGenerateJsonString(cbTaskNotificationMainsData);
+				var jsonCBTicketNotificationMainsData = fnGenerateJsonString(cbTicketNotificationMainsData);
+				var jsonCBProjectNotificationMainsData = fnGenerateJsonString(cbProjectNotificationMainsData);
+				var jsonCBReminderNotificationMainsData = fnGenerateJsonString(cbReminderNotificationMainsData);
+				var jsonCBRequestNotificationMainsData = fnGenerateJsonString(cbRequestNotificationMainsData);
+
+				// var formData = new FormData();
+				// formData.append("Id", $("#productForm input[name='Id']").val());
+				// formData.append("Name", $("#productForm input[name='Name']").val());
+
+				// var checkedCategories = $("#productForm input[name='CategoryIds']:checked");
+				// var index = 0;
+				// checkedCategories.each(function () {
+				// 	formData.append("CategoryIds[" + index + "]", $(this).val());
+				// 	index++;
+				// });
+
+
+				$.ajax({
+					url: '@Url.Action("UpdateNotificationMain", "NotificationMain")',
+					type: 'POST',
+						data: {cbValueId: Id,
+							   cbValue1: jsonCBCommonNotificationMainsData,
+							   cbValue2: jsonCBLeaveNotificationMainsData,
+							   cbValue3: jsonCBProposalNotificationMainsData,
+							   cbValue4: jsonCBInvoiceNotificationMainsData,
+							   cbValue5: jsonCBPaymentNotificationMainsData,
+							   cbValue6: jsonCBTaskNotificationMainsData,
+							   cbValue7: jsonCBTicketNotificationMainsData,
+							   cbValue8: jsonCBProjectNotificationMainsData,
+							   cbValue9: jsonCBReminderNotificationMainsData,
+							   cbValue10: jsonCBRequestNotificationMainsData
+								},
+					// processData: false,
+					// contentType: false,
+					success: function(response) {
+						 swalWithBootstrapButtons.fire({ title: "Updated!",
+		 text: "Updated successfully!",
+		 icon: "success",
+			  allowOutsideClick: false}).then(okay => {
+		   if (okay) {
+			location.reload();
+		  }
+		});
+					}
+				});
+			});
+		});
+</script>
+
+
+

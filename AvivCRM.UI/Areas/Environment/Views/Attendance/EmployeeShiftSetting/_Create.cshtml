@@ -1,0 +1,91 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model EmployeeShiftSettingVM;
+<style type="text/css">
+
+</style>
+<div class="modal-content" style="height: 428px !important;">
+	<div class="modal-header">
+		<h5 class="modal-title mt-0" id="myECModalLabel">Shift Setup</h5>
+		@* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="row mt-3">
+				<div class="col-lg-4">Shift Name <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Shift Short Code <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Color Code <span class="text-danger">*</span></div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4"><input type="text" class="form-control" id="" required=""></div>
+				<div class="col-lg-4"><input type="text" class="form-control" id="" required=""></div>
+				<div class="col-lg-4"><input id="txtLabelColor" class="form-control" value="#f7f8f9" data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }" style="background-color: rgb(247, 248, 249); color: rgb(34, 34, 34);"></div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-4">Shift Start Time <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Shift End Time <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Half-day Mark Time <span class="text-danger">*</span></div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4"><input class="form-control" type="time" value="" id=""></div>
+				<div class="col-lg-4"><input class="form-control" type="time" value="" id=""></div>
+				<div class="col-lg-4"><input class="form-control" type="time" value="" id=""></div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-4">Early Clock In (minutes) <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Late mark after (minutes) <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Maximum check-in allowed in a day <span class="text-danger">*</span></div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4"><input type="number" class="form-control" id="" required=""></div>
+				<div class="col-lg-4"><input type="number" class="form-control" id="" required=""></div>
+				<div class="col-lg-4"><input type="number" class="form-control" id="" required=""></div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-12">Office opens on <span class="text-danger">*</span></div>
+			</div>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-1 col-md-15">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="">Monday</label>
+				</div>
+				<div class="col-md-1 col-md-15">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="">Tuesday</label>
+				</div>
+				<div class="col-md-1 col-md-15">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="">Wednesday</label>
+				</div>
+				<div class="col-md-1 col-md-15">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="">Thursday</label>
+				</div>
+				<div class="col-md-1 col-md-15">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="">Friday</label>
+				</div>
+				<div class="col-md-1 col-md-15">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="">Saturday</label>
+				</div>
+				<div class="col-md-1 col-md-15">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="">Sunday</label>
+				</div>
+			</div>
+			<div class="row mt-4 text-end ">
+				<div class="col-lg-12 ">
+					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
+					<button type="button" class="btn btn-sm btn-de-primary"><i class="mdi mdi-check-all me-2"></i>Create</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div><!-- /.modal-content -->
+<script type="text/javascript">
+
+</script>
+
+
+

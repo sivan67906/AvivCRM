@@ -1,0 +1,294 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model FinanceInvoiceSettingVM
+<link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css" />
+
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">Invoice Index</h4>
+	</div><!--end card-header-->
+	<div class="card-body">
+		<form id="FinanceInvoiceSettingUpdate" enctype="multipart/form-data">
+		<div class="row">
+				<div class="col-lg-4 form-group">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">Invoice Logo <i class="fa fa-question-circle" aria-hidden="true"></i></h4>
+						</div><!--end card-header-->
+						<div class="card-body">
+							<input type="file" class="dropify" id="txtFILogoImage" name="FILogoImage" data-allowed-file-extensions="png jpg jpeg svg bmp" data-height="100" autocomplete="off">
+						</div><!--end card-body-->
+					</div>
+				</div>
+			<div class="col-lg-2">
+			</div>
+				<div class="col-lg-4 form-group">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">Authorised Signatory Signature<i class="fa fa-question-circle" aria-hidden="true"></i></h4>
+						</div><!--end card-header-->
+						<div class="card-body">
+							<input type="file" class="dropify" id="txtFIAuthorisedImage" name="FIAuthorisedImage" data-allowed-file-extensions="png jpg jpeg svg bmp" data-height="100" autocomplete="off">
+						</div><!--end card-body-->
+					</div>
+				</div>
+			<div class="col-lg-2">
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col-lg-6">Language</div>
+			<div class="col-lg-6">Due after <span class="text-danger">*</span></div>
+		</div>
+		<div class="row mt-2">
+			<div class="col-lg-6">
+					@* <select class="form-select" name="RoleId" asp-for="@Model.LanguageDDSettings.SelectedLanguageId" 
+					asp-items="@(new SelectList (Model.LanguageDDSettings.languageItems, "Id", "Name"))">
+						<option value="">--</option>
+					</select> *@
+				@* <select id="sltLanguage" name="" class="form-select" aria-label="">
+					<option selected="" value="">--</option>
+					<option data-content="<span class='flag-icon flag-icon-gb flag-icon-squared'></span> English" selected="" value="en"> English </option>
+					<option data-content="<span class='flag-icon flag-icon-sa flag-icon-squared'></span> Arabic" value="ar"> Arabic </option>
+					<option data-content="<span class='flag-icon flag-icon-de flag-icon-squared'></span> German" value="de"> German </option>
+					<option data-content="<span class='flag-icon flag-icon-id flag-icon-squared'></span> Indonesian" value="id"> Indonesian </option>
+					<option data-content="<span class='flag-icon flag-icon-my flag-icon-squared'></span> Malaysia" value="ms"> Malaysia </option>
+				</select> *@
+			</div>
+			<div class="col-lg-6">
+				<div class="input-group">
+						<input id="txtFIDueAfter" type="number" class="form-control" name="FIDueAfter"
+							   placeholder="15" value="@Model.FIDueAfter">
+						@* <span asp-validation-for="FIDueAfter" class="text-danger"></span> *@
+
+					@* <input type="number" class="form-control" placeholder="15" aria-label="" aria-describedby="dueDays"> *@
+					<span class="input-group-text" id="dueDays">Day(s)</span>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col-lg-6">Send Reminder Before</div>
+			<div class="col-lg-6"></div>
+		</div>
+		<div class="row mt-2">
+			<div class="col-lg-6">
+				<div class="input-group">
+						<input id="txtFISendReminderBefore" type="number" class="form-control" name="FISendReminderBefore"
+							   placeholder="15" value="@Model.FISendReminderBefore">
+					@* <input type="number" class="form-control" placeholder="0" aria-label="" aria-describedby="sendReminder"> *@
+					<span class="input-group-text" id="sendReminder">Day(s)</span>
+				</div>
+			</div>
+			<div class="col-lg-2" style="padding-right: 0px;">
+				<label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+					<select class="form-select" id="FISendReminderAfterEveryId" name="FISendReminderAfterEveryId">
+					<option value="1">Send Reminder After</option>
+					<option value="2">Send Reminder Before</option>
+				</select>
+			</div>
+			<div class="col-lg-4" style="padding-left: 0px;">
+				<div class="input-group">
+						<input id="txtFISendReminderAfterEvery" type="number" class="form-control" name="FISendReminderAfterEvery"
+							   placeholder="15" value="@Model.FISendReminderAfterEvery">
+					@* <input type="number" class="form-control" placeholder="0" aria-label="" aria-describedby="dueDays"> *@
+					<span class="input-group-text" id="dueDays">Day(s)</span>
+				</div>
+			</div>
+		</div>
+			<div class="row">
+				<form id="FinanceGeneralSettingUpdate">
+				@for (var i = 0; i < Model.FICBGeneralSettings.Count; i++)
+				{
+					<div class="col-lg-4">
+						<div class="form-check custom-control custom-checkbox mt-2">
+							<input type="hidden" name="FICBGeneralSettings[@i].IsChecked" value="false" />
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_FICBGeneralSettings_@Model.FICBGeneralSettings[i].Id" name="FICBGeneralSettings[@i].IsChecked" value="true" @(Model.FICBGeneralSettings[i].IsChecked ? "checked" : "") />
+							<label class="custom-control-label labelcustom" for="checkbox_FICBGeneralSettings_@Model.FICBGeneralSettings[i].Id">@Model.FICBGeneralSettings[i].Name</label>
+							<input type="hidden" name="FICBGeneralSettings[@i].Id" value="@Model.FICBGeneralSettings[i].Id" />
+							<input type="hidden" name="FICBGeneralSettings[@i].Name" value="@Model.FICBGeneralSettings[i].Name" />
+						</div>
+					</div>
+				}
+				</form>
+			</div>
+		@* <div class="row">
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox mt-4 mb-2">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="showTax" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="showTax">Show Tax number on invoice</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox mt-4 mb-2">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="showHSN" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="showHSN">Hsn/Sac Code Show</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox mt-4 mb-2">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="showTaxCalc" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="showTaxCalc">Show tax calculation message</label>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="showStatus" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="showStatus">Show Status</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="showAuthorised" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="showAuthorised">Show Authorised Signatory</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+			</div>
+		</div> *@
+		<div class="row mt-4">
+			<h4>Client info to show on invoice</h4>
+		</div>
+			<div class="row">
+				<form id="FinanceClientInfoSettingUpdate">
+				@for (var i = 0; i < Model.FICBClientInfoSettings.Count; i++)
+				{
+					<div class="col-lg-4">
+						<div class="form-check custom-control custom-checkbox mt-2">
+							<input type="hidden" name="FICBClientInfoSettings[@i].IsChecked" value="false" />
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_FICBClientInfoSettings_@Model.FICBClientInfoSettings[i].Id" name="FICBClientInfoSettings[@i].IsChecked" value="true" @(Model.FICBClientInfoSettings[i].IsChecked ? "checked" : "") />
+							<label class="custom-control-label labelcustom" for="checkbox_FICBClientInfoSettings_@Model.FICBClientInfoSettings[i].Id">@Model.FICBClientInfoSettings[i].Name</label>
+							<input type="hidden" name="FICBClientInfoSettings[@i].Id" value="@Model.FICBClientInfoSettings[i].Id" />
+							<input type="hidden" name="FICBClientInfoSettings[@i].Name" value="@Model.FICBClientInfoSettings[i].Name" />
+						</div>
+					</div>
+				}
+				</form>
+			</div>
+		@* <div class="row mb-2">
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="clientName" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="clientName">Client Name</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="clientEmail" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="clientEmail">Client Email</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="clientPhone" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="clientPhone">Client Phone</label>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="companyName" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="companyName">Company Name</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="clientAddress" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="clientAddress">Client Address</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="form-check-input form-check-input-custom" id="showPrjInvoice" data-parsley-multiple="" data-parsley-mincheck="2">
+					<label class="custom-control-label labelcustom" for="showPrjInvoice">Show Project on Invoice</label>
+				</div>
+			</div>
+		</div> *@
+		<div class="row mt-4">
+			<div class="col-md-12">
+				<label class="custom-control-label" for="reqShiftChange" style="font-size: 14px;">Terms and Conditions</label>
+					<textarea id="txtFITerms" class="form-control" rows="5" placeholder="Thank you for your business."
+							  name="FITerms">@Model.FITerms</textarea>
+				@* <textarea class="form-control mt-2" rows="5" id="termsConditions">Thank you for your business.</textarea> *@
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col-md-12">
+				<label class="custom-control-label" for="reqShiftChange" style="font-size: 14px;">Other information</label>
+					<textarea id="txtFIOtherInfo" class="form-control" rows="5" placeholder="Enter Other information"
+							  name="FIOtherInfo">@Model.FIOtherInfo</textarea>
+					@* <textarea class="form-control mt-2" rows="5" id="otherInformation" placeholder="Enter Other information"></textarea> *@
+			</div>
+		</div>
+		<button id="btnUpdateFinanceInvoiceSetting" type="button" class="btn btn-de-primary mt-4 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+	</form>
+	</div><!--end card-body-->
+</div>
+<script src="~/matrica/assets/libs/dropify/js/dropify.js"></script>
+<script type="text/javascript">
+
+	function fnGenerateJsonString(cbData){
+				var items = [];
+					cbData.forEach(function(field) {
+						var indexMatch = field.name.match(/\d+/);
+						if (indexMatch) {
+							var index = indexMatch[0];
+							if (!items[index]) {
+								items[index] = { Id: 0, Name: "", IsChecked: false };
+							}
+							if (field.name.includes("IsChecked")) {
+								items[index].IsChecked = field.value === "true";
+							} else if (field.name.includes("Id")) {
+								items[index].Id = parseInt(field.value);
+							} else if (field.name.includes("Name")) {
+								items[index].Name = field.value;
+							}
+						}
+					});
+					items = items.filter(item => item != null);
+					return JSON.stringify(items);
+		}
+
+	$(document).ready(function() {
+		$('#btnUpdateFinanceInvoiceSetting').click(function() {
+			var formData = new FormData($('#FinanceInvoiceSettingUpdate')[0]);
+			
+			var cbGeneralData = $('#FinanceGeneralSettingUpdate').serializeArray();
+			var cbClientInfoData = $('#FinanceClientInfoSettingUpdate').serializeArray();
+			
+				var jsonGenralData = fnGenerateJsonString(cbGeneralData);
+				var jsonClientInfoData = fnGenerateJsonString(cbClientInfoData);
+
+				formData.append("FICBGeneralJsonSettings", jsonGenralData);
+				formData.append("FICBClientInfoJsonSettings", jsonClientInfoData);
+
+
+			$.ajax({
+				url: '@Url.Action("FinanceInvoiceSettingUpdate", "Finance")',
+				type: 'POST',
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+					if (response.success) {
+						alert('Data saved successfully!');
+					}
+				}
+			});
+		});
+	});
+</script>
+<script type="text/javascript">
+	$(".dropify").attr("data-default-file", window.location.origin + "/matrica/assets/images/logo-sm.png");
+	$('.dropify').dropify();
+
+	  const dropifyMessages = {
+		default: "Choose a file",
+		replace: "Drop a file or click to replace",
+		remove: "Remove",
+		error: "Some error occurred.",
+	};
+</script>
+
+
+

@@ -1,0 +1,143 @@
+@model AvivCRM.UI.Areas.Environment.ViewModels.TimesheetSettingVM;
+<div class="modal fade" id="mdlTimesheetShow">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title mt-0" id="">Edit Timesheet Details</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-4 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								Project <span class="f-14 mr-1 text-danger">*</span>
+							</label>
+							<select class="form-select mt-2" aria-label="Default select example">
+								<option value="">--</option>
+								<option value="1" selected>Apollo Analytics Platform</option>
+								<option value="2">Nebula E-commerce Solution</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-lg-4 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								Task
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+							<select class="form-select mt-2" aria-label="Default select example">
+								<option value="">--</option>
+								<option value="1" selected>Develop Landing Page</option>
+								<option value="2">Payment Credential</option>
+								<option value="3">Settings</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-lg-4 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								Employee
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+							<select class="form-select mt-2" aria-label="Default select example">
+								<option value="">--</option>
+								<option value="1" selected>John Doe</option>
+								<option value="2">Deva</option>
+								<option value="3">Ganesh</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								Start Date
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+
+							<input class="form-control mt-2" type="date" value="2024-12-01" id="example-date-input">
+
+						</div>
+					</div>
+					<div class="col-lg-3 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								Start Time
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+
+							<input class="form-control mt-2" type="time" value="09:00" id="example-time-input">               <!--example-datetime-local-input-->
+
+						</div>
+					</div>
+					<div class="col-lg-3 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								End Date
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+
+							<input class="form-control mt-2" type="date" value="2024-12-01" id="example-date-input">
+
+						</div>
+					</div>
+					<div class="col-lg-3 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								End Time
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+
+							<input class="form-control mt-2" type="time" value="12:00" id="example-time-input">
+
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								Memo
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+							<input class="form-control mt-2" type="text" value="Nice day" placeholder="e.g.Working on new logo" id="example-text-input">
+						</div>
+					</div>
+					<div class="col-lg-6 g-2">
+						<div class="mb-3 text-start">
+							<label for="example-text-input">
+								Total Hours
+								<span class="f-14 mr-1 text-danger">*</span>
+							</label>
+							<input class="form-control mt-2" type="text" value="3Hrs 00 Min" id="example-text-input">
+						</div>
+					</div>
+				</div>
+
+			</div><!--end card-body-->
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-lg-12 text-end">
+						<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
+						<button type="button" class="btn btn-sm btn-de-primary "><i class="mdi mdi-check-all me-2 "></i>Update</button>
+					</div>
+				</div>
+			</div><!--end modal-footer-->
+		</div>
+	</div>
+</div>
+@section Scripts {
+	<script type="text/javascript">
+		$(window).on('load', function() {
+		 $('#mdlDesignationShow').modal({backdrop: 'static', keyboard: false});
+		});
+	</script>
+}
+
+
+
+
+
+
+

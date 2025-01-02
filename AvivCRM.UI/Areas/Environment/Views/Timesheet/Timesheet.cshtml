@@ -1,0 +1,80 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model List<TimesheetSettingVM>
+
+<div id="PlaceHolderHere">
+</div>
+<div class="row">
+	<div class="col-12 col-lg-12">
+		<div class="card" style="">
+			<div class="card-header">
+				<div class="row align-items-center">
+					<div class="col">
+						<h4 class="card-title">Timesheets Index</h4>
+					</div><!--end col-->
+					<div class="col-auto">
+						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+						data-target="#mdlTimesheetShow" data-url="@Url.Action("Create")">
+							<i class="fas fa-plus me-2"></i>Add Timesheet
+						</button>
+					</div><!--end col-->
+				</div>  <!--end row-->
+			</div><!--end card-header-->
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table  mb-0">
+						<thead class="thead-light">
+							<tr>
+								<th>Project</th>
+								<th>Task</th>
+								<th>Employee</th>
+								<th>Start Time</th>
+								<th>End Time</th>
+								<th>Total Hours</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							@for (var i = 0; i < Model.Count(); i++)
+							{
+								<tr>
+									<td class="d-none">@Html.DisplayNameFor(m => Model[i].Id)</td>
+									<td>@(i + 1)</td>
+									<td>@Model[i].ProjectName</td>
+									<td>@Model[i].TaskName</td>
+									<td>@Model[i].EmployeeName</td>
+									<td>@Model[i].StartDateTime</td>
+									<td>@Model[i].EndDateTime</td>
+									<td>@Model[i].TotalHours</td>
+									<td>
+										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+												data-target="#mdlTimesheetShow" data-url="@Url.Action($"Edit/{@Model[i].Id}")">
+											<i class="las la-pen text-secondary font-16"></i>
+										</button>
+										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+												data-target="#mdlTimesheetShow" data-url="@Url.Action($"Delete/{@Model[i].Id}")">
+											<i class="las la-trash-alt text-secondary font-16"></i>
+										</button>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table><!--end /table-->
+				</div><!--end /tableresponsive-->
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(window).on('load', function() {
+		 $('#mdlTimesheetShow').modal({backdrop: 'static', keyboard: false});
+		});
+	</script>
+
+}
+
+
+

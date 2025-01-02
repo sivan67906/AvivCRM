@@ -1,0 +1,142 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model FinanceInvoiceTemplateSettingVM
+<style type="text/css">
+	.myButton {
+		border: 1px solid #eaf0f9;
+	}
+
+	.selected-image {
+		float: right;
+		margin-right: 5px;
+	}
+
+	.myButton i {
+		float: right;
+		margin-right: 5px;
+	}
+
+	.button-image {
+		/* opacity: 0; */
+		display: block;
+		margin: 0 auto;
+	}
+
+	.fas.fa-check-circle {
+		opacity: 0;
+	}
+
+	input:checked ~ .fas.fa-check-circle {
+		opacity: 1;
+	}
+
+	input:checked ~ .button-image {
+		opacity: 1;
+	}
+
+	.myButton span {
+		display: block;
+		text-align: center;
+	}
+	.icustomstyler{
+		font-size: 26px;
+		color: green;
+		position: absolute;
+		top: 4% !important;
+		left: 6% !important;
+	}
+	</style>
+
+<div class="modal fade" id="mdlProjectStatusShow" style="">
+	<div class="modal-dialog" id="PlaceHolderHere">
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<div class="row align-items-center">
+			<div class="col">
+				<h4 class="card-title">Template Index<span class="text-danger"> *</span></h4>
+			</div><!--end col-->
+
+		</div>  <!--end row-->
+	</div><!--end card-header-->
+	<div class="card-body">
+		<form id="FinanceInvoiceTemplateSettingUpdate">
+		<div class="col-lg-12">
+			<div class="row">
+				@for (var i = 0; i < Model.FIRBTemplateSettings.Count; i++)
+				{
+					<div class="col-lg-3">
+						<label class="myButton" for="radio-@Model.FIRBTemplateSettings[i].Id" style="width: 90%;">
+							@Model.FIRBTemplateSettings[i].ImageURL
+							<input id="radio-@Model.FIRBTemplateSettings[i].Id" type="radio"
+									   name="selectedRadio"
+								   value="@Model.FIRBTemplateSettings[i].Id" style="display: none; width: 100%;"
+								@(Model.FIRBTemplateSettings[i].isSelected ? "checked" : "") />
+							<i class="fas fa-check-circle icustomstyler" style=""></i>
+							<img class="button-image" src="@Model.FIRBTemplateSettings[i].ImageURL" style="width: 100%;">
+						</label>
+					</div>
+				}
+
+				@* <div class="col-lg-3">
+					<label class="myButton" style="width: 90%;">
+						<input type="radio" name="contact" value="email" style="display: none; width: 100%;">
+						<i class="fas fa-check-circle icustomstyler" style=""></i>
+						<img class="button-image" src="~/matrica/assets/images/templates/1.png" style="width: 100%;">
+					</label>
+				</div>
+				<div class="col-lg-3">
+					<label class="myButton" style="width: 90%;">
+						<input type="radio" name="contact" value="email" style="display: none; width: 100%;">
+						<i class="fas fa-check-circle icustomstyler" style=""></i>
+						<img class="button-image" src="~/matrica/assets/images/templates/2.png" style="width: 100%;">
+					</label>
+				</div>
+				<div class="col-lg-3">
+					<label class="myButton" style="width: 90%;">
+						<input type="radio" name="contact" value="email" style="display: none; width: 100%;">
+						<i class="fas fa-check-circle icustomstyler" style=""></i>
+						<img class="button-image" src="~/matrica/assets/images/templates/3.png" style="width: 100%;">
+					</label>
+				</div>
+				<div class="col-lg-3">
+				</div> *@
+			</div>
+		</div>
+		<button id="btnUpdateFinanceInvoiceTemplateSetting" type="button" class="btn btn-de-primary mt-2 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+	</form>
+	</div><!--end card-body-->
+</div><!--end card-->
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#btnUpdateFinanceInvoiceTemplateSetting').click(function() {
+			var formData = new FormData($('#FinanceInvoiceTemplateSettingUpdate')[0]);
+
+			var selectedRadio = $('input[name="selectedRadio"]:checked').val();
+				var items2 = [];
+				$('#FinanceInvoiceTemplateSettingUpdate input[type="radio"]').each(function() {
+					var id = $(this).val();
+					var name = $(this).parents('label').text();
+					var isSelected = $(this).is(':checked');
+					items2.push({ Id: id, ImageURL: name, IsSelected: isSelected }); });
+					var jsonDataInvoiceTemplate = JSON.stringify(items2);
+					formData.append('jsonData', jsonDataInvoiceTemplate);
+
+			$.ajax({
+				url: '@Url.Action("FinanceInvoiceTemplateSettingUpdate", "Finance")',
+				type: 'POST',
+				data: { jsonData: jsonDataInvoiceTemplate },
+				success: function(response) {
+					if (response.success) {
+						alert('Data saved successfully!');
+					}
+				}
+			});
+		});
+	});
+</script>
+
+
+

@@ -1,0 +1,60 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model FinanceVM
+@section Styles {
+	<link href="~/matrica/assets/css/app-custom.css" rel="stylesheet" type="text/css" />
+}
+<div class="row">
+	<div class="col-12 col-lg-10 mx-auto">
+		<div class="card">
+			<div class="card-body">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" href="#tbFinanceInvoiceSetting" role="tab">Invoice Settings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbFinanceInvoiceTemplateSetting" role="tab">Invoice Template</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbFinancePrefixSetting" role="tab">Prefix Settings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbFinanceUnitSetting" role="tab">Unit</a>
+					</li>
+				</ul>
+			</div><!--end card-body-->
+			<div class="card-body pt-0">
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active show" id="tbFinanceInvoiceSetting" role="tabpanel">
+						@await Component.InvokeAsync("FinanceInvoiceSetting", new { financeInvoiceSetting = Model.FinanceInvoiceSettingVMList })
+					</div>
+					<div class="tab-pane" id="tbFinanceInvoiceTemplateSetting" role="tabpanel">
+						@await Component.InvokeAsync("FinanceInvoiceTemplateSetting", new { financeInvoiceTemplateSetting = Model.FinanceInvoiceTemplateSettingVMList })
+					</div>
+					<div class="tab-pane" id="tbFinancePrefixSetting" role="tabpanel">
+						@await Component.InvokeAsync("FinancePrefixSetting", new { financePrefixSetting = Model.FinancePrefixSettingVMList })
+					</div>
+					<div class="tab-pane show" id="tbFinanceUnitSetting" role="tabpanel">
+						@await Component.InvokeAsync("FinanceUnitSetting", new { financeUnitSettings = Model.FinanceUnitSettingVMList })
+					</div>
+				</div>
+			</div><!--end card-body-->
+		</div><!--end card-->
+	</div>
+</div>
+
+@section Scripts {
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		 $(window).on('load', function() {
+		 $('.modal').modal({backdrop: 'static', keyboard: false});
+		});
+	</script>
+	<script type="text/javascript">
+	</script>
+}
+
+
+

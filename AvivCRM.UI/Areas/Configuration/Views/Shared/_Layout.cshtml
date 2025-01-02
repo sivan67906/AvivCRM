@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Office Management System</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta content="Premium Office Management System by Aviv Solutions Inc" name="description" />
+	<meta content="Firstlin s Joseph" name="author" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<!-- App css -->
+	<link href="~/matrica/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="~/matrica/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+	<link href="~/matrica/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+	<link href="~/matrica/assets/css/app-font.css" rel="stylesheet" type="text/css" />
+	<link href="~/matrica/assets/css/app-custom.css" rel="stylesheet" type="text/css" />
+	<link href="~/matrica/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+	<link href="~/matrica/assets/libs/animate.css/animate.min.css" rel="stylesheet" type="text/css">
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	@* <script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script> *@
+
+	@if (IsSectionDefined("Styles"))
+	{
+		@await RenderSectionAsync("Styles", required: true)
+	}
+	else
+	{
+		@await RenderSectionAsync("Styles", required: false)
+	}
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+
+	<!-- leftbar-tab-menu -->
+	<div class="leftbar-tab-menu">
+		<div class="main-icon-menu">
+			<a asp-area="" asp-controller="Login" asp-action="Login" class="logo logo-metrica d-block text-center">
+				<span>
+					<img src="~/matrica/assets/images/logo-sm.png" alt="logo-small" class="logo-sm" />
+				</span>
+			</a>
+			<div class="main-icon-menu-body">
+				<div class="position-reletive h-100" data-simplebar style="overflow-x: hidden;">
+					<ul class="nav nav-tabs" role="tablist" id="tab-menu">
+						@* <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard" data-bs-trigger="hover">
+							<a href="#SettingsDashboard" id="dashboard-tab" class="nav-link">
+								<i class="ti ti-smart-home menu-icon"></i>
+							</a><!--end nav-link-->
+						</li><!--end nav-item-->
+						<!--end nav-item-->
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="CRM" data-bs-trigger="hover">
+							<a href="#hrefCRM" id="crm-tab" class="nav-link">
+								<i class="mdi mdi-format-list-bulleted menu-icon"></i>
+							</a><!--end nav-link-->
+						</li>
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="HR" data-bs-trigger="hover">
+							<a href="#hrefHR" id="hr-tab" class="nav-link">
+								<i class="fas fa-user-friends menu-icon fa17-custom"></i>
+							</a><!--end nav-link-->
+						</li>
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Payroll" data-bs-trigger="hover">
+							<a href="#hrefPayroll" id="payroll-tab" class="nav-link">
+								<i class="fas fa-wallet menu-icon fa17-custom"></i>
+							</a><!--end nav-link-->
+						</li>
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Recruit" data-bs-trigger="hover">
+							<a href="#hrefRecruit" id="recruit-tab" class="nav-link">
+								<i class="fas fa-user-check menu-icon fa17-custom"></i>
+							</a><!--end nav-link-->
+						</li>
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Work" data-bs-trigger="hover">
+							<a href="#hrefWork" id="work-tab" class="nav-link">
+								<i class="fas fa-briefcase menu-icon fa17-custom"></i>
+							</a><!--end nav-link-->
+						</li>
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Finance" data-bs-trigger="hover">
+							<a href="#hrefFinance" id="finance-tab" class="nav-link">
+								<i class="fas fa-dollar-sign menu-icon"></i>
+							</a><!--end nav-link-->
+						</li>
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Inventory" data-bs-trigger="hover">
+							<a href="#hrefInventory" id="inventory-tab" class="nav-link">
+								<i class="fas fa-warehouse menu-icon fa15-custom"></i>
+							</a><!--end nav-link-->
+						</li>
+					
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Broadcast" data-bs-trigger="hover">
+							<a href="#hrefBroadcast" id="broadcast-tab" class="nav-link">
+								<i class="ti ti-clipboard menu-icon"></i>
+							</a><!--end nav-link-->
+						</li> *@
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Environment" data-bs-trigger="hover">
+							<a href="#hrefAvivSettings" id="settings-tab" class="nav-link">
+								<i class="mdi mdi-settings-outline menu-icon"></i>
+							</a><!--end nav-link-->
+						</li>
+						<li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Configuration" data-bs-trigger="hover">
+							<a href="#hrefConfigurationSettings" id="configurationsettings-tab" class="nav-link">
+								<i class="mdi mdi-settings menu-icon"></i>
+							</a><!--end nav-link-->
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!--end /div-->
+			</div><!--end main-icon-menu-body-->
+			<div class="pro-metrica-end">
+				<a asp-area="" asp-controller="Login" asp-action="Login" class="profile">
+					<img src="~/matrica/assets/images/person.png" alt="profile-user" class="rounded-circle thumb-sm">
+				</a>
+			</div><!--end pro-metrica-end-->
+		</div>
+		<!--end main-icon-menu-->
+
+		<div class="main-menu-inner">
+			<!-- LOGO -->
+			<div class="topbar-left">
+				<a asp-area="" asp-controller="Login" asp-action="Login" class="logo">
+					<span>
+						Office System
+					</span>
+				</a><!--end logo-->
+			</div><!--end topbar-left-->
+			<!--end logo-->
+			<div class="menu-body navbar-vertical tab-content" data-simplebar>
+				<div id="SettingsDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="dashboard-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Dashboard</h6>
+					</div>
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="nav-link">Home</a>
+						</li><!--end nav-item-->
+						@* <li class="nav-item">
+							<a class="nav-link" href="crypto-index.html">Crypto</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" href="crm-index.html">CRM</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" href="projects-index.html">Project</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" href="ecommerce-index.html">Ecommerce</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" href="helpdesk-index.html">Helpdesk</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" href="hospital-index.html">Hospital</a>
+						</li><!--end nav-item--> *@
+					</ul><!--end nav-->
+				</div><!-- end Dashboards -->
+				<div id="hrefCRM" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="crm-tab">
+					<div class="title-box">
+						<h6 class="menu-title">CRM</h6>
+					</div>
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="CRM" asp-controller="CRM" asp-action="Lead">Lead</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="CRM" asp-controller="CRM" asp-action="Client">Client</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings -->
+				<div id="hrefHR" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="hr-tab">
+					<div class="title-box">
+						<h6 class="menu-title">HR</h6>
+					</div>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="HR" asp-controller="HR" asp-action="Employee">Employee</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="HR" asp-controller="HR" asp-action="Leave">Leave</a>
+						</li><!--end nav-item-->
+						@* <li class="nav-item">
+							<a class="nav-link" asp-area="HR" asp-controller="HR" asp-action="Attendance">Attendance</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="HR" asp-controller="HR" asp-action="Holiday">Holiday</a>
+						</li><!--end nav-item--> *@
+						<li class="nav-item">
+							<a class="nav-link" asp-area="HR" asp-controller="HR" asp-action="Department">Department</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="HR" asp-controller="HR" asp-action="Designation">Designation</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings -->
+				<div id="hrefPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="payroll-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Payroll</h6>
+					</div>
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Payroll" asp-controller="Payroll" asp-action="Payroll">Payroll</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Payroll" asp-controller="Payroll" asp-action="EmployeeSalary">Employee Salary</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings -->
+				<div id="hrefRecruit" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="recruit-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Recruit</h6>
+					</div>
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Recruit" asp-controller="Recruit" asp-action="Skill">Skill</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Recruit" asp-controller="Recruit" asp-action="Job">Job</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Recruit" asp-controller="Recruit" asp-action="JobApplication">Job Application</a>
+						</li><!--end nav-item-->
+						@* <li class="nav-item">
+							<a class="nav-link" asp-area="Recruit" asp-controller="Recruit" asp-action="InterviewSchedule">Interview Schedule</a>
+						</li><!--end nav-item--> *@
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Recruit" asp-controller="Recruit" asp-action="OfferLetter">Offer Letter</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings -->
+				<div id="hrefWork" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="work-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Work</h6>
+					</div>
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Work" asp-controller="Work" asp-action="Contract">Contract</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Work" asp-controller="Work" asp-action="Project">Project</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Work" asp-controller="Work" asp-action="Task">Task</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Work" asp-controller="Work" asp-action="Timesheet">Timesheet</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings -->
+				<div id="hrefFinance" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="finance-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Finance</h6>
+					</div>
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Finance" asp-controller="Finance" asp-action="Proposal">Proposal</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Finance" asp-controller="Finance" asp-action="Estimates">Estimation</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Finance" asp-controller="Finance" asp-action="Invoice">Invoice</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Finance" asp-controller="Finance" asp-action="EInvoice">E-Invoice</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Finance" asp-controller="Finance" asp-action="Payments">Payment</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Finance" asp-controller="Finance" asp-action="CreditNote">Credit Note</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Finance" asp-controller="Finance" asp-action="Expenses">Expense</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Finance" asp-controller="Finance" asp-action="BankAccount">Bank Account</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings -->
+				<div id="hrefInventory" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="inventory-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Inventory</h6>
+					</div>
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="Vendor">Vendor</a>
+						</li><!--end nav-item-->
+						@* 	<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="PurchaseProducts">Purchase Products</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="PurchaseOrder">Purchase Order</a>
+						</li><!--end nav-item--> *@
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="Bills">Bill</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="VendorPayments">Vendor Payment</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="VendorCredits">Vendor Credit</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="Inventory">Inventory</a>
+						</li><!--end nav-item-->
+						@* <li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="Reports">Reports</a>
+						</li><!--end nav-item--> *@
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="Assets">Asset</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="Orders">Order</a>
+						</li><!--end nav-item-->
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Inventory" asp-controller="Inventory" asp-action="Products">Product</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings -->
+				@* <div id="hrefEvent" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="event-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Event</h6>
+					</div>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Event" asp-controller="Event" asp-action="Event">Event</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings --> *@
+				@* <div id="hrefMessage" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="message-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Message</h6>
+					</div>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Message" asp-controller="Message" asp-action="Message">Message</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings --> *@
+				<div id="hrefBroadcast" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="broadcast-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Broadcast</h6>
+					</div>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Broadcast" asp-controller="Broadcast" asp-action="Broadcast">Notice Board</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings -->
+				@* <div id="hrefTicket" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="ticket-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Ticket</h6>
+					</div>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="Ticket" asp-controller="Ticket" asp-action="Tickets">Ticket</a>
+						</li><!--end nav-item-->
+					</ul><!--end nav-->
+				</div><!-- end Settings --> *@
+
+				<div id="hrefAvivSettings" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="settings-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Settings</h6>
+					</div>
+					<div class="collapse navbar-collapse" id="sbCollapseConfiguration_2">
+						<!-- Navigation -->
+						<ul class="navbar-nav">
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="LeadAgent" asp-action="LeadAgent">Lead</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="LeadCategory" asp-action="LeadCategory">Lead Category</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="LeadSource" asp-action="LeadSource">Lead Source</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="LeadStatus" asp-action="LeadStatus">Lead Status</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Client" asp-action="Client">Client</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Application" asp-action="Application">Application</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Planning" asp-action="Planning">Planning</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Employee" asp-action="Employee">Employee</a>
+							</li><!--end nav-item-->
+							@* <li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Finance" asp-action="Payroll">Payroll</a>
+							</li><!--end nav-item--> *@
+							<li class="nav-item">
+                                <a class="nav-link" asp-area="Environment" asp-controller="Contract" asp-action="Contract">Contract</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Project" asp-action="Project">Project</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Task" asp-action="Task">Task</a>
+							</li><!--end nav-item-->
+							@* <li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Company" asp-action="Project">Project</a>
+							</li><!--end nav-item--> *@
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Timesheet" asp-action="Timesheet">Timesheet</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Payment" asp-action="Payment">Payment</a>
+							</li><!--end nav-item-->
+							@* <li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Company" asp-action="Assets">Asset</a>
+							</li><!--end nav-item--> *@
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Message" asp-action="Message">Message</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Ticket" asp-action="Ticket">Ticket</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Currency" asp-action="Currency">Currency</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Finance" asp-action="Finance">Finance</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Tax" asp-action="Tax">Tax</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Purchase" asp-action="Purchase">Purchase</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Recruit" asp-action="Recruit">Recruit</a>
+							</li><!--end nav-item-->
+							@* <li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Company" asp-action="SMS">SMS</a>
+							</li><!--end nav-item--> *@
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="NotificationMain" asp-action="NotificationMain">Notification</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Attendance" asp-action="Attendance">Attendance</a>
+							</li><!--end nav-item-->
+							@* <li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Company" asp-action="Index">Leaves</a>
+							</li><!--end nav-item--> *@
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="LeavesType" asp-action="LeavesType">Leaves</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="TimeLog" asp-action="TimeLog">Time Log</a>
+							</li><!--end nav-item-->
+							@* <li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Company" asp-action="Security">Security</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Company" asp-action="Permissions">Module</a>
+							</li><!--end nav-item--> *@
+							@* <li class="nav-item">
+								<a class="nav-link" asp-area="Environment" asp-controller="Integration" asp-action="Calendar">Google Calendar</a>
+							</li><!--end nav-item--> *@
+						</ul><!--end navbar-nav--->
+					</div><!--end sidebarCollapse_2-->
+				</div><!-- end Settings -->
+				<div id="hrefConfigurationSettings" class="main-icon-menu-pane tab-pane" role="tabpanel"
+					 aria-labelledby="configurationsettings-tab">
+					<div class="title-box">
+						<h6 class="menu-title">Configuration</h6>
+					</div>
+					<div class="collapse navbar-collapse" id="sbCollapseConfiguration_2">
+						<!-- Navigation -->
+						<ul class="navbar-nav">
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Configuration" asp-controller="Consumer" asp-action="Consumer">Consumer</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Configuration" asp-controller="Company" asp-action="Company">Company</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Configuration" asp-controller="BusinessLocation" asp-action="BusinessLocation">Business Location</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Configuration" asp-controller="Department" asp-action="Department">Department</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Configuration" asp-controller="Designation" asp-action="Designation">Designation</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Configuration" asp-controller="Role" asp-action="Role">Roles</a>
+							</li><!--end nav-item-->
+							<li class="nav-item">
+								<a class="nav-link" asp-area="Configuration" asp-controller="RoleAssignment" asp-action="RoleAssignment">Role Assignment</a>
+							</li><!--end nav-item-->
+						</ul><!--end navbar-nav--->
+					</div><!--end sidebarCollapse_2-->
+				</div><!-- end Settings -->
+			</div><!--end menu-body-->
+		</div><!-- end main-menu-inner-->
+	</div>
+	<!-- end leftbar-tab-menu-->
+	<!-- Top Bar Start -->
+	<div class="topbar">
+		<!-- Navbar -->
+		<nav class="navbar-custom" id="navbar-custom">
+			<ul class="list-unstyled topbar-nav float-end mb-0">
+
+				<!--Topbar Email Notification-->
+				<li class="dropdown notification-list">
+					<a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
+					   aria-haspopup="false" aria-expanded="false">
+						<i class="ti ti-mail"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-end dropdown-lg pt-0">
+						<h6 class="dropdown-item-text font-15 m-0 py-3 border-bottom d-flex justify-content-between align-items-center">
+							Emails <span class="badge bg-soft-primary badge-pill">3</span>
+						</h6>
+						<div class="notification-menu" data-simplebar>
+							<!-- item-->
+							<a href="#" class="dropdown-item py-3">
+								<small class="float-end text-muted ps-2">2 min ago</small>
+								<div class="media">
+									<div class="avatar-md bg-soft-primary">
+										<img src="assets/images/users/user-1.jpg" alt="" class="thumb-sm rounded-circle">
+									</div>
+									<div class="media-body align-self-center ms-2 text-truncate">
+										<h6 class="my-0 fw-normal text-dark">Your order is placed</h6>
+										<small class="text-muted mb-0">Dummy text of the printing and industry.</small>
+									</div><!--end media-body-->
+								</div><!--end media-->
+							</a><!--end-item-->
+						</div>
+						<!-- All-->
+						<a href="javascript:void(0);" class="dropdown-item text-center text-primary">
+							View all <i class="fi-arrow-right"></i>
+						</a>
+					</div>
+				</li>
+				<!--Topbar Message Notification-->
+				<li class="dropdown notification-list">
+					<a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
+					   aria-haspopup="false" aria-expanded="false">
+						<i class="ti ti-bell"></i>
+						<span class="alert-badge"></span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-end dropdown-lg pt-0">
+
+						<h6 class="dropdown-item-text font-15 m-0 py-3 border-bottom d-flex justify-content-between align-items-center">
+							Notifications <span class="badge bg-soft-primary badge-pill">2</span>
+						</h6>
+						<div class="notification-menu" data-simplebar>
+
+							<!-- item-->
+							<a href="#" class="dropdown-item py-3">
+								<small class="float-end text-muted ps-2">10 min ago</small>
+								<div class="media">
+									<div class="avatar-md bg-soft-primary">
+										<i class="ti ti-device-computer-camera"></i>
+									</div>
+									<div class="media-body align-self-center ms-2 text-truncate">
+										<h6 class="my-0 fw-normal text-dark">Development Process</h6>
+										<small class="text-muted mb-0">We are working on design process</small>
+									</div><!--end media-body-->
+								</div><!--end media-->
+							</a><!--end-item-->
+						</div>
+						<!-- All-->
+						<a href="javascript:void(0);" class="dropdown-item text-center text-primary">
+							View all <i class="fi-arrow-right"></i>
+						</a>
+					</div>
+				</li>
+				<!--Topbar Profile-->
+				<li class="dropdown">
+					<a class="nav-link dropdown-toggle nav-user" data-bs-toggle="dropdown" href="#" role="button"
+					   aria-haspopup="false" aria-expanded="false">
+						<div class="d-flex align-items-center">
+							<img src="~/matrica/assets/images/person.png" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
+							<div>
+								<small class="d-none d-md-block font-11">Architecture</small>
+								<span class="d-none d-md-block fw-semibold font-12">
+									Firstlin Sheldon <i class="mdi mdi-chevron-down"></i>
+								</span>
+							</div>
+						</div>
+					</a>
+					<div class="dropdown-menu dropdown-menu-end">
+						<a class="dropdown-item" asp-area="Environment" asp-controller="Profile" asp-action="Profile"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
+						<a class="dropdown-item" href="#"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Settings</a>
+						@* <select id="" class="form-select" aria-label="Default select example">
+							<option value="0" selected="selected">Select Company</option>
+							<option value="1">Meta</option>
+							<option value="2">Aviv</option>
+						</select> *@
+						<div class="dropdown-divider mb-0"></div>
+						<div id="divNavSelectCompany" class="mt-2">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building ms-3 me-2" viewBox="0 0 16 16">
+								<path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"></path>
+								<path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z"></path>
+							</svg>
+							<label id="lblSelectedCompany">Meta</label>
+							<a href="#" class="ms-5" data-toggle="tooltip" data-placement="top"
+							   data-bs-toggle="modal"
+							   data-animation="bounce" data-bs-target=".bs-selectCompany-modal-lg"
+							   title=""><i class="las la-pen text-secondary font-16"></i></a>
+						</div>
+						<div class="dropdown-divider mb-0"></div>
+						<a class="dropdown-item" href="#"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
+					</div>
+				</li>
+			</ul><!--end topbar-nav-->
+
+			<ul class="list-unstyled topbar-nav mb-0">
+				<li>
+					<button class="nav-link button-menu-mobile nav-icon" id="togglemenu">
+						<i class="ti ti-menu-2"></i>
+					</button>
+				</li>
+				<li class="hide-phone app-search" style="display:none;">
+					@* <form role="search" action="#" method="get">
+                        <input type="search" name="search" class="form-control top-search mb-0" placeholder="Type text...">
+                        <button type="submit"><i class="ti ti-search"></i></button>
+                    </form> *@
+				</li>
+			</ul>
+		</nav>
+		<!-- end navbar-->
+	</div>
+	<!-- Top Bar End -->
+	<!-- Page-Wrapper -->
+	<div class="page-wrapper">
+		<!-- Page Content-->
+		<div class="page-content-tab">
+			<div class="container-fluid">
+				<!-- Page-Title -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="page-title-box">
+							<div class="float-end">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item">
+										<a href="#">@ViewData["bGParent"]</a>
+									</li><!--end nav-item-->
+									<li class="breadcrumb-item">
+										<a href="#">@ViewData["bParent"]</a>
+									</li><!--end nav-item-->
+									<li class="breadcrumb-item active">@ViewData["bChild"]</li>
+								</ol>
+							</div><!--End Breadcrumb-->
+							<h4 class="page-title">@ViewData["pTitle"]</h4>
+						</div><!--end page-title-box-->
+					</div><!--end col-->
+				</div><!-- end page title -->
+				<!--Start Content-->
+				@* <div id="divBlocker" class="d-none">
+					<div id="ldSpinner" class="spinner-border text-primary customspinner" role="status"
+						 style=""></div>
+				</div> *@
+				@RenderBody()
+				<div id="divBlocker" class="d-none">
+					<div id="ldSpinner" class="spinner-border text-primary customspinner" role="status"
+						 style=""></div>
+				</div>
+				<div id="mdlSelectCompany" class="modal fade bs-selectCompany-modal-lg" tabindex="" role="dialog" aria-labelledby="mySelectCompanyModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title mt-0" id="mySelectCompanyModalLabel">Company Setup</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<form>
+									<div class="row mt-3 mb-2">
+										<div class="col-lg-12">Select Company</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											<select id="sltSelectCompany" class="form-select" aria-label="Default select example">
+												<option value="0" selected="selected">--</option>
+												<option value="1">Meta</option>
+												<option value="2">Aviv</option>
+											</select>
+										</div>
+									</div>
+									<div class="row mt-2">
+										<div class="col-lg-8"></div>
+										<div class="col-lg-4 text-end">
+											<button id="btnSelectedCompany" type="button" class="btn btn-de-primary mt-4"><b><i class="mdi mdi-check-all me-2"></i>Save</b></button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+				<!--end Cotent-->
+			</div><!-- container -->
+			<!-- Footer Start -->
+			<footer class="footer text-center text-sm-start">
+				Office Management System &copy;
+				<script>
+					document.write(new Date().getFullYear())
+				</script>
+				Urben Techies <span class="d-none d-sm-inline-block float-end"> Crafted with <i class="mdi mdi-heart text-danger"></i> by Aviv Solutions Inc </span>
+			</footer><!-- End Footer -->
+		</div>
+		<!-- end page content -->
+	</div>
+	<!-- End Page-Wrapper -->
+	<!-- Javascript  -->
+	@* <script src="~/lib/jquery/dist/jquery.js"></script> *@
+	<!-- vendor js -->
+	<script src="~/matrica/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="~/matrica/assets/libs/simplebar/simplebar.min.js"></script>
+	<script src="~/matrica/assets/libs/feather-icons/feather.min.js"></script>
+	<!-- App js -->
+	<script src="~/matrica/assets/js/app.js"></script>
+	<script src="~/matrica/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+	<script src="~/matrica/assets/js/pages/sweet-alert.init.js"></script>
+	<script type='text/javascript'>
+		$(document).ready(function() {
+
+		  let hash = document.location.hash;
+		  let prefix = "?tab=";
+
+		  //change hash url on page reload
+		  if (hash) {
+			$('.nav-tabs a[href=\"'+hash.replace(prefix,"")+'\"]').tab('show');
+		  }
+
+		  // change hash url on switch tab
+		  $('.nav-tabs a').on('shown.bs.tab', function (e) {
+			 window.location.hash = e.target.hash.replace("#", "#" + prefix);
+		  });
+		});
+	</script>
+	@if (IsSectionDefined("Scripts"))
+	{
+		@await RenderSectionAsync("Scripts", required: true)
+	}
+	else
+	{
+		@await RenderSectionAsync("Scripts", required: false)
+	}
+
+	<!-- Javascript End -->
+</body>
+</html>
+
+
+

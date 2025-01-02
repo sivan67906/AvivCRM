@@ -1,0 +1,70 @@
+@model AvivCRM.UI.Areas.Configuration.ViewModels.DesignationVM;
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title mt-0" id="">Designation Setup</h5>
+			</div>
+			<div class="modal-body">
+				<form action="Update">
+					<input id="txtId" type="hidden" name="Id" value="@Model.Id" />
+					<div class="row mt-3">
+						<div class="col-lg-4">Code <span class="text-danger">*</span></div>
+						<div class="col-lg-4">Name <span class="text-danger">*</span></div>
+						<div class="col-lg-4">Company <span class="text-danger">*</span></div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4">
+							<input id="txtCode" type="text" class="form-control" name="Code" placeholder="enter Code" value="@Model.Code">
+							<span asp-validation-for="Code" class="text-danger"></span>
+						</div>
+						<div class="col-lg-4">
+							<input id="txtName" type="text" class="form-control" name="Name" placeholder="enter Name" value="@Model.Name">
+							<span asp-validation-for="Name" class="text-danger"></span>
+						</div>
+						<div class="col-lg-4">
+							@Html.DropDownListFor(c => c.CompanyId, new SelectList(ViewBag.CompanyList, "Id", "Name"), "--", new { @class = "form-control" })
+							@* <input id="txtCompanyId" type="text" class="form-control" name="CompanyId" placeholder="enter CompanyId" value="@Model.CompanyId">
+							<span asp-validation-for="CompanyId" class="text-danger"></span> *@
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-lg-4">Department <span class="text-danger">*</span></div>
+						<div class="col-lg-4">Description <span class="text-danger">*</span></div>
+						<div class="col-lg-4"> <span class="text-danger">*</span></div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-4">
+							@Html.DropDownListFor(c => c.DepartmentId, new SelectList(ViewBag.DepartmentList, "Id", "Name"), "--", new { @class = "form-control" })
+							@* <input id="txtDepartmentId" type="text" class="form-control" name="DepartmentId" placeholder="enter DepartmentId" value="@Model.DepartmentId">
+							<span asp-validation-for="DepartmentId" class="text-danger"></span> *@
+						</div>
+						<div class="col-lg-4">
+							<textarea id="txtDescription" class="form-control" name="Description" placeholder="enter Description">@Model.Description</textarea>
+							<span asp-validation-for="Description" class="text-danger"></span>
+						</div>
+						<div class="col-lg-4">
+						</div>
+					</div>
+					<div class="row mt-4 text-end ">
+						<div class="col-lg-12 ">
+							<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
+							<button type="button" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+@section Scripts {
+	<script type="text/javascript">
+		$(window).on('load', function() {
+		 $('#mdlDesignationShow').modal({backdrop: 'static', keyboard: false});
+		});
+	</script>
+}
+
+
+
+
+
+
+

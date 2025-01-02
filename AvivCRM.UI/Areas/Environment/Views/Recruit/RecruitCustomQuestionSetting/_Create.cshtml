@@ -1,0 +1,87 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model RecruitCustomQuestionSettingVM;
+<style type="text/css">
+	
+</style>
+<div class="modal-content">
+	<div class="modal-header">
+		<h5 class="modal-title mt-0" id="myNCQModalLabel">Question Setup</h5>
+		@* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="row mt-3 mb-2">
+				<div class="col-lg-6">Category</div>
+				<div class="col-lg-6">Question <span class="text-danger">*</span></div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-lg-6">
+					<select id="sltAddQnCategory" class="form-select" aria-label="">
+						<option selected="" value="">--</option>
+						<option value="1"> Job Application </option>
+						<option value="2"> Job Offer </option>
+					</select>
+				</div>
+				<div class="col-lg-6"><input class="form-control" type="text" value="" id=""></div>
+			</div>
+			<div class="row mt-3 mb-2">
+				<div class="col-lg-6">Status</div>
+				<div class="col-lg-6">Is Required</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-lg-6">
+					<select id="sltAddQnStatus" class="form-select" aria-label="">
+						<option selected="" value="">--</option>
+						<option value="1"> Enable </option>
+						<option value="2"> Disable </option>
+					</select>
+				</div>
+				<div class="col-lg-6 mt-2">
+					<input class="form-check-input" type="radio" name="QnReqOptions" id="ipQnRequiredYes" value="">
+					<label class="form-check-label me-2" for="ipQnRequiredYes">Yes</label>
+					<input class="form-check-input" type="radio" name="QnReqOptions" id="ipQnRequiredNo" value="">
+					<label class="form-check-label" for="ipQnRequiredNo">No</label>
+				</div>
+			</div>
+			<div class="row mt-3 mb-2">
+				<div class="col-lg-12">Type</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-lg-12">
+					<select id="sltAddQnType" class="form-select" aria-label="">
+						<option selected="" value="">--</option>
+						<option value="1"> text </option>
+						<option value="2"> number </option>
+						<option value="3"> password </option>
+						<option value="4"> textarea </option>
+						<option value="5"> select </option>
+						<option value="6"> radio </option>
+					</select>
+				</div>
+			</div>
+			<div class="row mt-4 text-end ">
+				<div class="col-lg-12 ">
+					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
+					<button type="button" class="btn btn-sm btn-de-primary"><i class="mdi mdi-check-all me-2"></i>Create</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div><!-- /.modal-content -->
+@* 	<script type="text/javascript">
+		$(window).on('load', function() {
+		 $('#mdlRecruitCustomQuestionSettingShow').modal({backdrop: 'static', keyboard: false});
+		});
+	</script> *@
+
+
+
+
+
+
+
+
+
+
+
+

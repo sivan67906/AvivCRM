@@ -1,0 +1,121 @@
+.form-check-input-custom {
+    height: 16px !important;
+    vertical-align: middle !important;
+    width: 16px !important;
+}
+.labelcustom {
+    margin-left: 8px;
+    vertical-align: -webkit-baseline-middle;
+}
+.col-md-15 {
+    width: 12.499999995% !important;
+    flex: 0 0 12.499% !important;
+    max-width: 12.499% !important;
+}
+.col-md-25 {
+    width: 20.833333325% !important;
+    flex: 0 0 20.833% !important;
+    max-width: 20.833% !important;
+}
+.col-lg-15 {
+    width: 12.499999995% !important;
+    flex: 0 0 12.499% !important;
+    max-width: 12.499% !important;
+}
+.col-lg-25 {
+    width: 19.833333325% !important;
+    flex: 0 0 20.833% !important;
+    max-width: 20.833% !important;
+}
+.toggle-password {
+    float: right;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: -25px;
+}
+.bg-amt-grey {
+    background-color: #e7e9eb;
+}
+
+.btrr-bbrr {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.la-pen {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-success-rgb), var(--bs-text-opacity)) !important;
+}
+.la-trash-alt {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+}
+.fa15-custom {
+    font-size: 15px !important;
+}
+
+.fa17-custom {
+    font-size: 17px !important;
+}
+
+.swal2-icon .swal2-icon-content {
+    font-size: 40px !important;
+}
+
+.swal2-cancel {
+    margin-top: 0px !important;
+    /*margin-right: 20px !important;*/
+}
+
+.btn-de-primary {
+    border: 1px solid #0b51b7 !important;
+}
+
+.btn-de-danger {
+    border: 1px solid #ef4d56 !important
+}
+
+.font-spacing-bold {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-family: IBM Plex Sans !important;
+}
+.text-muted {
+    color: darkblue !important;
+}
+.screenblocker {
+    opacity: var(--bs-backdrop-opacity);
+    --bs-backdrop-zindex: 1050;
+    --bs-backdrop-bg: #d3d3d3;
+    --bs-backdrop-opacity: 0.5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--bs-backdrop-zindex);
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bs-backdrop-bg);
+    transition: opacity .15s linear;
+}
+
+.customspinner {
+    position: absolute;
+    height: 100px;
+    top: 25%;
+    left: 50%;
+    z-index: 9999 !important;
+}
+.custombuttonaslink {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+

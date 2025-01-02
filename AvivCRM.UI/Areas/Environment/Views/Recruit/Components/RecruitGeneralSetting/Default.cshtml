@@ -1,0 +1,231 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model RecruitGeneralSettingVM
+<link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css" />
+
+@* <div class="modal fade" id="mdlProjectStatusShow" style="">
+	<div class="modal-dialog" id="PlaceHolderHere">
+	</div>
+</div> *@
+<div class="card">
+	<div class="card-header">
+		<div class="row align-items-center">
+			<div class="col">
+				<h4 class="card-title">General Index</h4>
+			</div><!--end col-->
+		</div>  <!--end row-->
+	</div><!--end card-header-->
+	<div class="card-body">
+		<form id="RecruitGeneralSettingUpdate" enctype="multipart/form-data">
+			<input id="txtGeneralSettingId" type="hidden" name="Id" value="@Model.Id" />
+			<div class="row mt-4">
+				<div class="col-lg-4">Company Name</div>
+				<div class="col-lg-4">Company Website</div>
+				<div class="col-lg-4">Company Logo </div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-lg-4">
+					<input id="txtGeneralCompanyName" type="text" class="form-control" name="GeneralCompanyName" 
+					placeholder="e.g. Acme Corporation" value="@Model.GeneralCompanyName">
+					<span asp-validation-for="GeneralCompanyName" class="text-danger"></span>
+				</div>
+				<div class="col-lg-4">
+					<input id="txtGeneralCompanyWebsite" type="text" class="form-control" name="GeneralCompanyWebsite"
+					placeholder="e.g. https://www.spacex.com/" value="@Model.GeneralCompanyWebsite">
+					<span asp-validation-for="GeneralCompanyWebsite" class="text-danger"></span>
+				</div>
+				<div class="col-lg-4 form-group">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">Upload Image <i class="fa fa-question-circle" aria-hidden="true"></i></h4>
+						</div><!--end card-header-->
+						<div class="card-body">
+							<input type="file" class="form-control-file dropify" id="txtGeneralCompanyLogoImage" name="GeneralCompanyLogoImage" data-allowed-file-extensions="png jpg jpeg svg bmp" data-height="100" autocomplete="off">
+						</div><!--end card-body-->
+					</div>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-12">About Company</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<textarea id="txtGeneralAboutCompany" class="form-control" rows="5" placeholder="" 
+					name="GeneralAboutCompany">@Model.GeneralAboutCompany</textarea>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-12">
+					Legal Term Text
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<textarea id="txtGeneralLegalTerm" class="form-control" rows="5" placeholder=""
+					name="GeneralLegalTerm">@Model.GeneralLegalTerm</textarea>
+				</div>
+			</div>
+			<div class="row">
+				@for (var i = 0; i < Model.GeneralCBSettings.Count; i++)
+				{
+				<div class="col-lg-2">
+					<div class="form-check custom-control custom-checkbox mt-4 mb-2">
+						<input type="hidden" name="GeneralCBSettings[@i].IsChecked" value="false" />
+						<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.GeneralCBSettings[i].Id" name="GeneralCBSettings[@i].IsChecked" value="true" @(Model.GeneralCBSettings[i].IsChecked ? "checked" : "") />
+						<label class="custom-control-label labelcustom" for="checkbox-@Model.GeneralCBSettings[i].Id">@Model.GeneralCBSettings[i].Name</label>
+						<input type="hidden" name="GeneralCBSettings[@i].Id" value="@Model.GeneralCBSettings[i].Id" />
+						<input type="hidden" name="GeneralCBSettings[@i].Name" value="@Model.GeneralCBSettings[i].Name" />
+					</div>
+				</div>
+				}
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-6">
+					Duplicate Job Application Restriction (In days)<span class="text-danger"> *</span>
+				</div>
+				<div class="col-lg-6">Offer Letter Reminder To Candidate(In days)<span class="text-danger"> *</span> </div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-lg-6">
+					<input id="txtGeneralDuplJobApplnRestrictDays" type="number" class="form-control" name="GeneralDuplJobApplnRestrictDays"
+						   placeholder="" value="@Model.GeneralDuplJobApplnRestrictDays">
+					<span asp-validation-for="GeneralDuplJobApplnRestrictDays" class="text-danger"></span>
+				</div>
+				<div class="col-lg-6">
+					<input id="txtGeneralOLReminderToCandidate" type="number" class="form-control" name="GeneralOLReminderToCandidate"
+						   placeholder="" value="@Model.GeneralOLReminderToCandidate">
+					<span asp-validation-for="GeneralOLReminderToCandidate" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-12">
+					<input class="form-check-input" type="radio" name="BackgroundOptions" id="txtGeneralBGImage" value="Background Image">
+					<label class="form-check-label me-5" for="txtGeneralBGImage">Background Image</label>
+					<input class="form-check-input" type="radio" name="BackgroundOptions" id="txtGeneralBGColorCode" value="Background Color">
+					<label class="form-check-label" for="txtGeneralBGColorCode">Background Color</label>
+				</div>
+			</div>
+			<div id="divBackroundImage" style="display:none;">
+				<div class="row mt-4">
+					<div class="col-lg-12">Background Image (Idle Size 1120 * 200 )</div>
+				</div>
+				<div class="row col-lg-12 mt-2">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">Please click "Upload" Button to upload your Background Image <i class="fa fa-question-circle" aria-hidden="true"></i></h4>
+						</div><!--end card-header-->
+						<div class="card-body">
+							<input type="file" class="form-control-file dropify" id="txtGeneralBGLogoImage" name="GeneralBGLogoImage" data-allowed-file-extensions="png jpg jpeg svg bmp" data-height="100" autocomplete="off">
+						</div><!--end card-body-->
+					</div>
+				</div>
+			</div>
+			<div id="divBackroundColor" style="display:none;">
+				<div class="row mt-4">
+					<div class="col-lg-12">
+						Background Color <span class="text-danger">*</span>
+					</div>
+				</div>
+				<div class="row col-lg-12 mt-2">
+					<input id="txtGeneralBGColorCode" type="text" class="form-control" 
+					data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }"
+						   name="GeneralBGColorCode" placeholder="" value="@Model.GeneralBGColorCode">
+				</div>
+			</div>
+			<button id="updateRecruitGeneralSetting" type="button" class="btn btn-de-primary mt-2 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+		</form>
+	</div>
+
+</div><!--end card-body-->
+<script src="~/matrica/assets/libs/dropify/js/dropify.js"></script>
+<script>
+	$(document).ready(function() {
+		  $("input[id$='txtGeneralBGImage']").click(function() {
+			 $("#divBackroundImage").css("display", "block");
+			 $("#divBackroundColor").css("display", "none");
+		  });
+		 $("input[id$='txtGeneralBGColorCode']").click(function() {
+			 $("#divBackroundColor").css("display", "block");
+			 $("#divBackroundImage").css("display", "none");
+		  });
+		  });
+
+	$(document).ready(function() {
+		$('#updateRecruitGeneralSetting').click(function() {
+			const swalWithBootstrapButtons = Swal.mixin({
+			  customClass: {
+				 confirmButton: "btn btn-de-primary",
+				 cancelButton: "btn btn-de-danger me-2"
+			  },
+			  buttonsStyling: false
+		   });
+
+			var formData = new FormData($('#RecruitGeneralSettingUpdate')[0]);
+			var cbData = $('#RecruitGeneralSettingUpdate').serializeArray();
+			// var cbData = $('#RecruitGeneralSettingUpdate').serializeArray().filter(v => v.name !== 'selectedRadio');
+			var items = [];
+			cbData.forEach(function(field) {
+				var indexMatch = field.name.match(/\d+/);
+				if (indexMatch) {
+					var index = indexMatch[0];
+					if (!items[index]) {
+						items[index] = { Id: 0, Name: "", IsChecked: false };
+					}
+					if (field.name.includes("IsChecked")) {
+						items[index].IsChecked = field.value === "true";
+					} else if (field.name.includes("Id")) {
+						items[index].Id = parseInt(field.value);
+					} else if (field.name.includes("Name")) {
+						items[index].Name = field.value;
+					}
+				}
+			});
+			items = items.filter(item => item != null);
+			var jsonCBData = JSON.stringify(items);
+
+			formData.append('jsonData', jsonCBData);
+			// var sendData = form.serialize();
+
+			// var selectedRadio = $('input[name="selectedRadio"]:checked').val();
+			// var items2 = [];
+			// $('#checkboxForm input[type="radio"]').each(function() {
+			// 	var id = $(this).val();
+			// 	var name = $(this).next('label').text();
+			// 	var isSelected = $(this).is(':checked');
+			// 	items2.push({ Id: id, Name: name, IsSelected: isSelected }); });
+			// 	var jsonData2 = JSON.stringify(items2);
+
+
+			$.ajax({
+				url: '@Url.Action("RecruitGeneralSettingUpdate", "Recruit")',
+				type: 'POST',
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+					swalWithBootstrapButtons.fire({ title: "Updated!",
+		 text: "Updated successfully!",
+		 icon: "success",
+			  allowOutsideClick: false}).then(okay => {
+		   if (okay) {
+			location.reload();
+		  }
+		});
+				}
+			});
+		});
+	});
+</script>
+<script type="text/javascript">
+		$(".dropify").attr("data-default-file", window.location.origin + "/matrica/assets/images/logo-sm.png");
+		$('.dropify').dropify();
+
+		  const dropifyMessages = {
+			default: "Choose a file",
+			replace: "Drop a file or click to replace",
+			remove: "Remove",
+			error: "Some error occurred.",
+		};
+</script>
+
+
+

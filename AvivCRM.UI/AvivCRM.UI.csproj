@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Configuration\Data\" />
+    <Folder Include="Areas\Configuration\Models\" />
+    <Folder Include="Areas\Environment\Data\" />
+    <Folder Include="Areas\Environment\Models\" />
+    <Folder Include="Areas\Environment\Views\Shared\" />
+    <Folder Include="wwwroot\matrica\assets\libs\chart.js\docs\" />
+    <Folder Include="wwwroot\matrica\assets\libs\code-prettify\src\" />
+    <Folder Include="wwwroot\matrica\assets\libs\gmaps\docs\" />
+    <Folder Include="wwwroot\matrica\assets\libs\gmaps\examples\" />
+    <Folder Include="wwwroot\matrica\assets\libs\gmaps\test\" />
+    <Folder Include="wwwroot\matrica\assets\libs\litepicker\types\" />
+    <Folder Include="wwwroot\matrica\assets\libs\raphael\dev\test\" />
+    <Folder Include="wwwroot\matrica\assets\libs\starability\starability-scss\starability\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\Workspace\AvivCRM\AvivCRM\AvivCRM.UI\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\Workspace\AvivCRM\AvivCRM\AvivCRM.UI\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>
+
+
+

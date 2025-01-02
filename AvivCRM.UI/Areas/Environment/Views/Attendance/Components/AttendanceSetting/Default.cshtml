@@ -1,0 +1,205 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model AttendanceSettingVM
+<div class="card">
+	<div class="card-header align-items-center">
+		<h4 class="card-title"> Project Index</h4>
+	</div><!--end card-header-->
+
+	<div class="card-body">
+		<form action="AttendanceSettingUpdate">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="custom-control custom-checkbox mt-4 mb-2">
+						<input type="checkbox" class="form-check-input form-check-input-custom" id="reqShiftChange" data-parsley-multiple="" data-parsley-mincheck="2">
+						<label class="custom-control-label labelcustom" for="reqShiftChange">Allow employee to request shift change</label>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="custom-control custom-checkbox mt-4 mb-2">
+						<input type="checkbox" class="form-check-input form-check-input-custom" id="clockInLocation" data-parsley-multiple="" data-parsley-mincheck="2">
+						<label class="custom-control-label labelcustom" for="clockInLocation">Save Clock-In Location</label>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="custom-control custom-checkbox mt-4 mb-2">
+						<input type="checkbox" class="form-check-input form-check-input-custom" id="clockInOutShift" data-parsley-multiple="" data-parsley-mincheck="2">
+						<label class="custom-control-label labelcustom" for="clockInOutShift">Allow clock-in outside shift hours</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="row">
+						<div class="col-lg-6 custom-control custom-checkbox mt-4 mb-2">
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="firstSignLoc" data-parsley-multiple="" data-parsley-mincheck="2">
+							<label class="custom-control-label labelcustom" for="firstSignLoc">Auto clock-in employee by first sign in</label>
+						</div>
+						<div id="defaultLocation" class="col-lg-5 mt-4 mb-2" style="display: none;">
+							<select id="sltDefaultLocation" class="form-select" aria-label="Default select example">
+								<option selected="" value="">--</option>
+								<option value="1">OFFICE</option>
+								<option value="2">HOME</option>
+							</select>
+						</div>
+						<div class="col-lg-1"></div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="row" align="right">
+						<div class="col-lg-6 custom-control custom-checkbox mt-4 mb-2">
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="monthEmailRpt" data-parsley-multiple="" data-parsley-mincheck="2">
+							<label class="custom-control-label labelcustom" for="monthEmailRpt">Send monthly attendance report email</label>
+						</div>
+						<div id="emailRptRole" class="col-lg-4 mt-4 mb-2" style="display: none;">
+							<select id="emailRptRole" class="form-select" aria-label="Default select example">
+								<option selected="" value="">--</option>
+								<option value="1">App Administrator</option>
+								<option value="2">Employee</option>
+								<option value="3">Membership</option>
+							</select>
+						</div>
+						<div class="col-lg-2">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-lg-4">
+					<label for="example-text-input" class="col-form-label text-end">Week Starts From <span class="text-danger">*</span></label>
+					<select id="weekStartsFrom" class="form-select" aria-label="">
+						<option selected="" value="">--</option>
+						<option value="0"> Sunday </option>
+						<option value="1"> Monday </option>
+						<option value="2"> Tuesday </option>
+						<option value="3"> Wednesday </option>
+						<option value="4"> Thursday </option>
+						<option value="5"> Friday </option>
+						<option value="6"> Saturday </option>
+					</select>
+				</div>
+				<div class="col-lg-4 form-check form-switch form-switch-primary mt-5 float-end text-end">
+					<input class="form-check-input  position-absolute" type="checkbox" id="customSwitchPrimary">
+					<label class="form-check-label" for="customSwitchPrimary"> Attendance Reminder Status <span class="text-danger">*</span></label>
+				</div>
+				<div class="col-lg-4" id="divReminderAftrMns" style="display: none;">
+					<label id="lblreminderaftrmns" for="reminderAftrMns" class="col-form-label">
+						Reminder After Minutes <span class="text-danger">*</span>
+					</label>
+					<input class="form-control" type="number" value="" id="reminderAftrMns">
+				</div>
+			</div>
+			<div class="row">
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-4">
+					<input class="fform-check-input form-check-input-custom me-2" type="checkbox" id="clockoutReminderSwitchPrimary">
+					<label class="form-check-label" for="clockoutReminderSwitchPrimary">Clockout reminder</label>
+				</div>
+				<div class="col-lg-4">
+					<input class="form-check-input form-check-input-custom me-2" type="checkbox" id="taskReminderIntervalSwitchPrimary">
+					<label class="form-check-label" for="taskReminderIntervalSwitchPrimary">Task reminder</label>
+				</div>
+				<div class="col-lg-4">
+					<input class="form-check-input form-check-input-custom me-2" type="checkbox" id="restReminderIntervalSwitchPrimary">
+					<label class="form-check-label" for="restReminderIntervalSwitchPrimary">Rest reminder</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4" id="divClockOutReminder" style="display: none;">
+					<label id="lblClockOutReminder" for="clockOutReminder" class="col-form-label">
+						Clockout Reminder After Minutes <span class="text-danger">*</span>
+					</label>
+					<input class="form-control" type="number" value="" id="clockOutReminder">
+				</div>
+				<div class="col-lg-4" id="divTaskReminderInterval" style="display: none;">
+					<label id="lblClockOutReminder" for="taskReminderInterval" class="col-form-label">
+						Task Reminder Interval (Minutes) <span class="text-danger">*</span>
+					</label>
+					<input class="form-control" type="number" value="" id="taskReminderInterval">
+				</div>
+				<div class="col-lg-4" id="divrestReminderInterval" style="display: none;">
+					<label id="lblClockOutReminder" for="restReminderInterval" class="col-form-label">
+						Rest Reminder Interval (Minutes) <span class="text-danger">*</span>
+					</label>
+					<input class="form-control" type="number" value="" id="restReminderInterval">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-4">
+					<div id="divEmpClockInClockOut" class="custom-control custom-checkbox mt-4 mb-2">
+						<input type="checkbox" class="form-check-input form-check-input-custom" id="empClockInClockOut" data-parsley-multiple="" data-parsley-mincheck="2">
+						<label class="custom-control-label labelcustom" for="empClockInClockOut">Allowed Employee self Clock-In/Clock-Out</label>
+					</div>
+				</div>
+				<div id="divClockInLocationRadius" class="col-lg-4" style="display: none;">
+					<div class="custom-control custom-checkbox mt-4 mb-2">
+						<input type="checkbox" class="form-check-input form-check-input-custom" id="clockInLocationRadius" data-parsley-multiple="" data-parsley-mincheck="2">
+						<label class="custom-control-label labelcustom" for="clockInLocationRadius">Clock-in check with added location Radius</label>
+					</div>
+				</div>
+				<div id="divClockInIPAddress" class="col-lg-4" style="display: none;">
+					<div class="custom-control custom-checkbox mt-4 mb-2">
+						<input type="checkbox" class="form-check-input form-check-input-custom" id="clockInIPAddress" data-parsley-multiple="" data-parsley-mincheck="2">
+						<label class="custom-control-label labelcustom" for="clockInIPAddress">Clock-in check with added IP address</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-4">
+					<div id="divEmpClockOutEnds" class="custom-control custom-checkbox mt-4 mb-2">
+						<input type="checkbox" class="form-check-input form-check-input-custom" id="empClockOutEnds" data-parsley-multiple="" data-parsley-mincheck="2">
+						<label class="custom-control-label labelcustom" for="empClockOutEnds">Auto Clock-out when shift ends </label>
+					</div>
+				</div>
+				<div id="dummydiv" class="col-lg-4" style="display: none;">
+				</div>
+				<div class="col-lg-4" id="divRadiusinMtrs" style="display: none;">
+					<label id="lblRadiusinMtrs" for="radiusinMtrs" class="col-form-label">
+						Radius (in meter)
+					</label>
+					<input class="form-control" type="number" value="" id="radiusinMtrs">
+				</div>
+				<div class="col-lg-4" id="divTblClockInIPAddress" style="display: none;">
+					<div class="row">
+						<div class="col-lg-12" id="divExpTable">
+							<table id="ExpTable" class="">
+								<thead style="display: -webkit-box;">
+									<tr class="">
+										<th class="col-form-label" style="font-weight: normal !important;">IP Address</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									@for (int i = 0; i < 1; i++)
+									{
+										<tr>
+											<td>
+												<input class="form-control" type="text" value="" id="txtipaddress-@i">
+											</td>
+											<td>
+												<button id="btnadd-@i" type="button" class="btn btn-sm btn-de-primary ml-1 visible" onclick="AddItem(this)"><i class="mdi mdi-check-all me-2"></i>Add IP Address</button>
+												<button id="btnremove-@i" type="button" class="btn btn-sm btn-de-danger invisible" onclick="DeleteItem(this)"><i class="mdi mdi-window-close me-2"></i>Delete</button>
+											</td>
+										</tr>
+									}
+								</tbody>
+								<input type="hidden" id="hdnLastIndex" value="0" />
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button type="button" class="btn btn-de-primary mt-4 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+		</form>
+	</div><!--end card-body-->
+
+</div>
+
+<script type="text/javascript">
+		
+</script>
+
+
+

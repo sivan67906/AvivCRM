@@ -1,0 +1,168 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model List<EmployeeShiftSettingVM>
+
+<div class="modal fade" id="mdlEmployeeShiftSettingShow" style="">
+	<div class="modal-dialog" id="PlaceHolderHere">
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
+		<div class="row align-items-center">
+			<div class="col">
+				<h4 class="card-title">Contact Index</h4>
+			</div><!--end col-->
+			<div class="col-auto">
+				<button type="button" class="btn btn-de-primary" data-bs-toggle="modal" data-animation="bounce"
+						data-bs-target=".bs-addNewShift-modal-lg">
+					<i class="fas fa-plus me-2"></i>Add Shift
+				</button>
+			</div><!--end col-->
+		</div>  <!--end row-->
+	</div><!--end card-header-->
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table mb-0">
+				<thead class="thead-light">
+					<tr>
+						<th>Name</th>
+						<th>Time</th>
+						<th>Others</th>
+						<th>IsDefault</th>
+						<th>Action</th>
+					</tr><!--end tr-->
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>General Shift</td>
+						<td>
+							Start Time: 09:00 AM<br />
+							Half Day:<br />
+							Start Time: 06:00 PM<br />
+						</td>
+						<td>
+							Late mark after (minutes): 20<br />
+							Maximum check-in allowed in a day: 2<br />
+							Office opens on: Monday Tuesday Wednesday Thursday Friday<br />
+						</td>
+						<td>Yes</td>
+						<td>
+							<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
+							   data-bs-target=".bs-addEditShift-modal-lg"><i class="las la-pen text-secondary font-16"></i></a>
+						</td>
+					</tr><!--end tr-->
+					<tr>
+						<td>Day Shift</td>
+						<td>
+							Start Time: 07:00 AM<br />
+							Half Day:<br />
+							Start Time: 17:00 PM<br />
+						</td>
+						<td>
+							Late mark after (minutes): 20<br />
+							Maximum check-in allowed in a day: 2<br />
+							Office opens on: Monday Tuesday Wednesday Thursday Friday<br />
+						</td>
+						<td>Yes</td>
+						<td>
+							<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
+							   data-bs-target=".bs-addEditShift-modal-lg"><i class="las la-pen text-secondary font-16"></i></a>
+						</td>
+					</tr><!--end tr-->
+					<tr>
+						<td>Night Shift</td>
+						<td>
+							Start Time: 21:00 AM<br />
+							Half Day:<br />
+							Start Time: 06:00 PM<br />
+						</td>
+						<td>
+							Late mark after (minutes): 20<br />
+							Maximum check-in allowed in a day: 2<br />
+							Office opens on: Monday Tuesday Wednesday Thursday Friday<br />
+						</td>
+						<td>Yes</td>
+						<td>
+							<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
+							   data-bs-target=".bs-addEditShift-modal-lg"><i class="las la-pen text-secondary font-16"></i></a>
+						</td>
+					</tr><!--end tr-->
+				</tbody>
+			</table>
+		</div>
+	</div><!--end card-body-->
+</div><!--end card-->
+
+
+<script type="text/javascript">
+	$(document).on("click", "#deletePC", function (e) {
+		   e.preventDefault();
+
+		   const swalWithBootstrapButtons = Swal.mixin({
+			  customClass: {
+				 confirmButton: "btn btn-de-primary",
+				 cancelButton: "btn btn-de-danger me-2"
+			  },
+			  buttonsStyling: false
+		   });
+		   swalWithBootstrapButtons.fire({
+			  title: "Are you sure?",
+			  text: "Do You want to delete this?",
+			  icon: "warning",
+			  showCancelButton: true,
+			  confirmButtonText: '<i class="mdi mdi-check-all me-2"></i>Delete',
+			  cancelButtonText: '<i class="mdi mdi-window-close me-2"></i>Close',
+			  // confirmButtonText: "Yes, delete it!",
+			  // cancelButtonText: "No, cancel!",
+			  reverseButtons: true,
+			  allowOutsideClick: false
+		   }).then((result) => {
+			  if (result.isConfirmed) {
+				 delProjectCategory(this);
+			  } else if (
+				 result.dismiss === Swal.DismissReason.cancel
+			  ) {
+				 // swalWithBootstrapButtons.fire({
+				 // title: "Cancelled",
+				 // text: "Your imaginary file is safe :)",
+				 // icon: "error",
+				 // 	allowOutsideClick: false
+				 // });
+			  }
+		   });
+
+		   function delProjectCategory(param) {
+			  var url = $(param).data('url');
+			  url = decodeURIComponent(url);
+			  var sendData = "Id=" + url.split('/').filter(Boolean).pop() + "";
+			  url = url.substring(0, url.lastIndexOf("/"));
+			  var currentUrl = window.location.origin;
+			  url = currentUrl + url;
+			  $.post(url, sendData).done(function (data, status) {
+				 $("#divBlocker").addClass("d-none").removeClass("screenblocker");
+				 if (status == "success") {
+							 swalWithBootstrapButtons.fire({ title: "Deleted!",
+		 text: "Deleted successfully!",
+		 icon: "success",
+			  allowOutsideClick: false}).then(okay => {
+		   if (okay) {
+			location.reload();
+		  }
+		});
+
+				 }
+				 else{
+					 swalWithBootstrapButtons.fire({
+				 title: "Error Occured",
+				 text: "Error Occured while Data deletion",
+				 icon: "error",
+					allowOutsideClick: false
+				 });
+				 }
+			  })
+		   }
+		});
+</script>
+
+
+

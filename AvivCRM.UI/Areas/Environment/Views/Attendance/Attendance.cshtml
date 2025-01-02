@@ -1,0 +1,157 @@
+@using AvivCRM.UI.Areas.Environment.ViewModels
+@model AttendanceVM
+
+@section Styles {
+	<link href="~/matrica/assets/libs/mobius1-selectr/selectr.min.css" rel="stylesheet" type="text/css" />
+	<link href="~/matrica/assets/libs/huebee/huebee.min.css" rel="stylesheet" type="text/css" />
+	<link href="~/matrica/assets/css/app-custom.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="row">
+	<div class="col-12 col-lg-10 mx-auto">
+		<div class="card">
+			<div class="card-body">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" href="#tbProjectSettings" role="tab">Attendance Settings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbProjSettingsStatus" role="tab">Employee Shifts</a>
+					</li>
+				</ul>
+			</div><!--end card-body-->
+			<div class="card-body pt-0">
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active show" id="tbProjectSettings" role="tabpanel">
+						@await Component.InvokeAsync("AttendanceSetting", new { attendanceSetting = Model.AttendanceSetting })
+					</div>
+					<div class="tab-pane" id="tbProjSettingsStatus" role="tabpanel">
+						@await Component.InvokeAsync("EmployeeShiftSetting", new { employeeShiftSettings = Model.EmployeeShiftSettings })
+					</div>
+				</div>
+			</div><!--end card-body-->
+		</div><!--end card-->
+
+	</div>
+</div>
+
+@section Scripts {
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+	<script src="~/matrica/assets/libs/huebee/huebee.pkgd.min.js"></script>
+	<script type="text/javascript">
+
+		$(window).on('load', function() {
+		 $('#mdlNewShift').modal({backdrop: 'static', keyboard: false});
+		 $('#mdlEditShift').modal({backdrop: 'static', keyboard: false});
+		});
+
+		function AddItem(btn) {
+		  let ipv46address = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/;
+		  let content = $(btn).closest("td").prev("td").find("input").val();
+		  if (ipv46address.test(content)) {
+			var table = document.getElementById('ExpTable');
+			var rows = table.getElementsByTagName('tr');
+			var rowOuterHtml = rows[rows.length - 1].outerHTML;
+			var lastrowIdx = document.getElementById('hdnLastIndex').value;
+			var nextrowIdx = eval(lastrowIdx) + 1;
+			document.getElementById('hdnLastIndex').value = nextrowIdx;
+			rowOuterHtml = rowOuterHtml.replaceAll(lastrowIdx, nextrowIdx);
+			var newRow = table.insertRow();
+			newRow.innerHTML = rowOuterHtml;
+			var btnAddID = btn.id;
+			var btnDeleteid = btnAddID.replaceAll('btnadd', 'btnremove');
+			var delbtn = document.getElementById(btnDeleteid);
+			delbtn.classList.add('visible');
+			delbtn.classList.remove('invisible');
+			var addbtn = document.getElementById(btnAddID);
+			addbtn.classList.add('invisible');
+			addbtn.classList.remove('visible');
+			$(btn).closest("td").prev("td").find("input").children(0).prevObject[0].disabled = true;
+		  } else {
+			$(btn).closest("td").prev("td").find("input").children(0).prevObject[0].value = "";
+		  }
+		}
+
+		function DeleteItem(btn) {
+		  $(btn).closest('tr').remove();
+		}
+		$(document).ready(function() {
+		  $('#firstSignLoc').click(function() {
+			if ($(this).is(':checked')) $("#defaultLocation").css("display", "block");
+			else $("#defaultLocation").css("display", "none");
+		  });
+		  $('#monthEmailRpt').click(function() {
+			if ($(this).is(':checked')) $("#emailRptRole").css("display", "block");
+			else $("#emailRptRole").css("display", "none");
+		  });
+		  $('#customSwitchPrimary').click(function() {
+				  if ($(this).is(':checked')) $("#divReminderAftrMns").css("display", "block");
+				  else $("#divReminderAftrMns").css("display", "none");
+		  });
+
+		  $('#clockoutReminderSwitchPrimary').click(function() {
+				  if ($(this).is(':checked')) $("#divClockOutReminder").css("display", "block");
+				  else $("#divClockOutReminder").css("display", "none");
+		  });
+		  $('#taskReminderIntervalSwitchPrimary').click(function() {
+				  if ($(this).is(':checked')) $("#divTaskReminderInterval").css("display", "block");
+				  else $("#divTaskReminderInterval").css("display", "none");
+		  });
+		  $('#restReminderIntervalSwitchPrimary').click(function() {
+				  if ($(this).is(':checked')) $("#divrestReminderInterval").css("display", "block");
+				  else $("#divrestReminderInterval").css("display", "none");
+		  });
+
+		  $('#empClockInClockOut').click(function() {
+				  if ($(this).is(':checked'))
+				  {
+					  $("#divClockInLocationRadius").css("display", "block");
+					  $("#clockInLocationRadius").attr("disabled", false);
+					  $("#divClockInIPAddress").css("display", "block");
+					  $("#clockInIPAddress").attr("disabled", false);
+					  $("#radiusinMtrs").attr("disabled", false);
+					  $("#ExpTable").find("input,button,textarea,select").attr("disabled", false);
+				  }
+				  else {
+					  $("#divClockInLocationRadius").css("display", "block");
+					  $("#clockInLocationRadius").attr("disabled", true);
+					  $("#divClockInIPAddress").css("display", "block");
+					  $("#clockInIPAddress").attr("disabled", true);
+					  $("#radiusinMtrs").attr("disabled", true);
+					  $("#ExpTable").find("input,button,textarea,select").attr("disabled", true);
+				  }
+		  });
+		  $('#clockInLocationRadius').click(function() {
+				  if ($(this).is(':checked')) {
+					  $("#divRadiusinMtrs").css("display", "block");
+					  $("#dummydiv").css("display", "none");}
+				  else {
+					  $("#divRadiusinMtrs").css("display", "none");
+					  $("#dummydiv").css("display", "block");
+				  }
+		  });
+		  $('#clockInIPAddress').click(function() {
+				  if ($(this).is(':checked')) $("#divTblClockInIPAddress").css("display", "block");
+				  else $("#divTblClockInIPAddress").css("display", "none");
+		  });
+		  $('#empClockOutEnds').click(function() {
+				  if ($(this).is(':checked'))
+				  {
+					  $("#clockoutReminderSwitchPrimary").attr("disabled", true);
+					  $("#clockOutReminder").attr("disabled", true);
+				  }
+				  else {
+					  $("#clockoutReminderSwitchPrimary").attr("disabled", false);
+					  $("#clockOutReminder").attr("disabled", false);
+				  }
+		  });
+		});
+
+	</script>
+}
+
+
+
