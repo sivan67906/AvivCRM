@@ -15,7 +15,7 @@ namespace AvivCRM.UI.Areas.Environment.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-        public async Task<IActionResult> LeadSource(string searchQuery = null)
+        public async Task<IActionResult> LeadSource(string searchQuery = null!)
         {
             ViewData["pTitle"] = "Lead Sources Profile";
 
@@ -25,32 +25,31 @@ namespace AvivCRM.UI.Areas.Environment.Controllers
             ViewData["bChild"] = "Lead Source View";
             var client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-            ApiResultResponse<List<LeadSourceVM>> productList = new();
+            ApiResultResponse<List<LeadSourceVM>> leadSourceList = new();
 
             if (string.IsNullOrEmpty(searchQuery))
             {
                 // Fetch all products if no search query is provided
-                productList = await client.GetFromJsonAsync<ApiResultResponse<List<LeadSourceVM>>>("LeadSource/all-leadsource");
+                leadSourceList = await client.GetFromJsonAsync<ApiResultResponse<List<LeadSourceVM>>>("LeadSource/all-leadsource");
             }
             else
             {
                 // Fetch products matching the search query
-                productList = await client.GetFromJsonAsync<ApiResultResponse<List<LeadSourceVM>>>($"LeadSource/SearchByName?name={searchQuery}");
+                leadSourceList = await client.GetFromJsonAsync<ApiResultResponse<List<LeadSourceVM>>>($"LeadSource/SearchByName?name={searchQuery}");
             }
             ViewData["searchQuery"] = searchQuery; // Retain search query
 
-            ViewBag.ListResultData = productList!.Data;
-            ViewBag.ApiResult = productList!.Data;
-            ViewBag.ApiMessage = productList!.Message;
-            ViewBag.ApiStatus = productList.IsSuccess;
-            return View(ViewBag.ApiResult);
+            //ViewBag.ApiResult = leadSourceList!.Data;
+            //ViewBag.ApiMessage = leadSourceList!.Message;
+            //ViewBag.ApiStatus = leadSourceList.IsSuccess;
+            return View(leadSourceList!.Data);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            LeadSourceVM product = new();
-            return PartialView("_Create", product);
+            LeadSourceVM leadSource = new();
+            return PartialView("_Create", leadSource);
         }
 
         [HttpPost]
@@ -85,16 +84,16 @@ namespace AvivCRM.UI.Areas.Environment.Controllers
                 };
             }
 
-            ViewBag.ApiResult = source!.Data;
-            ViewBag.ApiMessage = source!.Message;
-            ViewBag.ApiStatus = source.IsSuccess;
+            //ViewBag.ApiResult = source!.Data;
+            //ViewBag.ApiMessage = source!.Message;
+            //ViewBag.ApiStatus = source.IsSuccess;
 
             //Server side Validation
             //List<string> serverErrorMessageList = new List<string>();
             //string serverErrorMessage = source!.Message!;
             //serverErrorMessageList.Add(serverErrorMessage);
 
-            if (!source.IsSuccess)
+            if (!source!.IsSuccess)
                 return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
             else
                 return Json(new { success = true });
@@ -109,12 +108,12 @@ namespace AvivCRM.UI.Areas.Environment.Controllers
             var client = _httpClientFactory.CreateClient("ApiGatewayCall");
             leadSource = await client.GetFromJsonAsync<ApiResultResponse<LeadSourceVM>>("LeadSource/byid-leadsource/?Id=" + Id);
 
-            ViewBag.ApiResult = leadSource!.Data;
-            ViewBag.ApiMessage = leadSource!.Message;
-            ViewBag.ApiStatus = leadSource.IsSuccess;
+            //ViewBag.ApiResult = leadSource!.Data;
+            //ViewBag.ApiMessage = leadSource!.Message;
+            //ViewBag.ApiStatus = leadSource.IsSuccess;
 
-            if (!leadSource.IsSuccess) return View();
-            else return PartialView("_Edit", ViewBag.ApiResult);
+            if (!leadSource!.IsSuccess) return View();
+            else return PartialView("_Edit", leadSource.Data);
         }
 
         [HttpPost]
@@ -149,16 +148,16 @@ namespace AvivCRM.UI.Areas.Environment.Controllers
                 };
             }
 
-            ViewBag.ApiResult = source!.Data;
-            ViewBag.ApiMessage = source!.Message;
-            ViewBag.ApiStatus = source.IsSuccess;
+            //ViewBag.ApiResult = source!.Data;
+            //ViewBag.ApiMessage = source!.Message;
+            //ViewBag.ApiStatus = source.IsSuccess;
 
             //Server side Validation
             //List<string> serverErrorMessageList = new List<string>();
             //string serverErrorMessage = source!.Message!;
             //serverErrorMessageList.Add(serverErrorMessage);
 
-            if (!source.IsSuccess)
+            if (!source!.IsSuccess)
                 return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
             else
                 return Json(new { success = true });
@@ -190,16 +189,16 @@ namespace AvivCRM.UI.Areas.Environment.Controllers
                 };
             }
 
-            ViewBag.ApiResult = source!.Data;
-            ViewBag.ApiMessage = source!.Message;
-            ViewBag.ApiStatus = source.IsSuccess;
+            //ViewBag.ApiResult = source!.Data;
+            //ViewBag.ApiMessage = source!.Message;
+            //ViewBag.ApiStatus = source.IsSuccess;
 
             //Server side Validation
             //List<string> serverErrorMessageList = new List<string>();
             //string serverErrorMessage = source!.Message!;
             //serverErrorMessageList.Add(serverErrorMessage);
 
-            if (!source.IsSuccess)
+            if (!source!.IsSuccess)
                 return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
             else
                 return Json(new { success = true });

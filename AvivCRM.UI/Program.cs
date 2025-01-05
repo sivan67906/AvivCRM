@@ -31,12 +31,12 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "Configuration",
-    pattern: "{area:exists}/{controller=Consumer}/{action=Consumer}/{id?}")
+    pattern: "{area:exists}/{controller=Consumer}/{action=Consumer1}/{id?}")
     .WithStaticAssets();
 
 //app.MapControllerRoute(
 //    name: "default",
-//    pattern: "{controller=Login}/{action=Login}/{id:int?}")
+//    pattern: "{controller=Home}/{action=Index}/{id:int?}")
 //    .WithStaticAssets();
 
 app.MapDefaultControllerRoute();

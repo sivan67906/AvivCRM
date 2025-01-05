@@ -1,9 +1,11 @@
 @using AvivCRM.UI.Areas.Environment.ViewModels
 @model IEnumerable<LeadSourceVM>
+
 <div class="modal fade" Id="mdlLeadSourceShow">
     <div class="modal-dialog" Id="PlaceHolderHere">
     </div>
 </div>
+
 <div class="row">
     <div class="col-12 col-lg-12">
 
@@ -17,7 +19,7 @@
                     <div class="col-auto">
                         <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
                                 data-target="#mdlLeadSourceShow" data-url="@Url.Action("Create")">
-                            <i class="fas fa-plus me-2"></i>Add Product
+                            <i class="fas fa-plus me-2"></i>Add LeadSource
                         </button>
                     </div><!--end col-->
                 </div>  <!--end row-->
@@ -72,15 +74,10 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
-	<script src="~/lib/jquery/dist/jquery.js"></script>
-	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(window).on('load', function() {
-         $('#mdlLeadSourceShow').modal({backdrop: 'static', keyboard: false});
-        });
-    </script>
-    @{
+    
+    @* @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
@@ -90,6 +87,14 @@
             // Re-initialize validation
             $.validator.unobtrusive.parse('#mdlLeadSourceShow');
         });
+        });
+    </script> *@
+
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(window).on('load', function() {
+         $('#mdlLeadSourceShow').modal({backdrop: 'static', keyboard: false});
         });
     </script>
 }
