@@ -122,5 +122,3 @@ export default moment.defineLocale('kn', {
         doy: 6, // The week that contains Jan 6th is the first week of the year.
     },
 });
-
-

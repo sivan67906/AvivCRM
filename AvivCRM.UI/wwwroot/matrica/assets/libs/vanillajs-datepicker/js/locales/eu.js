@@ -16,5 +16,3 @@
     format: "yyyy/mm/dd"
   };
 }());
-
-

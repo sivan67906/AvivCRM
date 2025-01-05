@@ -62,5 +62,3 @@ export default moment.defineLocale('en-ca', {
         return number + output;
     },
 });
-
-

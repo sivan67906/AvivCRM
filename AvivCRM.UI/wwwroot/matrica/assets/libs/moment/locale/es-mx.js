@@ -108,5 +108,3 @@ export default moment.defineLocale('es-mx', {
     },
     invalidDate: 'Fecha inválida',
 });
-
-

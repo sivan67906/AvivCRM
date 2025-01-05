@@ -5,5 +5,3 @@
 //   ES2015:
 //     import 'tinymce/icons/default'
 require('./icons.js');
-
-

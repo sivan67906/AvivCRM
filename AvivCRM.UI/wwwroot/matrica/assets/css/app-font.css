@@ -1,4 +1,4 @@
-/* Regular weight */
+﻿/* Regular weight */
 @font-face {
     font-family: "IBM Plex Sans";
     src: url("../fonts/IBMPlexSans-Thin.ttf") format("truetype");
@@ -113,5 +113,3 @@ em {
     font-weight: 400;
     font-style: italic; /* Italic */
 }
-
-

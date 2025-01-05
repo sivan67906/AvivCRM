@@ -22,5 +22,3 @@ FullCalendar.globalLocales.push(function () {
   return enAu;
 
 }());
-
-

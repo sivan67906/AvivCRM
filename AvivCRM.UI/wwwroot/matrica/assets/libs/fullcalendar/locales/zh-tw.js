@@ -21,5 +21,3 @@ FullCalendar.globalLocales.push(function () {
   return zhTw;
 
 }());
-
-

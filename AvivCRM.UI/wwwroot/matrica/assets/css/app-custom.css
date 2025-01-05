@@ -1,4 +1,4 @@
-.form-check-input-custom {
+﻿.form-check-input-custom {
     height: 16px !important;
     vertical-align: middle !important;
     width: 16px !important;
@@ -117,5 +117,3 @@
     text-decoration: underline;
     cursor: pointer;
 }
-
-

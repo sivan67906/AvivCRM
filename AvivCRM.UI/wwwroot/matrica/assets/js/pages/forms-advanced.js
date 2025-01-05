@@ -183,5 +183,3 @@ if ((document.querySelector('input[name="foo"]') === null) == false) {
     }).on("accept", function () {
         document.getElementById("moment-value").innerHTML = momentMask.masked.date || "-"
     });
-
-

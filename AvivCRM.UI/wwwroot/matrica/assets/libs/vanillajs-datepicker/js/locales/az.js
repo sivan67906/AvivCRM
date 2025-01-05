@@ -12,5 +12,3 @@
     monthsTitle: 'Aylar'
   };
 }());
-
-

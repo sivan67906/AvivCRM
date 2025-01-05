@@ -42,5 +42,3 @@ GMaps.createPanorama = function(options) {
 
   return panorama;
 };
-
-

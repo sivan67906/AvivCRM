@@ -166,5 +166,3 @@ export default moment.defineLocale('br', {
         return hour < 12 ? 'a.m.' : 'g.m.';
     },
 });
-
-

@@ -104,5 +104,3 @@ GMaps.prototype.removeControl = function(control) {
 
   return control;
 };
-
-

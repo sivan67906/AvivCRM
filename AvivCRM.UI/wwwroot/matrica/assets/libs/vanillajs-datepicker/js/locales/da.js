@@ -17,5 +17,3 @@
     monthsTitle: "Måneder"
   };
 }());
-
-

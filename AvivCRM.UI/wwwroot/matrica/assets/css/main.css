@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * Quill Editor v1.3.7
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
@@ -7068,7 +7068,7 @@ hr {
 }
 
     .blockquote-footer:before {
-        content: "—� "
+        content: "â€”Â "
     }
 
 .img-fluid, .img-thumbnail {
@@ -19003,7 +19003,7 @@ body.swal2-toast-shown .swal2-container {
 }
 
 .bootstrap-select.fit-width .dropdown-toggle .bs-caret:before {
-    content: "� "
+    content: "Â "
 }
 
 .bootstrap-select.fit-width .dropdown-toggle .caret {
@@ -19135,7 +19135,7 @@ body.swal2-toast-shown .swal2-container {
 }
 
     .flag-icon:before {
-        content: "� "
+        content: "Â "
     }
 
     .flag-icon.flag-icon-squared {
@@ -26435,5 +26435,3 @@ body.dark-theme {
     }
 
 /*# sourceMappingURL=main.css.map*/
-
-

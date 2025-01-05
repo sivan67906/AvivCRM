@@ -3621,5 +3621,3 @@ var Cropper = /*#__PURE__*/function () {
 assign(Cropper.prototype, render, preview, events, handlers, change, methods);
 
 export default Cropper;
-
-

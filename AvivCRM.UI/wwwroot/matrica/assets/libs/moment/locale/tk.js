@@ -89,5 +89,3 @@ export default moment.defineLocale('tk', {
         doy: 7, // The week that contains Jan 7th is the first week of the year.
     },
 });
-
-

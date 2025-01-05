@@ -19,5 +19,3 @@
     }
     chart.registerMap('japan', data);
 })();
-
-

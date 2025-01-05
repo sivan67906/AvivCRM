@@ -5,5 +5,3 @@
 //   ES2015:
 //     import 'tinymce/models/dom'
 require('./model.js');
-
-

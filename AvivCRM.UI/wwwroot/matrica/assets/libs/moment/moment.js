@@ -5675,5 +5675,3 @@ hooks.HTML5_FMT = {
 };
 
 export default hooks;
-
-

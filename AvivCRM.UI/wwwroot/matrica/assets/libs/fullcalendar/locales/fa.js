@@ -28,5 +28,3 @@ FullCalendar.globalLocales.push(function () {
   return fa;
 
 }());
-
-

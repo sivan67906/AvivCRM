@@ -90,5 +90,3 @@ export default moment.defineLocale('ka', {
         doy: 7,
     },
 });
-
-

@@ -361,5 +361,3 @@ GMaps.Route.prototype.forward = function() {
     this.step_count++;
   }
 };
-
-

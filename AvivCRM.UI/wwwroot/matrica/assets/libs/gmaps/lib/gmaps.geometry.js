@@ -203,5 +203,3 @@ GMaps.prototype.removePolygons = function() {
 
   this.polygons = [];
 };
-
-

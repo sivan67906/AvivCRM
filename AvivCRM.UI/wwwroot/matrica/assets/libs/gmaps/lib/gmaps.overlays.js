@@ -132,5 +132,3 @@ GMaps.prototype.removeOverlays = function() {
 
   this.overlays = [];
 };
-
-

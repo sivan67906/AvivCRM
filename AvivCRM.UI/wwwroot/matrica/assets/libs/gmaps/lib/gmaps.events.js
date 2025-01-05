@@ -63,5 +63,3 @@ GMaps.fire = function(event_name, object, scope) {
     }
   }
 };
-
-

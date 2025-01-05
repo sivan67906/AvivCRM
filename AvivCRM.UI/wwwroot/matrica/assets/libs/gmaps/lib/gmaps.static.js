@@ -243,5 +243,3 @@ GMaps.staticMapURL = function(options){
   parameters = parameters.join('&');
   return static_root + parameters;
 };
-
-

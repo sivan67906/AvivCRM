@@ -87,5 +87,3 @@ function processRelativeTime(number, withoutSuffix, key, isFuture) {
         ? format[key][0]
         : format[key][1];
 }
-
-

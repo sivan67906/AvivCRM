@@ -853,5 +853,3 @@ if (canUseDOM) {
 
 export default SimpleBar;
 //# sourceMappingURL=simplebar.esm.js.map
-
-

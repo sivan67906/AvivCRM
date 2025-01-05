@@ -7,5 +7,3 @@ dragula([document.getElementById("dragula-left"), document.getElementById("dragu
         document.getElementById("project-list-center-right"),
         document.getElementById("project-list-right"),
     ]);
-
-

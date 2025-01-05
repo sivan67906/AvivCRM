@@ -156,5 +156,3 @@ GMaps.prototype.removeLayer = function(layer) {
     }
   }
 };
-
-

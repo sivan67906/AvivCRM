@@ -20,5 +20,3 @@
     }
     chart.registerMap('world', data);
 })();
-
-

@@ -83,5 +83,3 @@ export default moment.defineLocale('oc-lnc', {
         doy: 4,
     },
 });
-
-

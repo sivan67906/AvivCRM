@@ -12,5 +12,3 @@ GMaps.prototype.checkMarkerGeofence = function(marker, outside_callback) {
     }
   }
 };
-
-

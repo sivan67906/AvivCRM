@@ -624,5 +624,3 @@ var GMaps = (function(global) {
 
   return GMaps;
 })(this);
-
-

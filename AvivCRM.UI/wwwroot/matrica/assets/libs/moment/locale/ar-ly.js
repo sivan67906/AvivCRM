@@ -169,5 +169,3 @@ export default moment.defineLocale('ar-ly', {
         doy: 12, // The week that contains Jan 12th is the first week of the year.
     },
 });
-
-

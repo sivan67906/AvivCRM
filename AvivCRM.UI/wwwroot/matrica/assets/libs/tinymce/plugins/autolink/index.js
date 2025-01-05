@@ -5,5 +5,3 @@
 //   ES2015:
 //     import 'tinymce/plugins/autolink'
 require('./plugin.js');
-
-

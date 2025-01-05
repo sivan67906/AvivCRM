@@ -98,5 +98,3 @@ export default moment.defineLocale('zh-mo', {
         yy: '%d 年',
     },
 });
-
-

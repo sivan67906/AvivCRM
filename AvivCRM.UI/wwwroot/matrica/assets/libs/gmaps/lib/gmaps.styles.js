@@ -7,5 +7,3 @@ GMaps.prototype.addStyle = function(options) {
 GMaps.prototype.setStyle = function(mapTypeId) {
   this.map.setMapTypeId(mapTypeId);
 };
-
-

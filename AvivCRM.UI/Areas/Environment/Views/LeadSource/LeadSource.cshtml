@@ -1,7 +1,7 @@
-@using AvivCRM.UI.Areas.Environment.Models
+@using AvivCRM.UI.Areas.Environment.ViewModels
 @model IEnumerable<LeadSourceVM>
-<div class="modal fade" id="mdlProductShow">
-    <div class="modal-dialog" id="PlaceHolderHere">
+<div class="modal fade" Id="mdlLeadSourceShow">
+    <div class="modal-dialog" Id="PlaceHolderHere">
     </div>
 </div>
 <div class="row">
@@ -16,7 +16,7 @@
                     </div><!--end col-->
                     <div class="col-auto">
                         <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-                                data-target="#mdlProductShow" data-url="@Url.Action("Create")">
+                                data-target="#mdlLeadSourceShow" data-url="@Url.Action("Create")">
                             <i class="fas fa-plus me-2"></i>Add Product
                         </button>
                     </div><!--end col-->
@@ -27,7 +27,7 @@
                 <div class="row mb-3">
                     @* <div class="col-lg-12">
                         <div class="input-group">
-                            <input type="text" name="searchQuery" class="form-control" placeholder="Search by name..." value="@ViewData["searchQuery"]" />
+                            <input type="text" Name="searchQuery" class="form-control" placeholder="Search by Name..." value="@ViewData["searchQuery"]" />
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </div> *@
@@ -47,16 +47,20 @@
                                     <tr>
 
                                         <td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
-                                        <td>@item.source</td>
+                                        <td>@item.Name</td>
                                         <td>
-                                            <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-                                                    data-target="#mdlProductShow" data-url="@Url.Action($"Edit/{item.Id}")" >
+                                            <button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+                                                    data-target="#mdlLeadSourceShow" data-url="@Url.Action($"Edit/{item.Id}")" >
                                                 <i class="las la-pen text-secondary font-16"></i>
                                             </button>
-                                            <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-                                                    data-target="#mdlProductShow" data-url="@Url.Action($"Delete/{item.Id}")" >
+                                           @*  <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+                                                    data-target="#mdlLeadSourceShow" data-url="@Url.Action($"Delete/{item.Id}")" >
                                                 <i class="las la-trash-alt text-secondary font-16"></i>
-                                            </button>
+                                            </button> *@
+                                            <a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+                                               data-url="@Url.Action($"Delete/{item.Id}")">
+                                                <i class="las la-trash-alt text-secondary font-16"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 }
@@ -73,10 +77,19 @@
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(window).on('load', function() {
-         $('#mdlProductShow').modal({backdrop: 'static', keyboard: false});
+         $('#mdlLeadSourceShow').modal({backdrop: 'static', keyboard: false});
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+        $('#mdlLeadSourceShow').on('shown.bs.modal', function ()
+        {
+            // Re-initialize validation
+            $.validator.unobtrusive.parse('#mdlLeadSourceShow');
+        });
         });
     </script>
 }
-
-
-

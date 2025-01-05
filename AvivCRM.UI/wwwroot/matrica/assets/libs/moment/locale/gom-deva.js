@@ -124,5 +124,3 @@ export default moment.defineLocale('gom-deva', {
         }
     },
 });
-
-

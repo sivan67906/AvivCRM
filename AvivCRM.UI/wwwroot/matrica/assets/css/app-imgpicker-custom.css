@@ -1,4 +1,4 @@
-ul.thumbnails.image_picker_selector {
+﻿ul.thumbnails.image_picker_selector {
     overflow: auto;
     list-style-image: none;
     list-style-position: outside;
@@ -41,5 +41,3 @@ ul.thumbnails.image_picker_selector {
                 background: #08c;
             }
 /*# sourceMappingURL=image-picker.min.css.map */
-
-

@@ -68,5 +68,3 @@ export default moment.defineLocale('fr-ca', {
         }
     },
 });
-
-

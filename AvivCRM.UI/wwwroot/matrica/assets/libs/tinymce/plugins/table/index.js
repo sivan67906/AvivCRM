@@ -5,5 +5,3 @@
 //   ES2015:
 //     import 'tinymce/plugins/table'
 require('./plugin.js');
-
-

@@ -2241,5 +2241,3 @@ export default {
     cssClasses: cssClasses,
     create: initialize,
 };
-
-

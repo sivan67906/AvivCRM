@@ -152,5 +152,3 @@ function executeExample(e) {
             return void Swal.fire({ icon: "question", title: "Oops...", text: "Icon question!" });
     }
 }
-
-

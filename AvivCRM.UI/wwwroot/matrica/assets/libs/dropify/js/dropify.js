@@ -655,5 +655,3 @@ $.fn[pluginName] = function(options) {
 
 return Dropify;
 }));
-
-

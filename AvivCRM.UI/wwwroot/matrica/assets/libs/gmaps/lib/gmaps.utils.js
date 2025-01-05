@@ -40,5 +40,3 @@ GMaps.geocode = function(options) {
     callback(results, status);
   });
 };
-
-

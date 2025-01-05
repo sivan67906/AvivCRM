@@ -997,5 +997,3 @@ define(["./raphael.core"], function(R) {
         })(method);
     }
 });
-
-

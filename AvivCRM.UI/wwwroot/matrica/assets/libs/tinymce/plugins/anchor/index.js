@@ -5,5 +5,3 @@
 //   ES2015:
 //     import 'tinymce/plugins/anchor'
 require('./plugin.js');
-
-

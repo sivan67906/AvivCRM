@@ -27,5 +27,3 @@ GMaps.prototype.addOverlayMapType = function(options) {
 GMaps.prototype.removeOverlayMapType = function(overlayMapTypeIndex) {
   this.map.overlayMapTypes.removeAt(overlayMapTypeIndex);
 };
-
-

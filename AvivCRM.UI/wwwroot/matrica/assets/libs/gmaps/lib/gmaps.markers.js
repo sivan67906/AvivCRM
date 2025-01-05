@@ -208,5 +208,3 @@ GMaps.prototype.removeMarkers = function (collection) {
     this.markers = new_markers;
   }
 };
-
-

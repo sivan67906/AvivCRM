@@ -56,5 +56,3 @@ export default moment.defineLocale('pt-br', {
     ordinal: '%dº',
     invalidDate: 'Data inválida',
 });
-
-
