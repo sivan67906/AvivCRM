@@ -110,7 +110,7 @@ public class RecruitController : Controller
         if (Id == 0) return View();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
         var recruitFooterSetting = await client.GetFromJsonAsync<RecruitFooterSettingVM>("RecruitFooterSetting/GetById/?Id=" + Id);
-        return PartialView("~/Areas/Settings/Views/Recruit/RecruitFooterSetting/_Edit.cshtml", recruitFooterSetting);
+        return PartialView("~/Areas/Environment/Views/Recruit/RecruitFooterSetting/_Edit.cshtml", recruitFooterSetting);
     }
 
     [HttpPost]
@@ -136,7 +136,7 @@ public class RecruitController : Controller
     {
         RecruitFooterSettingVM recruitFooterSetting = new();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        return PartialView("~/Areas/Settings/Views/Recruit/RecruitFooterSetting/_Create.cshtml", recruitFooterSetting);
+        return PartialView("~/Areas/Environment/Views/Recruit/RecruitFooterSetting/_Create.cshtml", recruitFooterSetting);
     }
 
     [HttpPost]
@@ -154,7 +154,7 @@ public class RecruitController : Controller
         if (Id == 0) return View();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
         var recruiterSetting = await client.GetFromJsonAsync<RecruiterSettingVM>("RecruiterSetting/GetById/?Id=" + Id);
-        return PartialView("~/Areas/Settings/Views/Recruit/RecruiterSetting/_Edit.cshtml", recruiterSetting);
+        return PartialView("~/Areas/Environment/Views/Recruit/RecruiterSetting/_Edit.cshtml", recruiterSetting);
     }
 
     [HttpPost]
@@ -180,7 +180,7 @@ public class RecruitController : Controller
     {
         RecruiterSettingVM recruiterSetting = new();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        return PartialView("~/Areas/Settings/Views/Recruit/RecruiterSetting/_Create.cshtml", recruiterSetting);
+        return PartialView("~/Areas/Environment/Views/Recruit/RecruiterSetting/_Create.cshtml", recruiterSetting);
     }
     [HttpPost]
     public async Task<IActionResult> CreateRecruitStatus(RecruiterSettingVM recruiterSetting)
@@ -212,7 +212,7 @@ public class RecruitController : Controller
         if (Id == 0) return View();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
         var recruitJobApplicationStatusSetting = await client.GetFromJsonAsync<RecruitJobApplicationStatusSettingVM>("RecruitJobApplicationStatusSetting/GetById/?Id=" + Id);
-        return PartialView("~/Areas/Settings/Views/Recruit/RecruitJobApplicationStatusSetting/_Edit.cshtml", recruitJobApplicationStatusSetting);
+        return PartialView("~/Areas/Environment/Views/Recruit/RecruitJobApplicationStatusSetting/_Edit.cshtml", recruitJobApplicationStatusSetting);
     }
 
     [HttpPost]
@@ -238,7 +238,7 @@ public class RecruitController : Controller
     {
         RecruitJobApplicationStatusSettingVM recruitJobApplicationStatusSetting = new();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        return PartialView("~/Areas/Settings/Views/Recruit/RecruitJobApplicationStatusSetting/_Create.cshtml", recruitJobApplicationStatusSetting);
+        return PartialView("~/Areas/Environment/Views/Recruit/RecruitJobApplicationStatusSetting/_Create.cshtml", recruitJobApplicationStatusSetting);
     }
 
     [HttpPost]
@@ -256,7 +256,7 @@ public class RecruitController : Controller
         if (Id == 0) return View();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
         var recruitCustomQuestionSetting = await client.GetFromJsonAsync<RecruitCustomQuestionSettingVM>("RecruitCustomQuestionSetting/GetById/?Id=" + Id);
-        return PartialView("~/Areas/Settings/Views/Recruit/RecruitCustomQuestionSetting/_Edit.cshtml", recruitCustomQuestionSetting);
+        return PartialView("~/Areas/Environment/Views/Recruit/RecruitCustomQuestionSetting/_Edit.cshtml", recruitCustomQuestionSetting);
     }
 
     [HttpPost]
@@ -282,7 +282,7 @@ public class RecruitController : Controller
     {
         RecruitCustomQuestionSettingVM recruitCustomQuestionSetting = new();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        return PartialView("~/Areas/Settings/Views/Recruit/RecruitCustomQuestionSetting/_Create.cshtml", recruitCustomQuestionSetting);
+        return PartialView("~/Areas/Environment/Views/Recruit/RecruitCustomQuestionSetting/_Create.cshtml", recruitCustomQuestionSetting);
     }
 
     [HttpPost]

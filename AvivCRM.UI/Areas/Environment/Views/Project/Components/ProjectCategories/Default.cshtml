@@ -42,8 +42,8 @@
 										data-bs-target="#mdlProjectCategoryShow" data-url="@Url.Action($"EditProjectCategory/{@Model[i].Id}")">
 									<i class="las la-pen text-secondary font-16"></i>
 								</button>
-									<a id="deletePC" name="Id" href="#" class="ms-2"
-								   data-target="" data-url="@Url.Action($"DeleteProjectCategory/{@Model[i].Id}")">
+								<a id="deletePC" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+								   data-url="@Url.Action($"DeleteProjectCategory/{@Model[i].Id}")">
 										<i class="las la-trash-alt text-secondary font-16"></i>
 									</a>
 							</td>
@@ -59,7 +59,7 @@
 
 
 <script type="text/javascript">
-	$(document).on("click", "#deletePC", function (e) {
+@* 	$(document).on("click", "#deletePC", function (e) {
 		   e.preventDefault();
 
 		   const swalWithBootstrapButtons = Swal.mixin({
@@ -125,7 +125,7 @@
 				 }
 			  })
 		   }
-		});
+		}); *@
 </script>
 
 

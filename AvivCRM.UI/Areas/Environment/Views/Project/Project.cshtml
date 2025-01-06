@@ -21,15 +21,15 @@
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div class="tab-pane active show" id="tbProjectSettings" role="tabpanel">
-						@await Component.InvokeAsync("ProjectSettings", new { projectSettings = Model.ProjectSettingVM })
+						@await Component.InvokeAsync("ProjectSetting", new { projectSetting = Model.ProjectSetting })
 					</div>
 
 					<div class="tab-pane" id="tbProjSettingsStatus" role="tabpanel">
-						@await Component.InvokeAsync("ProjectStatusSettings", new { projectStatusSettings = Model.ProjectStatusVM })
+						@await Component.InvokeAsync("ProjectStatuses", new { projectStatuses = Model.ProjectStatuses })
 					</div>
 
 					<div class="tab-pane" id="tbProjCategory" role="tabpanel">
-						@await Component.InvokeAsync("ProjectCategory", new { projectCategories = Model.ProjectCategoryVM })
+						@await Component.InvokeAsync("ProjectCategories", new { projectCategories = Model.ProjectCategories })
 					</div>
 				</div>
 			</div><!--end card-body-->
@@ -40,7 +40,9 @@
 
 @section Scripts {
 	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="/matrica/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+
 	<script type="text/javascript">
 		 $(window).on('load', function() {
 		 $('.modal').modal({backdrop: 'static', keyboard: false});

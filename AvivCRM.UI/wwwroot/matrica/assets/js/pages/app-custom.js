@@ -147,7 +147,7 @@
 
 
 
-
+    // Script for Popup of Create & Edit
     $('button[data-toggle="ajax-modal1"]').click(function (event) {
         //$("#divBlocker").removeClass("d-none").addClass("screenblocker");
         var url = $(this).data('url');
@@ -164,28 +164,54 @@
         })
     });
 
-    PlaceHolderElement1.on('click', '[data-save="modal"]', function (event) {
-        //$("#divBlocker").removeClass("d-none").addClass("screenblocker");
-        var form = $(this).parents('.modal').find('form');
-        //$('#PlaceHolderHere').find('input').attr('readonly', 'readonly');
-        //$('#PlaceHolderHere').find('button').attr('disabled', true);
-        //$('option:not(:selected)').prop('disabled', true);
 
-        var actionName = form.attr('action');
-        var currentUrl = window.location.href;
-        currentUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/") + 1);
-        var url = currentUrl + actionName;
-        var sendData = form.serialize();
-        $.post(url, sendData).done(function (data, status) {
-            //$("#divBlocker").addClass("d-none").removeClass("screenblocker");
-            if ((PlaceHolderElement1.find('.modal').length) == 0) {
-                PlaceHolderElement1.parents('.modal').modal('hide');
+
+    PlaceHolderElement1.on('click', '[data-save="modal1"]', function (event) {
+
+        if ((document.querySelector('div[id="divErrorList"]') === null) != true) {
+            $("#divErrorList").remove();
+        }
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).parents('.modal').find('form').attr('action'),
+            data: $(this).parents('.modal').find('form').serialize(),
+            success: function (response) {
+
+                if (response.success) {
+                    var urlEndPoint = $('.modal-body').find('form').attr('data-url');
+                    if (urlEndPoint == 'Create') { urlEndPoint = "Created"; urlEndPointIcon = "success"; }
+                    else if (urlEndPoint == 'Edit' || urlEndPoint == 'Update') { urlEndPoint = "Updated"; urlEndPointIcon = "warning"; }
+                    else { urlEndPoint = "Completed"; urlEndPointIcon = "success"; }
+                    swalWithBootstrapButtons.fire({
+                        title: urlEndPoint + "!",
+                        text: urlEndPoint + " successfully!",
+                        icon: urlEndPointIcon,
+                        allowOutsideClick: false
+                    }).then(okay => {
+                        if (okay) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    // Display validation errors
+                    if ((document.querySelector('div[id="divErrorList"]') === null) != true) {
+                        $("#divErrorList").remove();
+                    }
+                    var errors = response.errors;
+                    var errorList = '<ul>';
+                    for (var i = 0; i < errors.length; i++) {
+                        errorList += '<li>' + errors[i] + '</li>';
+                    }
+                    errorList += '</ul>';
+                    $('.modal-body').prepend('<div id="divErrorList" class="alert alert-danger">' + errorList + '</div>');
+                }
+            },
+            error: function (error) {
+                alert('Error submitting form');
             }
-            else {
-                PlaceHolderElement1.find('.modal').modal('hide');
-            }
-            location.reload();
-        })
+        });
     });
 });
 
