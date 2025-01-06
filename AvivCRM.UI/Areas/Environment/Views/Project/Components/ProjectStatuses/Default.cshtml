@@ -135,37 +135,4 @@
 		}
 	  })
 	});
-
-
-
-@* 
-
-	PlaceHolderElements.on('click', '[data-save="modals"]', function (event) {
-		$("#divBlocker").removeClass("d-none").addClass("screenblocker");
-		var form = $(this).parents('.modal').find('form');
-		$('#PlaceHolderHere').find('input').attr('readonly', 'readonly');
-		$('#PlaceHolderHere').find('button').attr('disabled', true);
-		//$('#PlaceHolderHere option:not(:selected)').attr('disabled', true);
-		$('option:not(:selected)').prop('disabled', true);
-
-
-		var formData = new FormData($('#UpdateProjectStatus')[0]);
-
-			var IsDefaultStatusEnabled = $('input[name="IsDefaultStatus"]').is(":checked");
-			var IsStatusEnabled = $('input[name="Status"]').is(":checked");
-
-			formData.set('IsDefaultStatus', IsDefaultStatusEnabled);
-			formData.set('Status', IsStatusEnabled);
-
-		$.ajax({
-				url: '@Url.Action("UpdateProjectStatus", "Project")',
-				type: 'POST',
-				data: formData,
-				processData: false,
-				contentType: false,
-				success: function(response) {
-					location.reload();
-				}
-			});
-	}); *@
 </script>

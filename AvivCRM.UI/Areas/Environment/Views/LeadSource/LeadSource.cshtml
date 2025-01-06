@@ -76,25 +76,6 @@
 </div>
 
 @section Scripts {
-    
-    @* @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script>
-        $(document).ready(function () {
-        $('#mdlLeadSourceShow').on('shown.bs.modal', function ()
-        {
-            // Re-initialize validation
-            $.validator.unobtrusive.parse('#mdlLeadSourceShow');
-        });
-        });
-    </script> *@
-
 	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(window).on('load', function() {
-         $('#mdlLeadSourceShow').modal({backdrop: 'static', keyboard: false});
-        });
-    </script>
 }
