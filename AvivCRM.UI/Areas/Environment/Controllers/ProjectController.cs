@@ -30,6 +30,7 @@ public class ProjectController : Controller
 
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
+        ProjectSettingVM projectSetting = new();
         List<ProjectSettingVM> projectSettingList = new();
         List<ProjectStatusVM> projectStatusSettingList = new();
         List<ProjectCategoryVM> projectCategoriesList = new();
@@ -37,18 +38,27 @@ public class ProjectController : Controller
         // Get Project Setting List
         var projectReminderPersonSettings = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectReminderPersonVM>>>("ProjectReminderPerson/all-projectreminderperson");
         var projectSettings = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectSettingVM>>>("ProjectSetting/all-projectsetting");
-        projectSettingList = projectSettings!.Data!;
-        var projectSetting = projectSettingList.FirstOrDefault();
+        if (projectSettings!.Data!.Count() > 0)
+        {
+            projectSettingList = projectSettings!.Data!;
+            projectSetting = projectSettingList.FirstOrDefault();
+        }
         projectSetting!.projectReminderPersons = projectReminderPersonSettings!.Data;
 
         // Get Project Status List
         var projectStatusSettings = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectStatusVM>>>("ProjectStatus/all-projectstatus");
-        projectStatusSettingList = projectStatusSettings!.Data!;
-
+        if (projectStatusSettings!.Data!.Count() > 0)
+        {
+            projectStatusSettingList = projectStatusSettings!.Data!;
+        }
         // Get Project Category List
         var projectCategories = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectCategoryVM>>>("ProjectCategory/all-projectcategory");
-        projectCategoriesList = projectCategories!.Data!;
+        if (projectCategories!.Data!.Count() > 0)
+        {
+            projectCategoriesList = projectCategories!.Data!;
+        }
 
+        // fill ProjectViewModel
         var vmProject = new ProjectVM
         {
             ProjectSetting = projectSetting,
