@@ -1,14 +1,8 @@
-@model AvivCRM.UI.Areas.Environment.ViewModels.PurchaseVM;
+@model AvivCRM.UI.Areas.Environment.ViewModels.PurchasePrefixVM;
 
-
-<div class="modal fade" id="mdlCurrenceyShow">
-    <div class="modal-dialog modal-xl" id="PlaceHolderHere">
-    </div>
-</div>
 <div class="row">
     <div class="col-12 col-lg-12">
         <div class="card">
-            <form asp-action="Purchase" method="post">
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col">
@@ -17,6 +11,7 @@
                     </div>  <!--end row-->
                 </div><!--end card-header-->
                 <div class="card-body">
+                    <input id="txtPurchasePrefixId" type="hidden" name="Id" value="@Model.Id" />
                     <div class="row col-lg-12 mt-2 ms-1">
                         <div class="col-lg-3">
                             <div class="text-center">
@@ -24,34 +19,33 @@
                             </div>
                             <div class="card" style="box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;">
                                 <div class="card-body">
-                                    <input id="txtId" type="hidden" name="Id" value="@Model.PurchaseOrders.Id" />
                                     <div class="row mt-2">
                                         <span>Purchase Order Prefix<span class="f-14 ms-1 text-danger">*</span></span>
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.PurchaseOrders.PurchaseOrderPrefix" type="text" placeholder="Enter Order Prefix" class="form-control" name="PurchaseOrders.PurchaseOrderPrefix" id="txtPurchaseOrderPrefix" />
-                                        <span asp-validation-for="PurchaseOrders.PurchaseOrderPrefix" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM!.PPurchaseVM!.Prefix" type="text" placeholder="Enter Order Prefix" class="form-control" name="" id="txtPurchaseOrderPrefix" />
+                                        @* <span asp-validation-for="PurchaseOrders.PurchaseOrderPrefix" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Purchase Order Number Seprator
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.PurchaseOrders.PurchaseOrderNumberSeperater" type="text" placeholder="Order Number Seperator" class="form-control" name="PurchaseOrders.PurchaseOrderNumberSeperater" id="txtPurchaseOrderNoSeperator" />
-                                        <span asp-validation-for="PurchaseOrders.PurchaseOrderNumberSeperater" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM!.PPurchaseVM!.Seperator" type="text" placeholder="Order Number Seperator" class="form-control" name="" id="txtPurchaseOrderNoSeperator" />
+                                        @* <span asp-validation-for="PurchaseOrders.PurchaseOrderNumberSeperater" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Purchase Order Number Digits
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.PurchaseOrders.PurchaseOrderNumberDigits" type="number" placeholder="Order Number Digits" class="form-control" name="PurchaseOrders.PurchaseOrderNumberDigits" id="txtPurchaseOrderNoDigits" />
-                                        <span asp-validation-for="PurchaseOrders.PurchaseOrderNumberDigits" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM!.PPurchaseVM!.Digits" type="number" placeholder="Order Number Digits" class="form-control" name="" id="txtPurchaseOrderNoDigits" />
+                                        @* <span asp-validation-for="PurchaseOrders.PurchaseOrderNumberDigits" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Purchase Order Number Example
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.PurchaseOrders.PurchaseOrderNumberExample" type="text" placeholder="Order Number Example" class="form-control font-spacing-bold" name="PurchaseOrders.PurchaseOrderNumberExample" id="txtPurchaseOrderNoExample" disabled="disabled" />
-                                        <span asp-validation-for="PurchaseOrders.PurchaseOrderNumberExample" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM!.PPurchaseVM!.Example" type="text" placeholder="Order Number Example" class="form-control font-spacing-bold" name="" id="txtPurchaseOrderNoExample" disabled="disabled" />
+                                        @* <span asp-validation-for="PurchaseOrders.PurchaseOrderNumberExample" class="text-danger"></span> *@
                                     </div>
                                 </div>
                             </div>
@@ -62,34 +56,33 @@
                             </div>
                             <div class="card" style="box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;">
                                 <div class="card-body">
-                                    <input id="txtId" type="hidden" name="Id" value="@Model.BillOrders.Id" />
                                     <div class="row mt-2">
                                         <span>Bill Order Prefix<span class="f-14 ms-1 text-danger">*</span></span>
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.BillOrders.BillOrderPrefix" type="text" placeholder="Enter Bill Order Prefix" class="form-control" name="BillOrders.BillOrderPrefix" id="txtBillOrderPrefix" />
-                                        <span asp-validation-for="BillOrders.BillOrderPrefix" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM.PBillOrderVM!.Prefix" type="text" placeholder="Enter Bill Order Prefix" class="form-control" name="" id="txtBillOrderPrefix" />
+                                        @* <span asp-validation-for="BillOrders.BillOrderPrefix" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Bill Order Number Seprator
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.BillOrders.BillOrderNumberSeperater" type="text" placeholder="Bill Order Number Separator" class="form-control" name="BillOrders.BillOrderNumberSeperater" id="txtBillOrderNoSeperator" />
-                                        <span asp-validation-for="BillOrders.BillOrderNumberSeperater" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM.PBillOrderVM!.Seperator" type="text" placeholder="Bill Order Number Separator" class="form-control" name="" id="txtBillOrderNoSeperator" />
+                                        @* <span asp-validation-for="BillOrders.BillOrderNumberSeperater" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Bill Order Digits
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.BillOrders.BillOrderNumberDigits" type="number" placeholder="Bill Order Digits" class="form-control" name="BillOrders.BillOrderNumberDigits" id="txtBillOrderNoDigits" />
-                                        <span asp-validation-for="BillOrders.BillOrderNumberDigits" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM.PBillOrderVM!.Digits" type="number" placeholder="Bill Order Digits" class="form-control" name="" id="txtBillOrderNoDigits" />
+                                        @* <span asp-validation-for="BillOrders.BillOrderNumberDigits" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Bill Order Example
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.BillOrders.BillOrderNumberExample" type="text" placeholder="Bill Order Number Example" class="form-control font-spacing-bold" name="BillOrders.BillOrderNumberExample" id="txtBillOrderNoExample" disabled="disabled" />
-                                        <span asp-validation-for="BillOrders.BillOrderNumberExample" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM.PBillOrderVM!.Example" type="text" placeholder="Bill Order Number Example" class="form-control font-spacing-bold" name="" id="txtBillOrderNoExample" disabled="disabled" />
+                                        @* <span asp-validation-for="BillOrders.BillOrderNumberExample" class="text-danger"></span> *@
                                     </div>
                                 </div>
                             </div>
@@ -100,42 +93,40 @@
                             </div>
                             <div class="card" style="box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;">
                                 <div class="card-body">
-                                    <input id="txtId" type="hidden" name="Id" value="@Model.VendorCreditOrders.Id" />
                                     <div class="row mt-2">
                                         <span>Vendor Credit Prefix<span class="f-14 ms-1 text-danger">*</span></span>
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.VendorCreditOrders.VendorCreditPrefix" type="text" placeholder="Vendor Credit Prefix" class="form-control" name="VendorCreditOrders.VendorCreditPrefix" id="txtVendorCreditPrefix" />
-                                        <span asp-validation-for="VendorCreditOrders.VendorCreditPrefix" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM.PVendorCreditVM!.Prefix" type="text" placeholder="Vendor Credit Prefix" class="form-control" name="" id="txtVendorCreditPrefix" />
+                                        @* <span asp-validation-for="VendorCreditOrders.VendorCreditPrefix" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Vendor Credit Number Seprator
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.VendorCreditOrders.VendorCreditNumberSeperater" type="text" placeholder="Vendor Credit Number Separator" class="form-control" name="VendorCreditOrders.VendorCreditNumberSeperater" id="txtVendorCreditNoSeperator" />
-                                        <span asp-validation-for="VendorCreditOrders.VendorCreditNumberSeperater" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM.PVendorCreditVM!.Seperator" type="text" placeholder="Vendor Credit Number Separator" class="form-control" name="" id="txtVendorCreditNoSeperator" />
+                                        @* <span asp-validation-for="VendorCreditOrders.VendorCreditNumberSeperater" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Vendor Credit Number Digits
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.VendorCreditOrders.VendorCreditNumberDigits" type="number" placeholder="Vendor Credit Number Digits" class="form-control" name="VendorCreditOrders.VendorCreditNumberDigits" id="txtVendorCreditNoDigits" />
-                                        <span asp-validation-for="VendorCreditOrders.VendorCreditNumberDigits" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM.PVendorCreditVM!.Digits" type="number" placeholder="Vendor Credit Number Digits" class="form-control" name="" id="txtVendorCreditNoDigits" />
+                                        @* <span asp-validation-for="VendorCreditOrders.VendorCreditNumberDigits" class="text-danger"></span> *@
                                     </div>
                                     <div class="row mt-4">
                                         Vendor Credit Number Example
                                     </div>
                                     <div class="row mt-2">
-                                        <input value="@Model.VendorCreditOrders.VendorCreditNumberExample" type="text" placeholder="Vendor Credit Number Example" class="form-control font-spacing-bold" name="VendorCreditOrders.VendorCreditNumberExample" id="txtVendorCreditNoExample" disabled="disabled" />
-                                        <span asp-validation-for="VendorCreditOrders.VendorCreditNumberExample" class="text-danger"></span>
+                                        <input value="@Model.CBPurchasePrefixVM.PVendorCreditVM!.Example" type="text" placeholder="Vendor Credit Number Example" class="form-control font-spacing-bold" name="" id="txtVendorCreditNoExample" disabled="disabled" />
+                                        @* <span asp-validation-for="VendorCreditOrders.VendorCreditNumberExample" class="text-danger"></span> *@
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-de-primary float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+                <button type="button" onclick="updateFinancePrefix()" class="btn btn-de-primary float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
                 </div>
-            </form>
         </div>
     </div>
 </div>
@@ -143,6 +134,78 @@
 @section Scripts {
 	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+
+    <script>
+            function updateFinancePrefix() {
+                const swalWithBootstrapButtons = Swal.mixin({
+                  customClass: {
+                     confirmButton: "btn btn-de-primary",
+                     cancelButton: "btn btn-de-danger me-2"
+                  },
+                  buttonsStyling: false
+               });
+
+            var PPurchaseVM = {
+                Id: 1,
+                Prefix: $('#txtPurchaseOrderPrefix').val(),
+                Seperator: $('#txtPurchaseOrderNoSeperator').val(),
+                Digits: $('#txtPurchaseOrderNoDigits').val(),
+                Example: $('#txtPurchaseOrderNoExample').val()
+            };
+            var PBillOrderVM = {
+                Id: 1,
+                Prefix: $('#txtBillOrderPrefix').val(),
+                Seperator: $('#txtBillOrderNoSeperator').val(),
+                Digits: $('#txtBillOrderNoDigits').val(),
+                Example: $('#txtBillOrderNoExample').val()
+            };
+            var PVendorCreditVM = {
+                Id: 1,
+                Prefix: $('#txtVendorCreditPrefix').val(),
+                Seperator: $('#txtVendorCreditNoSeperator').val(),
+                Digits: $('#txtVendorCreditNoDigits').val(),
+                Example: $('#txtVendorCreditNoExample').val()
+            };
+
+            var CBPurchasePrefixVM = {
+                PPurchaseVM: PPurchaseVM,
+                PBillOrderVM: PBillOrderVM,
+                PVendorCreditVM: PVendorCreditVM
+            };
+            var PurchasePrefixVM = {
+                Id: $('#txtPurchasePrefixId').val(),
+                PurchasePrefixJsonSettings: JSON.stringify(CBPurchasePrefixVM),
+                CBPurchasePrefixVM: CBPurchasePrefixVM
+            };
+
+            $.ajax({
+                    url: '@Url.Action("PurchasePrefixSettingUpdate", "Purchase")',
+                    type: 'POST',
+                    data: PurchasePrefixVM,
+                    success: function(response) {
+                             if (response.success) {
+                                 swalWithBootstrapButtons.fire({ title: "Updated!",
+             text: "Updated successfully!",
+             icon: "success",
+                  allowOutsideClick: false}).then(okay => {
+               if (okay) {
+                location.reload();
+              }
+            });
+
+                     }
+                     else{
+                         swalWithBootstrapButtons.fire({
+                     title: "Error Occured",
+                     text: "Error Occured while Data updation",
+                     icon: "error",
+                        allowOutsideClick: false
+                     });
+                     }
+                    }
+                });
+        }
+    </script>
     <script type="text/javascript">
             $.event.special.inputchange = {
             setup: function() {

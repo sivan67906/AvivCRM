@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 
@@ -18,164 +19,72 @@ public class PurchaseController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Purchase(int id = 0)
+    public async Task<IActionResult> Purchase()
     {
+        // Page Title
         ViewData["pTitle"] = "Purchases Profile";
+
+        // Breadcrumb
         ViewData["bGParent"] = "Environment";
         ViewData["bParent"] = "Purchase";
-        ViewData["bChild"] = "Purchase View";
+        ViewData["bChild"] = "Purchase";
 
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var purchaseVM = new PurchaseVM
-        {
-            BillOrders = new BillOrderVM(),
-            PurchaseOrders = new PurchaseOrderVM(),
-            VendorCreditOrders = new VendorCreditVM()
-        };
 
-        try
-        {
-            // Fetch BillOrder data
-            var billOrder = await client.GetFromJsonAsync<BillOrderVM>($"BillOrder/GetById/?Id={id}");
-            if (billOrder != null)
-            {
-                purchaseVM.BillOrders = billOrder;
-            }
+        var purchasePrefixSettings = await client.GetFromJsonAsync<ApiResultResponse<List<PurchasePrefixVM>>>("PurchaseSetting/all-purchasesetting");
+        var purchasePrefixSetting = purchasePrefixSettings!.Data!.FirstOrDefault();
 
-            // Fetch PurchaseOrder data
-            var purchaseOrder = await client.GetFromJsonAsync<PurchaseOrderVM>($"PurchaseOrder/GetById/?Id={id}");
-            if (purchaseOrder != null)
-            {
-                purchaseVM.PurchaseOrders = purchaseOrder;
-            }
-
-            // Fetch VendorCredit data
-            var vendorCredit = await client.GetFromJsonAsync<VendorCreditVM>($"VendorCredit/GetById/?Id={id}");
-            if (vendorCredit != null)
-            {
-                purchaseVM.VendorCreditOrders = vendorCredit;
-            }
-        }
-        catch (Exception ex)
+        #region get CBPurchasePrefixVM for PurchasePrefixVM
+        var cbPrefixItems = purchasePrefixSetting != null ? JsonConvert.DeserializeObject<List<CBPurchasePrefixVM>>(purchasePrefixSetting.PurchasePrefixJsonSettings!) : new List<CBPurchasePrefixVM>();
+        var cbPrefixItem = new CBPurchasePrefixVM();
+        if (cbPrefixItems!.Count > 0)
         {
-            // Log error and add error message
-            ModelState.AddModelError("", "Failed to fetch data from one or more APIs.");
+            cbPrefixItem = cbPrefixItems?.FirstOrDefault();
         }
 
-        return View(purchaseVM);
+        CBPurchasePrefixVM finalPrefixItems = new();
+        finalPrefixItems.PPurchaseVM = cbPrefixItem!.PPurchaseVM;
+        finalPrefixItems.PBillOrderVM = cbPrefixItem.PBillOrderVM;
+        finalPrefixItems.PVendorCreditVM = cbPrefixItem.PVendorCreditVM;
+        #endregion
+
+        purchasePrefixSetting!.CBPurchasePrefixVM = finalPrefixItems;
+
+        return View(purchasePrefixSetting);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Purchase(PurchaseVM purchaseVM)
+    public async Task<IActionResult> PurchasePrefixSettingUpdate(PurchasePrefixVM purchasePrefixSetting)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(purchaseVM); // Return the same view with validation errors
-        }
+        var jsonString = "[" + purchasePrefixSetting.PurchasePrefixJsonSettings + "]";
+        purchasePrefixSetting.PurchasePrefixJsonSettings = jsonString;
+
+        ApiResultResponse<PurchasePrefixVM> fStatus = new();
 
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-
-        try
+        var purchasePrefixSettingResponse = await client.PutAsJsonAsync("PurchaseSetting/update-purchasesetting/", purchasePrefixSetting);
+        if (purchasePrefixSettingResponse.IsSuccessStatusCode)
         {
-            // Update BillOrder
-            if (purchaseVM.BillOrders != null)
-            {
-                var response = await client.PutAsJsonAsync("BillOrder/Update", purchaseVM.BillOrders);
-                if (!response.IsSuccessStatusCode)
-                {
-                    ModelState.AddModelError("", "Failed to update BillOrder.");
-                }
-            }
-
-            // Update PurchaseOrder
-            if (purchaseVM.PurchaseOrders != null)
-            {
-                var response = await client.PutAsJsonAsync("PurchaseOrder/Update", purchaseVM.PurchaseOrders);
-                if (!response.IsSuccessStatusCode)
-                {
-                    ModelState.AddModelError("", "Failed to update PurchaseOrder.");
-                }
-            }
-
-            // Update VendorCredit
-            if (purchaseVM.VendorCreditOrders != null)
-            {
-                var response = await client.PutAsJsonAsync("VendorCredit/Update", purchaseVM.VendorCreditOrders);
-                if (!response.IsSuccessStatusCode)
-                {
-                    ModelState.AddModelError("", "Failed to update VendorCredit.");
-                }
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(purchaseVM); // Show validation errors on the same view
-            }
-
-            // Redirect to success or listing page
-            return RedirectToAction("Purchase");
+            var jsonpurchasePrefixSettingSource = await purchasePrefixSettingResponse.Content.ReadAsStringAsync();
+            fStatus = JsonConvert.DeserializeObject<ApiResultResponse<PurchasePrefixVM>>(jsonpurchasePrefixSettingSource);
         }
-        catch (Exception ex)
+        else
         {
-            ModelState.AddModelError("", "An error occurred while updating the data. Please try again.");
-            return View(purchaseVM);
+            var errorContent = await purchasePrefixSettingResponse.Content.ReadAsStringAsync();
+            fStatus = new ApiResultResponse<PurchasePrefixVM>
+            {
+                IsSuccess = false,
+                Message = purchasePrefixSettingResponse.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
         }
+
+        // Server side Validation
+        List<string> serverErrorMessageList = new List<string>();
+        string serverErrorMessage = fStatus!.Message!.ToString();
+        serverErrorMessageList.Add(serverErrorMessage);
+        if (!fStatus!.IsSuccess)
+            return Json(new { success = false, errors = serverErrorMessageList });
+        else
+            return Json(new { success = true });
     }
-
-
-
-    //[HttpGet]
-    //public async Task<IActionResult> Create()
-    //{
-    //    PurchaseVM purchase = new();
-    //    var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //    return PartialView("_Create", purchase);
-    //}
-
-    //[HttpPost]
-    //public async Task<IActionResult> Create(PurchaseVM purchase)
-    //{
-    //    var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //    await client.PostAsJsonAsync<PurchaseVM>("Purchase/Create", purchase);
-    //    return RedirectToAction("Purchase");
-    //}
-
-    //[HttpGet]
-    //public async Task<IActionResult> Edit(int Id)
-    //{
-    //    if (Id == 0) return View();
-    //    var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //    var purchase = await client.GetFromJsonAsync<PurchaseVM>("Purchase/GetById/?Id=" + Id);
-    //    return PartialView("_Edit", purchase);
-    //}
-
-    //[HttpPost]
-    //public async Task<IActionResult> Update(PurchaseVM purchase)
-    //{
-    //    if (purchase.Id == 0) return View();
-    //    var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //    await client.PutAsJsonAsync<PurchaseVM>("Purchase/Update/", purchase);
-    //    return RedirectToAction("Purchase");
-    //}
-
-    //[HttpGet]
-    //public async Task<IActionResult> Delete(int Id)
-    //{
-    //    if (Id == 0) return View();
-    //    var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //    var purchase = await client.GetFromJsonAsync<PurchaseVM>("Purchase/GetById/?Id=" + Id);
-    //    return PartialView("_Delete", purchase);
-    //}
-
-    //[HttpPost]
-    //public async Task<IActionResult> Delete(PurchaseVM purchase)
-    //{
-    //    if (purchase.Id == 0) return View();
-    //    var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //    await client.DeleteAsync("Purchase/Delete?Id=" + purchase.Id);
-    //    return RedirectToAction("Purchase");
-    //}
 }
-
-
-
