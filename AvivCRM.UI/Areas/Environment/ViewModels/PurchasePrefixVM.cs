@@ -1,6 +1,6 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
 
-public class PurchasePrefixVM
+public class PurchaseVM
 {
     public Guid Id { get; set; }
     public string? PurchasePrefixJsonSettings { get; set; }

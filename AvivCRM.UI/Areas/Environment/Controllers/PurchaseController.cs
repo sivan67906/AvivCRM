@@ -31,7 +31,7 @@ public class PurchaseController : Controller
 
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        var purchasePrefixSettings = await client.GetFromJsonAsync<ApiResultResponse<List<PurchasePrefixVM>>>("PurchaseSetting/all-purchasesetting");
+        var purchasePrefixSettings = await client.GetFromJsonAsync<ApiResultResponse<List<PurchaseVM>>>("PurchaseSetting/all-purchasesetting");
         var purchasePrefixSetting = purchasePrefixSettings!.Data!.FirstOrDefault();
 
         #region get CBPurchasePrefixVM for PurchasePrefixVM
@@ -54,24 +54,24 @@ public class PurchaseController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> PurchasePrefixSettingUpdate(PurchasePrefixVM purchasePrefixSetting)
+    public async Task<IActionResult> PurchasePrefixSettingUpdate(PurchaseVM purchasePrefixSetting)
     {
         var jsonString = "[" + purchasePrefixSetting.PurchasePrefixJsonSettings + "]";
         purchasePrefixSetting.PurchasePrefixJsonSettings = jsonString;
 
-        ApiResultResponse<PurchasePrefixVM> fStatus = new();
+        ApiResultResponse<PurchaseVM> fStatus = new();
 
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
         var purchasePrefixSettingResponse = await client.PutAsJsonAsync("PurchaseSetting/update-purchasesetting/", purchasePrefixSetting);
         if (purchasePrefixSettingResponse.IsSuccessStatusCode)
         {
             var jsonpurchasePrefixSettingSource = await purchasePrefixSettingResponse.Content.ReadAsStringAsync();
-            fStatus = JsonConvert.DeserializeObject<ApiResultResponse<PurchasePrefixVM>>(jsonpurchasePrefixSettingSource);
+            fStatus = JsonConvert.DeserializeObject<ApiResultResponse<PurchaseVM>>(jsonpurchasePrefixSettingSource);
         }
         else
         {
             var errorContent = await purchasePrefixSettingResponse.Content.ReadAsStringAsync();
-            fStatus = new ApiResultResponse<PurchasePrefixVM>
+            fStatus = new ApiResultResponse<PurchaseVM>
             {
                 IsSuccess = false,
                 Message = purchasePrefixSettingResponse.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
