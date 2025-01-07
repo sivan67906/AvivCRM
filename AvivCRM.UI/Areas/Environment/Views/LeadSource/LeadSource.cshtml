@@ -27,13 +27,6 @@
 
             <div class="card-body">
                 <div class="row mb-3">
-                    @* <div class="col-lg-12">
-                        <div class="input-group">
-                            <input type="text" Name="searchQuery" class="form-control" placeholder="Search by Name..." value="@ViewData["searchQuery"]" />
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </div>
-                    </div> *@
-
                     <div class="table-responsive">
                         <table class="table mb-0">
                             <thead class="thead-light">
@@ -55,10 +48,6 @@
                                                     data-target="#mdlLeadSourceShow" data-url="@Url.Action($"Edit/{item.Id}")" >
                                                 <i class="las la-pen text-secondary font-16"></i>
                                             </button>
-                                           @*  <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-                                                    data-target="#mdlLeadSourceShow" data-url="@Url.Action($"Delete/{item.Id}")" >
-                                                <i class="las la-trash-alt text-secondary font-16"></i>
-                                            </button> *@
                                             <a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
                                                data-url="@Url.Action($"Delete/{item.Id}")">
                                                 <i class="las la-trash-alt text-secondary font-16"></i>

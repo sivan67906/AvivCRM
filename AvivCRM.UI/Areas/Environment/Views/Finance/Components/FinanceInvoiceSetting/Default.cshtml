@@ -48,27 +48,11 @@
 							<option value="">--</option>
 						</select>
 					</div>
-
-					@* <select class="form-select" name="RoleId" asp-for="@Model.LanguageDDSettings.SelectedLanguageId" 
-					asp-items="@(new SelectList (Model.LanguageDDSettings.languageItems, "Id", "Name"))">
-						<option value="">--</option>
-					</select> *@
-					@* <select id="sltLanguage" name="" class="form-select" aria-label="">
-					<option selected="" value="">--</option>
-					<option data-content="<span class='flag-icon flag-icon-gb flag-icon-squared'></span> English" selected="" value="en"> English </option>
-					<option data-content="<span class='flag-icon flag-icon-sa flag-icon-squared'></span> Arabic" value="ar"> Arabic </option>
-					<option data-content="<span class='flag-icon flag-icon-de flag-icon-squared'></span> German" value="de"> German </option>
-					<option data-content="<span class='flag-icon flag-icon-id flag-icon-squared'></span> Indonesian" value="id"> Indonesian </option>
-					<option data-content="<span class='flag-icon flag-icon-my flag-icon-squared'></span> Malaysia" value="ms"> Malaysia </option>
-				</select> *@
 				</div>
 				<div class="col-lg-6">
 					<div class="input-group">
 						<input id="txtFIDueAfter" type="number" class="form-control" name="FIDueAfter"
 							   placeholder="15" value="@Model.FIDueAfter">
-						@* <span asp-validation-for="FIDueAfter" class="text-danger"></span> *@
-
-						@* <input type="number" class="form-control" placeholder="15" aria-label="" aria-describedby="dueDays"> *@
 						<span class="input-group-text" id="dueDays">Day(s)</span>
 					</div>
 				</div>
@@ -82,7 +66,6 @@
 					<div class="input-group">
 						<input id="txtFISendReminderBefore" type="number" class="form-control" name="FISendReminderBefore"
 							   placeholder="15" value="@Model.FISendReminderBefore">
-						@* <input type="number" class="form-control" placeholder="0" aria-label="" aria-describedby="sendReminder"> *@
 						<span class="input-group-text" id="sendReminder">Day(s)</span>
 					</div>
 				</div>
@@ -97,7 +80,6 @@
 					<div class="input-group">
 						<input id="txtFISendReminderAfterEvery" type="number" class="form-control" name="FISendReminderAfterEvery"
 							   placeholder="15" value="@Model.FISendReminderAfterEvery">
-						@* <input type="number" class="form-control" placeholder="0" aria-label="" aria-describedby="dueDays"> *@
 						<span class="input-group-text" id="dueDays">Day(s)</span>
 					</div>
 				</div>
@@ -146,7 +128,6 @@
 					<label class="custom-control-label" for="reqShiftChange" style="font-size: 14px;">Terms and Conditions</label>
 					<textarea id="txtFITerms" class="form-control" rows="5" placeholder="Thank you for your business."
 							  name="FITerms">@Model.FITerms</textarea>
-					@* <textarea class="form-control mt-2" rows="5" id="termsConditions">Thank you for your business.</textarea> *@
 				</div>
 			</div>
 			<div class="row mt-4">
@@ -154,7 +135,6 @@
 					<label class="custom-control-label" for="reqShiftChange" style="font-size: 14px;">Other information</label>
 					<textarea id="txtFIOtherInfo" class="form-control" rows="5" placeholder="Enter Other information"
 							  name="FIOtherInfo">@Model.FIOtherInfo</textarea>
-					@* <textarea class="form-control mt-2" rows="5" id="otherInformation" placeholder="Enter Other information"></textarea> *@
 				</div>
 			</div>
 		</form>
@@ -228,7 +208,6 @@
 			location.reload();
 		  }
 		});
-
 				 }
 				 else{
 					 swalWithBootstrapButtons.fire({

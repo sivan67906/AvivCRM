@@ -20,7 +20,6 @@
 				</div>
 				<div class="col-lg-3">
 					<input asp-for="ColorCode" style="width:100%;" type="color" name="ColorCode" class="form-control form-control-color" id="txtColorCode" value="" title="Choose your color">
-					@* <span asp-validation-for="ColorCode" class="text-danger"></span> *@
 				</div>
 				<div class="col-lg-2">
 				</div>
@@ -34,13 +33,11 @@
 				<div class="col-lg-7">
 					<div class="form-check form-switch form-switch-success">
 						<input asp-for="IsDefaultStatus" class="form-check-input" name="IsDefaultStatus" type="checkbox" id="ipIsDefaultStatus" style="width: 4em !important; height: 2em !important;">
-						@* <span asp-validation-for="IsDefaultStatus" class="text-danger"></span> *@
 					</div>
 				</div>
 				<div class="col-lg-3">
 					<div class="form-check form-switch form-switch-success">
 						<input asp-for="Status" class="form-check-input" name="Status" type="checkbox" id="ipStatus" style="width: 4em !important; height: 2em !important;">
-						@* <span asp-validation-for="Status" class="text-danger"></span> *@
 					</div>
 				</div>
 				<div class="col-lg-2"></div>
@@ -54,11 +51,3 @@
 		</form>
 	</div>
 </div>
-	<script type="text/javascript">
-		// $(window).on('load', function() {
-		//  $('#mdlProjectStatusShow').modal({backdrop: 'static', keyboard: false});
-		// });
-	</script>
-
-
-

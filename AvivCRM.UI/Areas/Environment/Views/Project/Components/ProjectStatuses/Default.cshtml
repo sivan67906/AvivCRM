@@ -1,7 +1,6 @@
 @using AvivCRM.UI.Areas.Environment.ViewModels
 @model List<ProjectStatusVM>
 
-
 <div class="modal fade" id="mdlProjectStatusShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
 	</div>
@@ -30,7 +29,6 @@
 			<table class="table mb-0">
 				<thead class="thead-light">
 					<tr>
-						@* <th class="d-none">@Html.DisplayNameFor(m => m.)</th> *@
 						<th>#</th>
 						<th>Name</th>
 						<th>Default Status</th>
@@ -47,19 +45,6 @@
 							<td>@(i + 1)</td>
 							<td><span><i class="bi bi-dot bg-info ps-2 pe-2  rounded-circle me-2"></i></span>@Model[i].Name</td>
 							<td>
-								@* @if (Model[i].Status)
-								{
-									<div class="form-check default_status" data-status-id="@Model[i].Id">
-										<input class="form-check-input" type="radio" name="IsDefaultStatus" id="projRadios1" value="@Model[i].IsDefaultStatus" @(Model[i].IsDefaultStatus ? "checked" : "")>
-										<label class="form-check-label" for="projRadios1">
-										</label>
-									</div>
-								}
-								else
-								{
-									<span>You can not change inactive status to Default status</span>
-								} *@
-
 								@if (Model[i].IsDefaultStatus)
 								{
 									<label>Yes</label>
@@ -67,7 +52,6 @@
 								else
 								{
 									<label>No</label>
-									@* <span>You can not change inactive status to Default status</span> *@
 								}
 							</td>
 							<td>
@@ -85,7 +69,7 @@
 										data-bs-target="#mdlProjectStatusShow" data-url="@Url.Action($"EditProjectStatus/{@Model[i].Id}")">
 									<i class="las la-pen text-secondary font-16"></i>
 								</button>
-								@if ((!Model[i].IsDefaultStatus))  @* || (!Model[i].Status) *@
+								@if ((!Model[i].IsDefaultStatus))
 								{
 									<a id="deletePS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
 									   data-url="@Url.Action($"DeleteProjectStatus/{@Model[i].Id}")">
@@ -94,7 +78,6 @@
 								}
 							</td>
 						</tr>
-
 						<!--end tr-->
 					}
 				</tbody>

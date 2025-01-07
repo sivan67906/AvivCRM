@@ -147,7 +147,6 @@ public class ProjectController : Controller
     {
         ProjectStatusVM projStatus = new();
 
-        //if (Id == 0) return View();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
         var projectStatus = await client.GetFromJsonAsync<ApiResultResponse<ProjectStatusVM>>("ProjectStatus/byid-projectstatus/?Id=" + Id);
         projStatus = projectStatus!.Data!;

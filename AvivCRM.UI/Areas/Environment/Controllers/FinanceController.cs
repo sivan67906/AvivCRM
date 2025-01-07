@@ -109,15 +109,6 @@ public class FinanceController : Controller
     [HttpPost]
     public async Task<IActionResult> FinanceInvoiceSettingUpdate(FinanceInvoiceSettingVM financeInvoiceSetting)
     {
-        //if (financeInvoiceSetting.Id == 0) return View();
-
-
-        //if (financeInvoiceSetting.GeneralCBSettings != null && financeInvoiceSetting.GeneralCBSettings.Count > 0)
-        //{
-        //    string jsonCBString = JsonConvert.SerializeObject(financeInvoiceSetting.GeneralCBSettings, Formatting.Indented);
-        //    financeInvoiceSetting.GeneralCBJsonSettings = jsonCBString.Replace("\n", "").Replace("\r", "");
-        //}
-        //financeInvoiceSetting.GeneralCBJsonSettings = jsonData;
 
         if (financeInvoiceSetting.FILogoImage != null && financeInvoiceSetting.FILogoImage.Length > 0)
         {
@@ -286,27 +277,11 @@ public class FinanceController : Controller
             };
         }
 
-        //ViewBag.ApiResult = source!.Data;
-        //ViewBag.ApiMessage = source!.Message;
-        //ViewBag.ApiStatus = source.IsSuccess;
-
-        //Server side Validation
-        //List<string> serverErrorMessageList = new List<string>();
-        //string serverErrorMessage = source!.Message!;
-        //serverErrorMessageList.Add(serverErrorMessage);
-
         if (!finUnitSetting!.IsSuccess)
             return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         else
             return Json(new { success = true });
     }
-
-    //[HttpGet]
-    //public async Task<IActionResult> Create()
-    //{
-    //    FinanceUnitSettingVM financeUnitSetting = new();
-    //    return PartialView("~/Areas/Environment/Views/Finance/FinanceUnitSetting/_Create.cshtml", financeUnitSetting);
-    //}
 
     [HttpGet]
     public async Task<IActionResult> CreateFinanceUnitSetting()
@@ -353,6 +328,3 @@ public class FinanceController : Controller
             return Json(new { success = true });
     }
 }
-
-
-

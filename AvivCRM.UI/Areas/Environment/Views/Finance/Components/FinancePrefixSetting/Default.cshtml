@@ -206,14 +206,10 @@
 			FICBPrefixSettingVM: FICBPrefixSettingVM
 		};
 
-		// var prefixSettingId = $('#txtFinancePrefixSettingId').val();
-
 		$.ajax({
 				url: '@Url.Action("FinancePrefixSettingUpdate", "Finance")',
 				type: 'POST',
 				data: FinancePrefixSettingVM,
-				// processData: false,
-				// contentType: false,
 				success: function(response) {
 						 if (response.success) {
 							 swalWithBootstrapButtons.fire({ title: "Updated!",
