@@ -2,19 +2,18 @@
 @model List<FinanceUnitSettingVM>
 
 <div class="modal fade" id="mdlFinanceUnitSettingShow" style="">
-	<div class="modal-dialog" id="PlaceHolderHere">
+	<div class="modal-dialog" id="PlaceHolderHere1">
 	</div>
 </div>
-
 <div class="card">
 	<div class="card-header">
 		<div class="row align-items-center">
 			<div class="col">
-				<h4 class="card-title">Unit Index</h4>
+				<h4 class="card-title">Finance Unit Index</h4>
 			</div><!--end col-->
 			<div class="col-auto">
-				<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-						data-target="#mdlFinanceUnitSettingShow" data-url="@Url.Action("CreateFinanceUnit")">
+				<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal1"
+						data-target="#mdlFinanceUnitSettingShow" data-url="@Url.Action($"CreateFinanceUnitSetting")">
 					<i class="fas fa-plus me-2"></i>Add Finance Unit
 				</button>
 			</div><!--end col-->
@@ -34,35 +33,33 @@
 
 				<tbody>
 					@for (var i = 0; i < Model.Count(); i++)
-							{
-								<tr>
+					{
+						<tr>
+							<td class="d-none">@Html.DisplayNameFor(m => Model[i].Id)</td>
 							<td>@(i + 1)</td>
 							<td>@Model[i].FUnitName</td>
 							<td>@(Model[i].FIsDefault ? "Yes" : "No")</td>
-						<td>
-						@* 	<a  data-toggle="tooltip" data-placement="top"
-							   data-bs-toggle="modal"
-							   data-animation="bounce" data-bs-target=".bs-addEditUnit-modal-lg"
-							   title="Edit"><i class="las la-pen text-secondary font-16"></i></a> *@
-
-								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
-										data-bs-target="#mdlFinanceUnitSettingShow" data-url="@Url.Action($"Edit/{@Model[i].Id}")">
+							<td>
+								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
+										data-bs-target="#mdlFinanceUnitSettingShow" data-url="@Url.Action($"EditFinanceUnitSetting/{@Model[i].Id}")">
 									<i class="las la-pen text-secondary font-16"></i>
 								</button>
-						</td>
-					</tr><!--end tr-->
-							}
+								@* <a id="deletePC" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+								   data-url="@Url.Action($"DeleteProjectCategory/{@Model[i].Id}")">
+										<i class="las la-trash-alt text-secondary font-16"></i>
+									</a> *@
+							</td>
+						</tr>
+
+						<!--end tr-->
+					}
 				</tbody>
 			</table>
 		</div>
 	</div><!--end card-body-->
-
-
-
 </div>
-
-
-
-<script>
-	@* $(document).ready(function(){ $("#mdlFinanceUnitSettingShow").modal('show'); }); *@
+<script type="text/javascript">
 </script>
+
+
+

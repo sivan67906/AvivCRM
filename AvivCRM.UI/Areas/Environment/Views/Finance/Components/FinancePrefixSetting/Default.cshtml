@@ -79,7 +79,7 @@
 						Credit Note Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Prefix" type="text" placeholder="" class="form-control font-spacing-bold" name="creditNoteNoExample" id="txtCreditNoteNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="creditNoteNoExample" id="txtCreditNoteNoExample" disabled="disabled" />
 					</div>
 				</div>
 			</div>
@@ -239,6 +239,7 @@
 	}
 </script>
 <script>
+		$(document).ready(function() {
 	$.event.special.inputchange = {
 			setup: function() {
 				var self = this, val;
@@ -260,30 +261,30 @@
 
 		$('#txtInvoiceNoPrefix').on('inputchange', function() {
 				   var prefix = $("#txtInvoiceNoPrefix").val();
-					var seperator = $("#txtInvoiceNoNoSeperator").val();
-					var digits = $("#txtInvoiceNoNoDigits").val();
+					var seperator = $("#txtInvoiceNoSeperator").val();
+					var digits = $("#txtInvoiceNoDigits").val();
 					var n = "1"; if(digits == "" || digits == "0"){n = "";}
 					digits = n.padStart(digits, '0');
 					var result = prefix + seperator + digits;
-					$("#txtInvoiceNoNoExample").val(result);
+					$("#txtInvoiceNoExample").val(result);
 		});
-		$('#txtInvoiceNoNoSeperator').on('inputchange', function() {
+		$('#txtInvoiceNoSeperator').on('inputchange', function() {
 				   var prefix = $("#txtInvoiceNoPrefix").val();
-					var seperator = $("#txtInvoiceNoNoSeperator").val();
-					var digits = $("#txtInvoiceNoNoDigits").val();
+					var seperator = $("#txtInvoiceNoSeperator").val();
+					var digits = $("#txtInvoiceNoDigits").val();
 					var n = "1"; if(digits == "" || digits == "0"){n = "";}
 					digits = n.padStart(digits, '0');
 					var result = prefix + seperator + digits;
-					$("#txtInvoiceNoNoExample").val(result);
+					$("#txtInvoiceNoExample").val(result);
 		});
-		$('#txtInvoiceNoNoDigits').on('inputchange', function() {
+		$('#txtInvoiceNoDigits').on('inputchange', function() {
 				   var prefix = $("#txtInvoiceNoPrefix").val();
-					var seperator = $("#txtInvoiceNoNoSeperator").val();
-					var digits = $("#txtInvoiceNoNoDigits").val();
+					var seperator = $("#txtInvoiceNoSeperator").val();
+					var digits = $("#txtInvoiceNoDigits").val();
 					var n = "1"; if(digits == "" || digits == "0"){n = "";}
 					digits = n.padStart(digits, '0');
 					var result = prefix + seperator + digits;
-					$("#txtInvoiceNoNoExample").val(result);
+					$("#txtInvoiceNoExample").val(result);
 		});
 
 
@@ -370,5 +371,6 @@
 					digits = n.padStart(digits, '0');
 					var result = prefix + seperator + digits;
 					$("#txtOrdNoExample").val(result);
+		});
 		});
 </script>

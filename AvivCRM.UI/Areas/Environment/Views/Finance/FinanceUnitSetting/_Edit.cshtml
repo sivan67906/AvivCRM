@@ -1,34 +1,30 @@
 @using AvivCRM.UI.Areas.Environment.ViewModels
 @model FinanceUnitSettingVM;
-<style type="text/css">
-	
-</style>
 
 <div class="modal-content">
 	<div class="modal-header">
-		<h5 class="modal-title mt-0" id="myEUnitModalLabel">Edit Unit Details</h5>
-		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		<h5 class="modal-title mt-0" id="">Edit Finance Unit Details</h5>
 	</div>
 	<div class="modal-body">
-		<form asp-action="UpdateProjectStatus" id="UpdateProjectStatus" data-url="Edit" method="post">
-			<input id="txtFinanceUnitSettingId" type="hidden" name="Id" value="@Model.Id" />
-			<div class="row mt-3 mb-2">
-				<div class="col-lg-12">Unit Type <span class="text-danger">*</span></div>
+		<form id="UpdateFinanceUnitSetting" data-url="Edit" asp-action="UpdateFinanceUnitSetting" method="post">
+			<input id="txtId" type="hidden" name="Id" value="@Model.Id" />
+			<div class="row mt-3">
+				<div class="col-lg-7">Name <span class="text-danger">*</span></div>
+				<div class="col-lg-5"></div>
 			</div>
 			<div class="row">
-				<div class="col-lg-12">
-					<input asp-for="@Model.FUnitName" class="form-control" name="FUnitName" type="text" id="txtFUnitName" />
+				<div class="col-lg-7">
+					<input class="form-control" asp-for="@Model.FUnitName">
+				</div>
+				<div class="col-lg-5">
 				</div>
 			</div>
-			<div class="row mt-2 text-end ">
-				<div class="col-lg-12 mt-4">
+			<div class="row mt-4 text-end ">
+				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal1"><i class="mdi mdi-check-all me-2"></i>Update</button>
 				</div>
 			</div>
 		</form>
 	</div>
-</div><!-- /.modal-content -->
-
-
-
+</div>

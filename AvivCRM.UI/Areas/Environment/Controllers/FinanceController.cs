@@ -221,8 +221,8 @@ public class FinanceController : Controller
         var financePrefixSettingResponse = await client.PutAsJsonAsync("FinancePrefixSetting/update-financeprefixsetting/", financePrefixSetting);
         if (financePrefixSettingResponse.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await financePrefixSettingResponse.Content.ReadAsStringAsync();
-            fStatus = JsonConvert.DeserializeObject<ApiResultResponse<FinancePrefixSettingVM>>(jsonResponseLeadSource);
+            var jsonfinancePrefixSettingSource = await financePrefixSettingResponse.Content.ReadAsStringAsync();
+            fStatus = JsonConvert.DeserializeObject<ApiResultResponse<FinancePrefixSettingVM>>(jsonfinancePrefixSettingSource);
         }
         else
         {
@@ -245,7 +245,7 @@ public class FinanceController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid Id)
+    public async Task<IActionResult> EditFinanceUnitSetting(Guid Id)
     {
         //if (Id == 0) return View();
         ApiResultResponse<FinanceUnitSettingVM> financeUnit = new();
@@ -257,7 +257,7 @@ public class FinanceController : Controller
         else return PartialView("~/Areas/Environment/Views/Finance/FinanceUnitSetting/_Edit.cshtml", financeUnit.Data);
     }
     [HttpPost]
-    public async Task<IActionResult> UpdateProjectStatus(FinanceUnitSettingVM financeUnitSetting)
+    public async Task<IActionResult> UpdateFinanceUnitSetting(FinanceUnitSettingVM financeUnitSetting)
     {
         if (!ModelState.IsValid)
         {
@@ -309,7 +309,7 @@ public class FinanceController : Controller
     //}
 
     [HttpGet]
-    public async Task<IActionResult> CreateFinanceUnit()
+    public async Task<IActionResult> CreateFinanceUnitSetting()
     {
         FinanceUnitSettingVM financeUnitSetting = new();
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
@@ -317,7 +317,7 @@ public class FinanceController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateFinanceUnit(FinanceUnitSettingVM financeUnitSetting)
+    public async Task<IActionResult> CreateFinanceUnitSetting(FinanceUnitSettingVM financeUnitSetting)
     {
         if (!ModelState.IsValid)
         {
