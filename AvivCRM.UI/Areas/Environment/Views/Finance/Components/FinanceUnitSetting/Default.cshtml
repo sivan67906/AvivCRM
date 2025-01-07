@@ -14,8 +14,8 @@
 			</div><!--end col-->
 			<div class="col-auto">
 				<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-						data-target="#mdlFinanceUnitSettingShow" data-url="@Url.Action("Create")">
-					<i class="fas fa-plus me-2"></i>Add Unit
+						data-target="#mdlFinanceUnitSettingShow" data-url="@Url.Action("CreateFinanceUnit")">
+					<i class="fas fa-plus me-2"></i>Add Finance Unit
 				</button>
 			</div><!--end col-->
 		</div>  <!--end row-->
@@ -38,7 +38,7 @@
 								<tr>
 							<td>@(i + 1)</td>
 							<td>@Model[i].FUnitName</td>
-							<td>(@Model[i].FIsDefault) ? "Yes" : "No"</td>
+							<td>@(Model[i].FIsDefault ? "Yes" : "No")</td>
 						<td>
 						@* 	<a  data-toggle="tooltip" data-placement="top"
 							   data-bs-toggle="modal"
@@ -63,3 +63,6 @@
 
 
 
+<script>
+	@* $(document).ready(function(){ $("#mdlFinanceUnitSettingShow").modal('show'); }); *@
+</script>

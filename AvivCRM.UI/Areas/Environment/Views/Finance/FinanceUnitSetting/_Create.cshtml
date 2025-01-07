@@ -1,35 +1,27 @@
 @using AvivCRM.UI.Areas.Environment.ViewModels
 @model FinanceUnitSettingVM;
-<style type="text/css">
 
-</style>
 
 <div class="modal-content">
 	<div class="modal-header">
-		<h5 class="modal-title mt-0" id="myEUnitModalLabel">Edit Unit Details</h5>
-		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		<h5 class="modal-title mt-0" Id="">Unit Setup</h5>
 	</div>
 	<div class="modal-body">
-		<form action="Create">
-			<div class="row mt-3 mb-2">
-				<div class="col-lg-12">Unit Type <span class="text-danger">*</span></div>
-			</div>
+		<form asp-action="CreateFinanceUnit" id="CreateFinanceUnit" data-url="Create" method="post">
+			@* <div asp-validation-summary="All" class="text-danger"></div> *@
 			<div class="row">
 				<div class="col-lg-12">
-					<input id="txtUnitType" type="text" class="form-control" name="FUnitName" placeholder="enter UnitName" value="">
-
-					@* <input type="text" placeholder="" value="Pcs" class="form-control" id=""> *@
+					<label asp-for="FUnitName">Unit</label>
+					<input asp-for="FUnitName" class="form-control" name="FUnitName" type="text" value="" id="txtFUnitName">
+					@* <span asp-validation-for="Name" class="text-danger"></span> *@
 				</div>
 			</div>
-			<div class="row mt-2 text-end ">
-				<div class="col-lg-12 mt-4">
+			<div class="row mt-4 text-end ">
+				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="button" class="btn btn-sm btn-de-primary"><i class="mdi mdi-check-all me-2"></i>Create</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
 				</div>
 			</div>
 		</form>
 	</div>
-</div><!-- /.modal-content -->
-
-
-
+</div>

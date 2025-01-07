@@ -64,11 +64,10 @@
 		<form id="FinanceInvoiceTemplateSettingUpdate">
 		<div class="col-lg-12">
 			<div class="row">
-				@for (var i = 0; i < Model.FIRBTemplateSettings.Count; i++)
+				@for (var i = 0; i < Model!.FIRBTemplateSettings!.Count; i++)
 				{
 					<div class="col-lg-3">
 						<label class="myButton" for="radio-@Model.FIRBTemplateSettings[i].Id" style="width: 90%;">
-							@Model.FIRBTemplateSettings[i].ImageURL
 							<input id="radio-@Model.FIRBTemplateSettings[i].Id" type="radio"
 									   name="selectedRadio"
 								   value="@Model.FIRBTemplateSettings[i].Id" style="display: none; width: 100%;"
@@ -106,32 +105,59 @@
 		</div>
 		<button id="btnUpdateFinanceInvoiceTemplateSetting" type="button" class="btn btn-de-primary mt-2 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
 	</form>
+		<input type="hidden" value="@Model.Id" id="txtFinanceInvoiceTemplateSettingId" />
+
 	</div><!--end card-body-->
 </div><!--end card-->
 <script type="text/javascript">
 
 	$(document).ready(function() {
 		$('#btnUpdateFinanceInvoiceTemplateSetting').click(function() {
-			var formData = new FormData($('#FinanceInvoiceTemplateSettingUpdate')[0]);
+			const swalWithBootstrapButtons = Swal.mixin({
+			  customClass: {
+				 confirmButton: "btn btn-de-primary",
+				 cancelButton: "btn btn-de-danger me-2"
+			  },
+			  buttonsStyling: false
+		   });
 
+			var formData = new FormData($('#FinanceInvoiceTemplateSettingUpdate')[0]);
+			var txtSettingId = $("#txtFinanceInvoiceTemplateSettingId").val();
 			var selectedRadio = $('input[name="selectedRadio"]:checked').val();
 				var items2 = [];
 				$('#FinanceInvoiceTemplateSettingUpdate input[type="radio"]').each(function() {
 					var id = $(this).val();
-					var name = $(this).parents('label').text();
+					var name = $(this).parents('label').find('img').attr("src");//$(this).parents('label').text();
 					var isSelected = $(this).is(':checked');
 					items2.push({ Id: id, ImageURL: name, IsSelected: isSelected }); });
+
+					formData.append("Id", txtSettingId);
 					var jsonDataInvoiceTemplate = JSON.stringify(items2);
 					formData.append('jsonData', jsonDataInvoiceTemplate);
 
 			$.ajax({
 				url: '@Url.Action("FinanceInvoiceTemplateSettingUpdate", "Finance")',
 				type: 'POST',
-				data: { jsonData: jsonDataInvoiceTemplate },
+				data: { jsonData: jsonDataInvoiceTemplate, Id: txtSettingId},
 				success: function(response) {
-					if (response.success) {
-						alert('Data saved successfully!');
-					}
+						 if (response.success) {
+							 swalWithBootstrapButtons.fire({ title: "Updated!",
+		 text: "Updated successfully!",
+		 icon: "success",
+			  allowOutsideClick: false}).then(okay => {
+		   if (okay) {
+			location.reload();
+		  }
+		});
+				 }
+				 else{
+					 swalWithBootstrapButtons.fire({
+				 title: "Error Occured",
+				 text: "Error Occured while Data updation",
+				 icon: "error",
+					allowOutsideClick: false
+				 });
+				 }
 				}
 			});
 		});

@@ -20,31 +20,33 @@
 			<div class="text-center">
 				<h4 class="text-muted">Invoice</h4>
 			</div>
+			<input type="hidden" value="@Model.Id" id="txtFinancePrefixSettingId" />
+
 			<div class="card" style="box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;">
 				<div class="card-body">
 					<div class="row mt-2">
 						<span>Invoice Prefix<span class="f-14 ms-1 text-danger">*</span></span>
 					</div>
 					<div class="row mt-2">
-						<input value="INV" type="text" placeholder="Enter Invoice Prefix" class="form-control" name="invoiceNoPrefix" id="txtInvoiceNoPrefix" />
+						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Prefix" type="text" placeholder="Enter Invoice Prefix" class="form-control" name="invoiceNoPrefix" id="txtInvoiceNoPrefix" />
 					</div>
 					<div class="row mt-4">
 						Invoice Number Separator
 					</div>
 					<div class="row mt-2">
-						<input value="#" type="text" placeholder="Invoice Number Seperator" class="form-control" name="invoiceNoNoSeperator" id="txtInvoiceNoNoSeperator" />
+						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Seperator" type="text" placeholder="Invoice Number Seperator" class="form-control" name="invoiceNoSeperator" id="txtInvoiceNoSeperator" />
 					</div>
 					<div class="row mt-4">
 						Invoice Number Digits
 					</div>
 					<div class="row mt-2">
-						<input value="2" type="number" placeholder="Invoice Number Digits" class="form-control" name="invoiceNoNoDigits" id="txtInvoiceNoNoDigits" />
+						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Digits" type="number" placeholder="Invoice Number Digits" class="form-control" name="invoiceNoDigits" id="txtInvoiceNoDigits" />
 					</div>
 					<div class="row mt-4">
 						Invoice Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="INV#01" type="text" placeholder="" class="form-control font-spacing-bold" name="invoiceNoNoExample" id="txtInvoiceNoNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="invoiceNoExample" id="txtInvoiceNoExample" disabled="disabled" />
 					</div>
 				</div>
 			</div>
@@ -59,25 +61,25 @@
 						<span>Credit Note Prefix<span class="f-14 ms-1 text-danger">*</span></span>
 					</div>
 					<div class="row mt-2">
-						<input value="CRD" type="text" placeholder="Enter Credit Note Prefix" class="form-control" name="creditNotePrefix" id="txtCreditNotePrefix" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Prefix" type="text" placeholder="Enter Credit Note Prefix" class="form-control" name="creditNotePrefix" id="txtCreditNotePrefix" />
 					</div>
 					<div class="row mt-4">
 						Credit Note Number Separator
 					</div>
 					<div class="row mt-2">
-						<input value="#" type="text" placeholder="Credit Note Number Separator" class="form-control" name="creditNoteNoSeperator" id="txtCreditNoteNoSeperator" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Seperator" type="text" placeholder="Credit Note Number Separator" class="form-control" name="creditNoteNoSeperator" id="txtCreditNoteNoSeperator" />
 					</div>
 					<div class="row mt-4">
 						Credit Note Digits
 					</div>
 					<div class="row mt-2">
-						<input value="2" type="number" placeholder="Credit Note Digits" class="form-control" name="creditNoteNoDigits" id="txtCreditNoteNoDigits" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Digits" type="number" placeholder="Credit Note Digits" class="form-control" name="creditNoteNoDigits" id="txtCreditNoteNoDigits" />
 					</div>
 					<div class="row mt-4">
 						Credit Note Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="CRD#01" type="text" placeholder="" class="form-control font-spacing-bold" name="creditNoteNoExample" id="txtCreditNoteNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Prefix" type="text" placeholder="" class="form-control font-spacing-bold" name="creditNoteNoExample" id="txtCreditNoteNoExample" disabled="disabled" />
 					</div>
 				</div>
 			</div>
@@ -92,25 +94,25 @@
 						<span>Estimation Prefix<span class="f-14 ms-1 text-danger">*</span></span>
 					</div>
 					<div class="row mt-2">
-						<input value="EST" type="text" placeholder="Estimate Prefix" class="form-control" name="estimatePrefix" id="txtEstimatePrefix" />
+						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Prefix" type="text" placeholder="Estimate Prefix" class="form-control" name="estimatePrefix" id="txtEstimatePrefix" />
 					</div>
 					<div class="row mt-4">
 						Estimation Number Separator
 					</div>
 					<div class="row mt-2">
-						<input value="#" type="text" placeholder="Estimate Number Separator" class="form-control" name="estimateNoSeperator" id="txtEstimateNoSeperator" />
+						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Seperator" type="text" placeholder="Estimate Number Separator" class="form-control" name="estimateNoSeperator" id="txtEstimateNoSeperator" />
 					</div>
 					<div class="row mt-4">
 						Estimation Number Digits
 					</div>
 					<div class="row mt-2">
-						<input value="2" type="number" placeholder="Estimate Number Digits" class="form-control" name="estimateNoDigits" id="txtEstimateNoDigits" />
+						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Digits" type="number" placeholder="Estimate Number Digits" class="form-control" name="estimateNoDigits" id="txtEstimateNoDigits" />
 					</div>
 					<div class="row mt-4">
 						Estimation Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="EST#01" type="text" placeholder="" class="form-control font-spacing-bold" name="estimateNoExample" id="txtEstimateNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="estimateNoExample" id="txtEstimateNoExample" disabled="disabled" />
 					</div>
 				</div>
 			</div>
@@ -125,32 +127,248 @@
 						<span>Order Prefix<span class="f-14 ms-1 text-danger">*</span></span>
 					</div>
 					<div class="row mt-2">
-						<input value="ORD" type="text" placeholder="Order Prefix" class="form-control" name="orderPrefix" id="txtOrderPrefix" />
+						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Prefix" type="text" placeholder="Order Prefix" class="form-control" name="orderPrefix" id="txtOrderPrefix" />
 					</div>
 					<div class="row mt-4">
 						Order Number Separator
 					</div>
 					<div class="row mt-2">
-						<input value="#" type="text" placeholder="Order Number Separator" class="form-control" name="ordNoSeperator" id="txtOrdNoSeperator" />
+						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Seperator" type="text" placeholder="Order Number Separator" class="form-control" name="ordNoSeperator" id="txtOrdNoSeperator" />
 					</div>
 					<div class="row mt-4">
 						Order Number Digits
 					</div>
 					<div class="row mt-2">
-						<input value="2" type="number" placeholder="Order Number Digits" class="form-control" name="ordNoDigits" id="txtOrdNoDigits" />
+						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Digits" type="number" placeholder="Order Number Digits" class="form-control" name="ordNoDigits" id="txtOrdNoDigits" />
 					</div>
 					<div class="row mt-4">
 						Order Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="ORD#01" type="text" placeholder="" class="form-control font-spacing-bold" name="ordNoExample" id="txtOrdNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="ordNoExample" id="txtOrdNoExample" disabled="disabled" />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<button type="button" class="btn btn-de-primary mt-2 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+<button type="button" onclick="updateFinancePrefix()" class="btn btn-de-primary mt-2 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
 
 
+<script>
+		function updateFinancePrefix() {
+			const swalWithBootstrapButtons = Swal.mixin({
+			  customClass: {
+				 confirmButton: "btn btn-de-primary",
+				 cancelButton: "btn btn-de-danger me-2"
+			  },
+			  buttonsStyling: false
+		   });
 
+		var FPInvoiceVM = {
+			Id: 1,
+			Prefix: $('#txtInvoiceNoPrefix').val(),
+			Seperator: $('#txtInvoiceNoSeperator').val(),
+			Digits: $('#txtInvoiceNoDigits').val(),
+			Example: $('#txtInvoiceNoExample').val()
+		};
+		var FPCreditNoteVM = {
+			Id: 1,
+			Prefix: $('#txtCreditNotePrefix').val(),
+			Seperator: $('#txtCreditNoteNoSeperator').val(),
+			Digits: $('#txtCreditNoteNoDigits').val(),
+			Example: $('#txtCreditNoteNoExample').val()
+		};
+		var FPEstimationVM = {
+			Id: 1,
+			Prefix: $('#txtEstimatePrefix').val(),
+			Seperator: $('#txtEstimateNoSeperator').val(),
+			Digits: $('#txtEstimateNoDigits').val(),
+			Example: $('#txtEstimateNoExample').val()
+		};
+		var FPOrderVM = {
+			Id: 1,
+			Prefix: $('#txtOrderPrefix').val(),
+			Seperator: $('#txtOrdNoSeperator').val(),
+			Digits: $('#txtOrdNoDigits').val(),
+			Example: $('#txtOrdNoExample').val()
+		};
+
+		var FICBPrefixSettingVM = {
+			FPInvoiceVM: FPInvoiceVM,
+			FPCreditNoteVM: FPCreditNoteVM,
+			FPEstimationVM: FPEstimationVM,
+			FPOrderVM: FPOrderVM
+		};
+		var FinancePrefixSettingVM = {
+			Id: $('#txtFinancePrefixSettingId').val(),
+			FICBPrefixJsonSettings: JSON.stringify(FICBPrefixSettingVM),
+			FICBPrefixSettingVM: FICBPrefixSettingVM
+		};
+
+		// var prefixSettingId = $('#txtFinancePrefixSettingId').val();
+
+		$.ajax({
+				url: '@Url.Action("FinancePrefixSettingUpdate", "Finance")',
+				type: 'POST',
+				data: FinancePrefixSettingVM,
+				// processData: false,
+				// contentType: false,
+				success: function(response) {
+						 if (response.success) {
+							 swalWithBootstrapButtons.fire({ title: "Updated!",
+		 text: "Updated successfully!",
+		 icon: "success",
+			  allowOutsideClick: false}).then(okay => {
+		   if (okay) {
+			location.reload();
+		  }
+		});
+
+				 }
+				 else{
+					 swalWithBootstrapButtons.fire({
+				 title: "Error Occured",
+				 text: "Error Occured while Data updation",
+				 icon: "error",
+					allowOutsideClick: false
+				 });
+				 }
+				}
+			});
+	}
+</script>
+<script>
+	$.event.special.inputchange = {
+			setup: function() {
+				var self = this, val;
+				$.data(this, 'timer', window.setInterval(function() {
+					val = self.value;
+					if ( $.data( self, 'cache') != val ) {
+						$.data( self, 'cache', val );
+						$( self ).trigger( 'inputchange' );
+					}
+				}, 20));
+			},
+			teardown: function() {
+				window.clearInterval( $.data(this, 'timer') );
+			},
+			add: function() {
+				$.data(this, 'cache', this.value);
+			}
+		};
+
+		$('#txtInvoiceNoPrefix').on('inputchange', function() {
+				   var prefix = $("#txtInvoiceNoPrefix").val();
+					var seperator = $("#txtInvoiceNoNoSeperator").val();
+					var digits = $("#txtInvoiceNoNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtInvoiceNoNoExample").val(result);
+		});
+		$('#txtInvoiceNoNoSeperator').on('inputchange', function() {
+				   var prefix = $("#txtInvoiceNoPrefix").val();
+					var seperator = $("#txtInvoiceNoNoSeperator").val();
+					var digits = $("#txtInvoiceNoNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtInvoiceNoNoExample").val(result);
+		});
+		$('#txtInvoiceNoNoDigits').on('inputchange', function() {
+				   var prefix = $("#txtInvoiceNoPrefix").val();
+					var seperator = $("#txtInvoiceNoNoSeperator").val();
+					var digits = $("#txtInvoiceNoNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtInvoiceNoNoExample").val(result);
+		});
+
+
+		$('#txtCreditNotePrefix').on('inputchange', function() {
+				   var prefix = $("#txtCreditNotePrefix").val();
+					var seperator = $("#txtCreditNoteNoSeperator").val();
+					var digits = $("#txtCreditNoteNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtCreditNoteNoExample").val(result);
+		});
+		$('#txtCreditNoteNoSeperator').on('inputchange', function() {
+				   var prefix = $("#txtCreditNotePrefix").val();
+					var seperator = $("#txtCreditNoteNoSeperator").val();
+					var digits = $("#txtCreditNoteNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtCreditNoteNoExample").val(result);
+		});
+		$('#txtCreditNoteNoDigits').on('inputchange', function() {
+				   var prefix = $("#txtCreditNotePrefix").val();
+					var seperator = $("#txtCreditNoteNoSeperator").val();
+					var digits = $("#txtCreditNoteNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtCreditNoteNoExample").val(result);
+		});
+
+
+		$('#txtEstimatePrefix').on('inputchange', function() {
+				   var prefix = $("#txtEstimatePrefix").val();
+					var seperator = $("#txtEstimateNoSeperator").val();
+					var digits = $("#txtEstimateNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtEstimateNoExample").val(result);
+		});
+		$('#txtEstimateNoSeperator').on('inputchange', function() {
+				   var prefix = $("#txtEstimatePrefix").val();
+					var seperator = $("#txtEstimateNoSeperator").val();
+					var digits = $("#txtEstimateNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtEstimateNoExample").val(result);
+		});
+		$('#txtEstimateNoDigits').on('inputchange', function() {
+				   var prefix = $("#txtEstimatePrefix").val();
+					var seperator = $("#txtEstimateNoSeperator").val();
+					var digits = $("#txtEstimateNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtEstimateNoExample").val(result);
+		});
+
+		$('#txtOrderPrefix').on('inputchange', function() {
+				   var prefix = $("#txtOrderPrefix").val();
+					var seperator = $("#txtOrdNoSeperator").val();
+					var digits = $("#txtOrdNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtOrdNoExample").val(result);
+		});
+		$('#txtOrdNoSeperator').on('inputchange', function() {
+				   var prefix = $("#txtOrderPrefix").val();
+					var seperator = $("#txtOrdNoSeperator").val();
+					var digits = $("#txtOrdNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtOrdNoExample").val(result);
+		});
+		$('#txtOrdNoDigits').on('inputchange', function() {
+				   var prefix = $("#txtOrderPrefix").val();
+					var seperator = $("#txtOrdNoSeperator").val();
+					var digits = $("#txtOrdNoDigits").val();
+					var n = "1"; if(digits == "" || digits == "0"){n = "";}
+					digits = n.padStart(digits, '0');
+					var result = prefix + seperator + digits;
+					$("#txtOrdNoExample").val(result);
+		});
+</script>

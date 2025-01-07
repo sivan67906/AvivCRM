@@ -2,7 +2,7 @@ namespace AvivCRM.UI.Areas.Environment.ViewModels;
 
 public class FinanceInvoiceTemplateSettingVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? FIRBTemplateJsonSettings { get; set; }
     public List<FIRBTemplateSettingVM>? FIRBTemplateSettings { get; set; }
 }

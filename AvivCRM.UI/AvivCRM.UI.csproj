@@ -12,6 +12,7 @@
     <Folder Include="Areas\Environment\Data\" />
     <Folder Include="Areas\Environment\Models\" />
     <Folder Include="Areas\Environment\Views\Shared\" />
+    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\matrica\assets\libs\chart.js\docs\" />
     <Folder Include="wwwroot\matrica\assets\libs\code-prettify\src\" />
     <Folder Include="wwwroot\matrica\assets\libs\gmaps\docs\" />

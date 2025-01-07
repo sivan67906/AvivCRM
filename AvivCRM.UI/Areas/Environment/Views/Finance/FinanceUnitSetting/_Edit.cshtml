@@ -10,22 +10,20 @@
 		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	</div>
 	<div class="modal-body">
-		<form action="Update">
-			<input id="txtId" type="hidden" name="Id" value="@Model.Id" />
+		<form asp-action="UpdateProjectStatus" id="UpdateProjectStatus" data-url="Edit" method="post">
+			<input id="txtFinanceUnitSettingId" type="hidden" name="Id" value="@Model.Id" />
 			<div class="row mt-3 mb-2">
 				<div class="col-lg-12">Unit Type <span class="text-danger">*</span></div>
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
-					<input id="txtUnitType" type="text" class="form-control" name="FUnitName" placeholder="enter UnitName" value="@Model.FUnitName">
-					
-					@* <input type="text" placeholder="" value="Pcs" class="form-control" id=""> *@
+					<input asp-for="@Model.FUnitName" class="form-control" name="FUnitName" type="text" id="txtFUnitName" />
 				</div>
 			</div>
 			<div class="row mt-2 text-end ">
 				<div class="col-lg-12 mt-4">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="button" class="btn btn-sm btn-de-primary"><i class="mdi mdi-check-all me-2"></i>Update</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
 				</div>
 			</div>
 		</form>
