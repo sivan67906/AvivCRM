@@ -11,7 +11,7 @@
 			<div class="card-body">
 				<div class="container">
 					<div class="row">
-						@for (var i = 0; i < Model.CBTimeLogSettings.Count; i++)
+						@for (var i = 0; i < Model.CBTimeLogSettings!.Count; i++)
 						{
 							<div class="col-lg-6 g-2">
 								<div class="mb-3 text-start">
@@ -73,7 +73,7 @@
 											Choose roles for email report
 											<span class="f-14 mr-1 text-danger">*</span>
 										</label>
-										<select class="form-select" name="RoleId" asp-for="@Model.RoleDDSettings.SelectedRoleId" asp-items="@(new SelectList (Model.RoleDDSettings.roleItems, "Id", "Name"))">
+										<select class="form-select" name="RoleId" asp-for="@Model.RoleDDSettings!.SelectedRoleId" asp-items="@(new SelectList (Model.RoleDDSettings!.roleItems, "Id", "Name"))">
 										<option value="">--</option>
 										</select>
 									</div>
@@ -108,6 +108,15 @@
 
 			$(document).ready(function() {
 			$('#btnTimeLogUpdate').click(function() {
+
+				const swalWithBootstrapButtons = Swal.mixin({
+			  customClass: {
+				 confirmButton: "btn btn-de-primary",
+				 cancelButton: "btn btn-de-danger me-2"
+			  },
+			  buttonsStyling: false
+		   });
+
 				var formData = new FormData($('#TimeLogUpdate')[0]);
 
 				var IsTimeTrackerReminderEnabled = $('input[name="IsTimeTrackerReminderEnabled"]').is(":checked");
@@ -145,10 +154,25 @@
 					processData: false,
 					contentType: false,
 					success: function(response) {
-						if (response.success) {
-							alert('Data saved successfully!');
-						}
-					}
+						 if (response.success) {
+							 swalWithBootstrapButtons.fire({ title: "Updated!",
+		 text: "Updated successfully!",
+		 icon: "success",
+			  allowOutsideClick: false}).then(okay => {
+		   if (okay) {
+			location.reload();
+		  }
+		});
+				 }
+				 else{
+					 swalWithBootstrapButtons.fire({
+				 title: "Error Occured",
+				 text: "Error Occured while Data updation",
+				 icon: "error",
+					allowOutsideClick: false
+				 });
+				 }
+				}
 				});
 			});
 		});

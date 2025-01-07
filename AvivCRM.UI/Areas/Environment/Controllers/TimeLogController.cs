@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using AvivCRM.UI.Areas.Configuration.ViewModels;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
@@ -29,14 +29,27 @@ public class TimeLogController : Controller
 
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        var timeLogs = await client.GetFromJsonAsync<List<TimeLogVM>>("TimeLog/GetAll");
-        var timeLog = timeLogs?.FirstOrDefault();
+        var timeLogs = await client.GetFromJsonAsync<ApiResultResponse<List<TimeLogVM>>>("TimeLog/all-timelog");
+        var timeLog = timeLogs!.Data!.FirstOrDefault();
 
-        var cbTimeLogItems = timeLog != null ? JsonConvert.DeserializeObject<List<CBTimeLogSettingVM>>(timeLog.CBTimeLogJsonSettings) : new List<CBTimeLogSettingVM>();
+        var cbTimeLogItems = timeLog != null ? JsonConvert.DeserializeObject<List<CBTimeLogSettingVM>>(timeLog.CBTimeLogJsonSettings!) : new List<CBTimeLogSettingVM>();
         timeLog!.CBTimeLogSettings = cbTimeLogItems;
 
-        var roleList = await client.GetFromJsonAsync<List<RoleVM>>("Role/GetAll");
-        var role = await client.GetFromJsonAsync<RoleVM>("Role/GetById/?Id=" + timeLog?.RoleId);
+        //var roleList = await client.GetFromJsonAsync<List<RoleVM>>("Role/all-role");
+        //var role = await client.GetFromJsonAsync<RoleVM>("Role/byid-role/?Id=" + timeLog?.RoleId);
+
+        var roleList = new List<RoleVM> {
+            new RoleVM { Id = new Guid("EDC3C550-82A3-4DC6-8842-F29351BB4BD8"), Code="ADM", Name="App Administrator"},
+            new RoleVM { Id = Guid.Parse("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), Code="EMP", Name="Employee"},
+            new RoleVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), Code="MEM", Name="Membership"}
+        };
+
+        var role = new RoleVM
+        {
+            Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"),
+            Code = "ADM",
+            Name = "App Administrator"
+        };
 
         var roleDDValue = new RoleDDSetting
         {
@@ -48,6 +61,7 @@ public class TimeLogController : Controller
                 Name = i.Name
             }).ToList()
         };
+
         timeLog!.RoleDDSettings = roleDDValue;
         return View(timeLog);
     }
@@ -55,11 +69,38 @@ public class TimeLogController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateTimeLog(TimeLogVM timeLog, string jsonData)
     {
-        if (timeLog.Id == 0) return View();
+        //if (timeLog.Id == 0) return View();
+        ApiResultResponse<ProjectSettingVM> result = new();
+
         timeLog.CBTimeLogJsonSettings = jsonData;
         var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PutAsJsonAsync("TimeLog/Update/", timeLog);
-        return Redirect("TimeLog");
+        //await client.PutAsJsonAsync("TimeLog/update-timelog/", timeLog);
+        //return Redirect("TimeLog");
+        var responseTimeLog = await client.PutAsJsonAsync("TimeLog/update-timelog/", timeLog);
+        if (responseTimeLog.IsSuccessStatusCode)
+        {
+            var jsonResponseLeadSource = await responseTimeLog.Content.ReadAsStringAsync();
+            result = JsonConvert.DeserializeObject<ApiResultResponse<ProjectSettingVM>>(jsonResponseLeadSource);
+        }
+        else
+        {
+            var errorContent = await responseTimeLog.Content.ReadAsStringAsync();
+            result = new ApiResultResponse<ProjectSettingVM>
+            {
+                IsSuccess = false,
+                Message = responseTimeLog.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
+        }
+
+        // Server side Validation
+        List<string> serverErrorMessageList = new List<string>();
+        string serverErrorMessage = result!.Message!.ToString();
+        serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!result!.IsSuccess)
+            return Json(new { success = false, errors = serverErrorMessageList });
+        else
+            return Json(new { success = true });
     }
 }
 

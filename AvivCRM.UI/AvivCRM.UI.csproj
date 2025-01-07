@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Configuration\Views\Role\**" />
+    <Content Remove="Areas\Configuration\Views\Role\**" />
+    <EmbeddedResource Remove="Areas\Configuration\Views\Role\**" />
+    <None Remove="Areas\Configuration\Views\Role\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Configuration\Controllers\RoleController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\Configuration\Data\" />
     <Folder Include="Areas\Configuration\Models\" />
     <Folder Include="Areas\Environment\Data\" />

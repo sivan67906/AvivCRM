@@ -56,7 +56,7 @@
 
 								<form id="CommonNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.CommonNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.CommonNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -79,7 +79,7 @@
 								</div>
 								<form id="LeaveNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.LeaveNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.LeaveNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -101,7 +101,7 @@
 								</div>
 								<form id="ProposalNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.ProposalNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.ProposalNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -123,7 +123,7 @@
 								</div>
 								<form id="InvoiceNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.InvoiceNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.InvoiceNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -145,7 +145,7 @@
 								</div>
 								<form id="PaymentNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.PaymentNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.PaymentNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -167,7 +167,7 @@
 								</div>
 								<form id="TaskNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.TaskNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.TaskNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -189,7 +189,7 @@
 								</div>
 								<form id="TicketNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.TicketNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.TicketNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -211,7 +211,7 @@
 								</div>
 								<form id="ProjectNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.ProjectNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.ProjectNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -233,7 +233,7 @@
 								</div>
 								<form id="ReminderNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.ReminderNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.ReminderNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -255,7 +255,7 @@
 								</div>
 								<form id="RequestNotificationMainsUpdate">
 									<div class="row">
-										@for (var i = 0; i < Model.RequestNotificationMains.Count; i++)
+										@for (var i = 0; i < Model.RequestNotificationMains!.Count; i++)
 										{
 											<div class="col-lg-4">
 												<div class="form-check custom-control custom-checkbox mt-2">
@@ -375,7 +375,8 @@
 					// processData: false,
 					// contentType: false,
 					success: function(response) {
-						 swalWithBootstrapButtons.fire({ title: "Updated!",
+						 if (response.success) {
+							 swalWithBootstrapButtons.fire({ title: "Updated!",
 		 text: "Updated successfully!",
 		 icon: "success",
 			  allowOutsideClick: false}).then(okay => {
@@ -383,7 +384,16 @@
 			location.reload();
 		  }
 		});
-					}
+				 }
+				 else{
+					 swalWithBootstrapButtons.fire({
+				 title: "Error Occured",
+				 text: "Error Occured while Data updation",
+				 icon: "error",
+					allowOutsideClick: false
+				 });
+				 }
+				}
 				});
 			});
 		});

@@ -2,7 +2,7 @@ namespace AvivCRM.UI.Areas.Environment.ViewModels;
 
 public class NotificationMainVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? CommonNotificationMainJson { get; set; }
     public string? LeaveNotificationMainJson { get; set; }
     public string? ProposalNotificationMainJson { get; set; }
