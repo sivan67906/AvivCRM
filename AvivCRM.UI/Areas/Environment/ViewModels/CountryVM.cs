@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class CountryVM
 {
     public int Id { get; set; }
@@ -9,6 +8,3 @@ public class CountryVM
     public DateTime? UpdatedDate { get; set; }
     public bool IsActive { get; set; }
 }
-
-
-

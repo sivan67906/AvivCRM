@@ -13,10 +13,12 @@ public class TimeLogController : Controller
     {
         _httpClientFactory = httpClientFactory;
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
     }
+
     public async Task<IActionResult> TimeLog()
     {
         // Page Title
@@ -27,39 +29,40 @@ public class TimeLogController : Controller
         ViewData["bParent"] = "TimeLog";
         ViewData["bChild"] = "TimeLog";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        var timeLogs = await client.GetFromJsonAsync<ApiResultResponse<List<TimeLogVM>>>("TimeLog/all-timelog");
-        var timeLog = timeLogs!.Data!.FirstOrDefault();
+        ApiResultResponse<List<TimeLogVM>>? timeLogs =
+            await client.GetFromJsonAsync<ApiResultResponse<List<TimeLogVM>>>("TimeLog/all-timelog");
+        TimeLogVM? timeLog = timeLogs!.Data!.FirstOrDefault();
 
-        var cbTimeLogItems = timeLog != null ? JsonConvert.DeserializeObject<List<CBTimeLogSettingVM>>(timeLog.CBTimeLogJsonSettings!) : new List<CBTimeLogSettingVM>();
+        List<CBTimeLogSettingVM>? cbTimeLogItems = timeLog != null
+            ? JsonConvert.DeserializeObject<List<CBTimeLogSettingVM>>(timeLog.CBTimeLogJsonSettings!)
+            : new List<CBTimeLogSettingVM>();
         timeLog!.CBTimeLogSettings = cbTimeLogItems;
 
         //var roleList = await client.GetFromJsonAsync<List<RoleVM>>("Role/all-role");
         //var role = await client.GetFromJsonAsync<RoleVM>("Role/byid-role/?Id=" + timeLog?.RoleId);
 
-        var roleList = new List<RoleVM> {
-            new RoleVM { Id = new Guid("EDC3C550-82A3-4DC6-8842-F29351BB4BD8"), Code="ADM", Name="App Administrator"},
-            new RoleVM { Id = Guid.Parse("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), Code="EMP", Name="Employee"},
-            new RoleVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), Code="MEM", Name="Membership"}
-        };
-
-        var role = new RoleVM
+        List<RoleVM>? roleList = new()
         {
-            Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"),
-            Code = "ADM",
-            Name = "App Administrator"
+            new RoleVM
+            {
+                Id = new Guid("EDC3C550-82A3-4DC6-8842-F29351BB4BD8"), Code = "ADM", Name = "App Administrator"
+            },
+            new RoleVM { Id = Guid.Parse("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), Code = "EMP", Name = "Employee" },
+            new RoleVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), Code = "MEM", Name = "Membership" }
         };
 
-        var roleDDValue = new RoleDDSetting
+        RoleVM? role = new()
+        {
+            Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), Code = "ADM", Name = "App Administrator"
+        };
+
+        RoleDDSetting? roleDDValue = new()
         {
             role = role,
             SelectedRoleId = role!.Id,
-            roleItems = roleList?.Select(i => new RoleVM
-            {
-                Id = i.Id,
-                Name = i.Name
-            }).ToList()
+            roleItems = roleList?.Select(i => new RoleVM { Id = i.Id, Name = i.Name }).ToList()
         };
 
         timeLog!.RoleDDSettings = roleDDValue;
@@ -73,18 +76,18 @@ public class TimeLogController : Controller
         ApiResultResponse<ProjectSettingVM> result = new();
 
         timeLog.CBTimeLogJsonSettings = jsonData;
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         //await client.PutAsJsonAsync("TimeLog/update-timelog/", timeLog);
         //return Redirect("TimeLog");
-        var responseTimeLog = await client.PutAsJsonAsync("TimeLog/update-timelog/", timeLog);
+        HttpResponseMessage? responseTimeLog = await client.PutAsJsonAsync("TimeLog/update-timelog/", timeLog);
         if (responseTimeLog.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseTimeLog.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseTimeLog.Content.ReadAsStringAsync();
             result = JsonConvert.DeserializeObject<ApiResultResponse<ProjectSettingVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseTimeLog.Content.ReadAsStringAsync();
+            string? errorContent = await responseTimeLog.Content.ReadAsStringAsync();
             result = new ApiResultResponse<ProjectSettingVM>
             {
                 IsSuccess = false,
@@ -93,16 +96,15 @@ public class TimeLogController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
-        string serverErrorMessage = result!.Message!.ToString();
+        List<string> serverErrorMessageList = new();
+        string serverErrorMessage = result!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
         if (!result!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 }
-
-
-

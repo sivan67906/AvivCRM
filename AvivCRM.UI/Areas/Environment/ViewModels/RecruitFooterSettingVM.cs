@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class RecruitFooterSettingVM
 {
     public int Id { get; set; }
@@ -9,6 +8,3 @@ public class RecruitFooterSettingVM
     public string? FooterStatusName { get; set; }
     public string? FooterDescription { get; set; }
 }
-
-
-

@@ -69,13 +69,12 @@
 				</div>
 				<div class="col-lg-4">
 					@Html.DropDownListFor(c => c.CountryId,
-											new SelectList(ViewBag.CountryList, "Id", "Name"),
-											"--", new
-											{
-												@class = "form-control"
-											,
-												onchange = "loadState(this)"
-											})
+						new SelectList(ViewBag.CountryList, "Id", "Name"),
+						"--", new
+						{
+							@class = "form-control",
+							onchange = "loadState(this)"
+						})
 				</div>
 				<div class="col-lg-4">
 					<select class="form-control" name="StateId" id="StateId" onchange="loadCity(this)">
@@ -132,6 +131,3 @@
 
 <script type="text/javascript">
 </script>
-
-
-

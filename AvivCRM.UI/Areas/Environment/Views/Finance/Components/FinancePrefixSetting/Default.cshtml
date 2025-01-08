@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model FinancePrefixSettingVM
+@model AvivCRM.UI.Areas.Environment.ViewModels.FinancePrefixSettingVM
 
 <div class="modal fade" id="mdlProjectStatusShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
@@ -12,7 +11,7 @@
 			<div class="col">
 				<h4 class="card-title">Prefix Index</h4>
 			</div><!--end col-->
-		</div>  <!--end row-->
+		</div> <!--end row-->
 	</div><!--end card-header-->
 
 	<div class="row col-lg-12 mt-2 ms-1">
@@ -20,7 +19,7 @@
 			<div class="text-center">
 				<h4 class="text-muted">Invoice</h4>
 			</div>
-			<input type="hidden" value="@Model.Id" id="txtFinancePrefixSettingId" />
+			<input type="hidden" value="@Model.Id" id="txtFinancePrefixSettingId"/>
 
 			<div class="card" style="box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;">
 				<div class="card-body">
@@ -28,25 +27,25 @@
 						<span>Invoice Prefix<span class="f-14 ms-1 text-danger">*</span></span>
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Prefix" type="text" placeholder="Enter Invoice Prefix" class="form-control" name="invoiceNoPrefix" id="txtInvoiceNoPrefix" />
+						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Prefix" type="text" placeholder="Enter Invoice Prefix" class="form-control" name="invoiceNoPrefix" id="txtInvoiceNoPrefix"/>
 					</div>
 					<div class="row mt-4">
 						Invoice Number Separator
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Seperator" type="text" placeholder="Invoice Number Seperator" class="form-control" name="invoiceNoSeperator" id="txtInvoiceNoSeperator" />
+						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Seperator" type="text" placeholder="Invoice Number Seperator" class="form-control" name="invoiceNoSeperator" id="txtInvoiceNoSeperator"/>
 					</div>
 					<div class="row mt-4">
 						Invoice Number Digits
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Digits" type="number" placeholder="Invoice Number Digits" class="form-control" name="invoiceNoDigits" id="txtInvoiceNoDigits" />
+						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM!.Digits" type="number" placeholder="Invoice Number Digits" class="form-control" name="invoiceNoDigits" id="txtInvoiceNoDigits"/>
 					</div>
 					<div class="row mt-4">
 						Invoice Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="invoiceNoExample" id="txtInvoiceNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM!.FPInvoiceVM.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="invoiceNoExample" id="txtInvoiceNoExample" disabled="disabled"/>
 					</div>
 				</div>
 			</div>
@@ -61,25 +60,25 @@
 						<span>Credit Note Prefix<span class="f-14 ms-1 text-danger">*</span></span>
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Prefix" type="text" placeholder="Enter Credit Note Prefix" class="form-control" name="creditNotePrefix" id="txtCreditNotePrefix" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Prefix" type="text" placeholder="Enter Credit Note Prefix" class="form-control" name="creditNotePrefix" id="txtCreditNotePrefix"/>
 					</div>
 					<div class="row mt-4">
 						Credit Note Number Separator
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Seperator" type="text" placeholder="Credit Note Number Separator" class="form-control" name="creditNoteNoSeperator" id="txtCreditNoteNoSeperator" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Seperator" type="text" placeholder="Credit Note Number Separator" class="form-control" name="creditNoteNoSeperator" id="txtCreditNoteNoSeperator"/>
 					</div>
 					<div class="row mt-4">
 						Credit Note Digits
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Digits" type="number" placeholder="Credit Note Digits" class="form-control" name="creditNoteNoDigits" id="txtCreditNoteNoDigits" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Digits" type="number" placeholder="Credit Note Digits" class="form-control" name="creditNoteNoDigits" id="txtCreditNoteNoDigits"/>
 					</div>
 					<div class="row mt-4">
 						Credit Note Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="creditNoteNoExample" id="txtCreditNoteNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM.FPCreditNoteVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="creditNoteNoExample" id="txtCreditNoteNoExample" disabled="disabled"/>
 					</div>
 				</div>
 			</div>
@@ -94,25 +93,25 @@
 						<span>Estimation Prefix<span class="f-14 ms-1 text-danger">*</span></span>
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Prefix" type="text" placeholder="Estimate Prefix" class="form-control" name="estimatePrefix" id="txtEstimatePrefix" />
+						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Prefix" type="text" placeholder="Estimate Prefix" class="form-control" name="estimatePrefix" id="txtEstimatePrefix"/>
 					</div>
 					<div class="row mt-4">
 						Estimation Number Separator
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Seperator" type="text" placeholder="Estimate Number Separator" class="form-control" name="estimateNoSeperator" id="txtEstimateNoSeperator" />
+						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Seperator" type="text" placeholder="Estimate Number Separator" class="form-control" name="estimateNoSeperator" id="txtEstimateNoSeperator"/>
 					</div>
 					<div class="row mt-4">
 						Estimation Number Digits
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Digits" type="number" placeholder="Estimate Number Digits" class="form-control" name="estimateNoDigits" id="txtEstimateNoDigits" />
+						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Digits" type="number" placeholder="Estimate Number Digits" class="form-control" name="estimateNoDigits" id="txtEstimateNoDigits"/>
 					</div>
 					<div class="row mt-4">
 						Estimation Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="estimateNoExample" id="txtEstimateNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM.FPEstimationVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="estimateNoExample" id="txtEstimateNoExample" disabled="disabled"/>
 					</div>
 				</div>
 			</div>
@@ -127,32 +126,34 @@
 						<span>Order Prefix<span class="f-14 ms-1 text-danger">*</span></span>
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Prefix" type="text" placeholder="Order Prefix" class="form-control" name="orderPrefix" id="txtOrderPrefix" />
+						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Prefix" type="text" placeholder="Order Prefix" class="form-control" name="orderPrefix" id="txtOrderPrefix"/>
 					</div>
 					<div class="row mt-4">
 						Order Number Separator
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Seperator" type="text" placeholder="Order Number Separator" class="form-control" name="ordNoSeperator" id="txtOrdNoSeperator" />
+						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Seperator" type="text" placeholder="Order Number Separator" class="form-control" name="ordNoSeperator" id="txtOrdNoSeperator"/>
 					</div>
 					<div class="row mt-4">
 						Order Number Digits
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Digits" type="number" placeholder="Order Number Digits" class="form-control" name="ordNoDigits" id="txtOrdNoDigits" />
+						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Digits" type="number" placeholder="Order Number Digits" class="form-control" name="ordNoDigits" id="txtOrdNoDigits"/>
 					</div>
 					<div class="row mt-4">
 						Order Number Example
 					</div>
 					<div class="row mt-2">
-						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="ordNoExample" id="txtOrdNoExample" disabled="disabled" />
+						<input value="@Model.FICBPrefixSettingVM.FPOrderVM!.Example" type="text" placeholder="" class="form-control font-spacing-bold" name="ordNoExample" id="txtOrdNoExample" disabled="disabled"/>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<button type="button" onclick="updateFinancePrefix()" class="btn btn-de-primary mt-2 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+<button type="button" onclick="updateFinancePrefix()" class="btn btn-de-primary mt-2 float-end">
+	<b><i class="mdi mdi-check-all me-2"></i>Update</b>
+</button>
 
 
 <script>

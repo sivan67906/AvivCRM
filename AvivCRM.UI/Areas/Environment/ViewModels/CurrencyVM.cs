@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class CurrencyVM
 {
     public int Id { get; set; }
@@ -14,6 +13,3 @@ public class CurrencyVM
     public string? DecimalSeparator { get; set; }
     public int NumberofDecimals { get; set; }
 }
-
-
-

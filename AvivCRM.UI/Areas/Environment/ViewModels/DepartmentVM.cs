@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class DepartmentVM
 {
     public int Id { get; set; }
@@ -13,6 +12,3 @@ public class DepartmentVM
     public DateTime? UpdatedDate { get; set; }
     public bool IsActive { get; set; } = true;
 }
-
-
-

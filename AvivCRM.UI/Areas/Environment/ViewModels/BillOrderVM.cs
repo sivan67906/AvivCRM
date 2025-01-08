@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class BillOrderVM
 {
     public int Id { get; set; }
@@ -8,6 +7,3 @@ public class BillOrderVM
     public string? BillOrderNumberDigits { get; set; }
     public string? BillOrderNumberExample { get; set; }
 }
-
-
-

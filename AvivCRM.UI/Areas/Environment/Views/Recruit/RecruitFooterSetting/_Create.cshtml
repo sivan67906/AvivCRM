@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model RecruitFooterSettingVM;
+@model AvivCRM.UI.Areas.Environment.ViewModels.RecruitFooterSettingVM;
 <style type="text/css">
 	
 </style>
@@ -20,12 +19,12 @@
 					<input id="txtRecruitFooterTitle" type="text" class="form-control" name="FooterTitle" placeholder="enter Footer Title" value="">
 					<span asp-validation-for="FooterTitle" class="text-danger"></span>
 					@* <input class="form-control" type="text" value="" id="reminderAftrMns"> *@
-					</div>
+				</div>
 				<div class="col-lg-4">
 					<input id="txtRecruitFooterSlug" type="text" class="form-control" name="FooterSlug" placeholder="enter Footer Slug" value="">
 					<span asp-validation-for="FooterSlug" class="text-danger"></span>
 					@* <input class="form-control" type="text" value="" id="reminderAftrMns"> *@
-					</div>
+				</div>
 				<div class="col-lg-4">
 					<select id="sltCheck" class="form-select" aria-label="">
 						<option value="0" selected="" value="">--</option>
@@ -62,9 +61,3 @@
 		 $('#mdlRecruitFooterSettingShow').modal({backdrop: 'static', keyboard: false});
 		});
 	</script> *@
-
-
-
-
-
-

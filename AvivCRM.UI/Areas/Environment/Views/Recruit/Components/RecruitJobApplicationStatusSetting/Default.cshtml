@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model List<RecruitJobApplicationStatusSettingVM>
+@model List<AvivCRM.UI.Areas.Environment.ViewModels.RecruitJobApplicationStatusSettingVM>
 
 <div class="modal fade" id="mdlProjectStatusShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
@@ -14,49 +13,50 @@
 			</div><!--end col-->
 			<div class="col-auto">
 				<button type="button" class="btn btn-de-primary" data-bs-toggle="modal"
-						data-animation="bounce" data-bs-target=".bs-addJobApplnStatus-modal-lg">
+				        data-animation="bounce" data-bs-target=".bs-addJobApplnStatus-modal-lg">
 					<i class="fas fa-plus me-2"></i>Add Status
 				</button>
 			</div><!--end col-->
-		</div>  <!--end row-->
+		</div> <!--end row-->
 	</div><!--end card-header-->
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table mb-0">
 				<thead class="thead-light">
-					<tr>
-						<th>#</th>
-						<th>Name</th>
-						<th>Category</th>
-						<th>Label Color</th>
-						<th>Position</th>
-						<th>Apply model actions</th>
-						<th>Action</th>
-					</tr><!--end tr-->
+				<tr>
+					<th>#</th>
+					<th>Name</th>
+					<th>Category</th>
+					<th>Label Color</th>
+					<th>Position</th>
+					<th>Apply model actions</th>
+					<th>Action</th>
+				</tr><!--end tr-->
 				</thead>
 
 				<tbody>
-					@for (var i = 0; i < Model.Count(); i++)
-					{
-						<tr>
-							<td>@(i + 1)</td>
-							<td>@Model[i].JASStatus</td>
-							<td>@Model[i].JobApplicationCategoryName</td>
-							<td>@Model[i].JASColor</td>
-							<td>@Model[i].JobApplicationPositionName</td>
-							<td>@Model[i].JASIsModelChecked</td>
-							<td>
-								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
-										data-bs-target="#mdlRecruitJobApplicationStatusSettingShow" data-url="@Url.Action($"EditRecruitJobApplicationStatusSetting/{@Model[i].Id}")">
-									<i class="las la-pen text-secondary font-16"></i>
-								</button>
-								<a id="deleteRJASS" name="Id" href="#" class="ms-2"
-								   data-target="" data-url="@Url.Action($"DeleteRecruitJobApplicationStatusSetting/{@Model[i].Id}")">
-									<i class="las la-trash-alt text-secondary font-16"></i>
-								</a>
-							</td>
-					</tr><!--end tr-->
-					}
+				@for (var i = 0; i < Model.Count(); i++)
+				{
+					<tr>
+						<td>@(i + 1)</td>
+						<td>@Model[i].JASStatus</td>
+						<td>@Model[i].JobApplicationCategoryName</td>
+						<td>@Model[i].JASColor</td>
+						<td>@Model[i].JobApplicationPositionName</td>
+						<td>@Model[i].JASIsModelChecked</td>
+						<td>
+							<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
+							        data-bs-target="#mdlRecruitJobApplicationStatusSettingShow" data-url="@Url.Action($"EditRecruitJobApplicationStatusSetting/{Model[i].Id}")">
+								<i class="las la-pen text-secondary font-16"></i>
+							</button>
+							<a id="deleteRJASS" name="Id" href="#" class="ms-2"
+							   data-target="" data-url="@Url.Action($"DeleteRecruitJobApplicationStatusSetting/{Model[i].Id}")">
+								<i class="las la-trash-alt text-secondary font-16"></i>
+							</a>
+						</td>
+					</tr>
+					<!--end tr-->
+				}
 				</tbody>
 			</table>
 		</div>
@@ -131,6 +131,3 @@
 		   }
 		});
 </script>
-
-
-

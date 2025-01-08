@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class ApplicationVM
 {
     public int Id { get; set; }
@@ -13,6 +12,3 @@ public class ApplicationVM
     public string? DatatableRowLimit { get; set; }
     public bool EmployeeCanExportData { get; set; }
 }
-
-
-

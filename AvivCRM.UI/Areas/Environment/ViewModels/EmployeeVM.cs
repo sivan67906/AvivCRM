@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class EmployeeVM
 {
     public int Id { get; set; }
@@ -23,6 +22,3 @@ public class EmployeeVM
     public string StateName { get; set; } = string.Empty;
     public string CityName { get; set; } = string.Empty;
 }
-
-
-

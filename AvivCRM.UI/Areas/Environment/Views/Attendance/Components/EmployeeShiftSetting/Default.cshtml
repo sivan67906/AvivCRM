@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model List<EmployeeShiftSettingVM>
+@model List<AvivCRM.UI.Areas.Environment.ViewModels.EmployeeShiftSettingVM>
 
 <div class="modal fade" id="mdlEmployeeShiftSettingShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
@@ -13,80 +12,86 @@
 			</div><!--end col-->
 			<div class="col-auto">
 				<button type="button" class="btn btn-de-primary" data-bs-toggle="modal" data-animation="bounce"
-						data-bs-target=".bs-addNewShift-modal-lg">
+				        data-bs-target=".bs-addNewShift-modal-lg">
 					<i class="fas fa-plus me-2"></i>Add Shift
 				</button>
 			</div><!--end col-->
-		</div>  <!--end row-->
+		</div> <!--end row-->
 	</div><!--end card-header-->
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table mb-0">
 				<thead class="thead-light">
-					<tr>
-						<th>Name</th>
-						<th>Time</th>
-						<th>Others</th>
-						<th>IsDefault</th>
-						<th>Action</th>
-					</tr><!--end tr-->
+				<tr>
+					<th>Name</th>
+					<th>Time</th>
+					<th>Others</th>
+					<th>IsDefault</th>
+					<th>Action</th>
+				</tr><!--end tr-->
 				</thead>
 
 				<tbody>
-					<tr>
-						<td>General Shift</td>
-						<td>
-							Start Time: 09:00 AM<br />
-							Half Day:<br />
-							Start Time: 06:00 PM<br />
-						</td>
-						<td>
-							Late mark after (minutes): 20<br />
-							Maximum check-in allowed in a day: 2<br />
-							Office opens on: Monday Tuesday Wednesday Thursday Friday<br />
-						</td>
-						<td>Yes</td>
-						<td>
-							<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
-							   data-bs-target=".bs-addEditShift-modal-lg"><i class="las la-pen text-secondary font-16"></i></a>
-						</td>
-					</tr><!--end tr-->
-					<tr>
-						<td>Day Shift</td>
-						<td>
-							Start Time: 07:00 AM<br />
-							Half Day:<br />
-							Start Time: 17:00 PM<br />
-						</td>
-						<td>
-							Late mark after (minutes): 20<br />
-							Maximum check-in allowed in a day: 2<br />
-							Office opens on: Monday Tuesday Wednesday Thursday Friday<br />
-						</td>
-						<td>Yes</td>
-						<td>
-							<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
-							   data-bs-target=".bs-addEditShift-modal-lg"><i class="las la-pen text-secondary font-16"></i></a>
-						</td>
-					</tr><!--end tr-->
-					<tr>
-						<td>Night Shift</td>
-						<td>
-							Start Time: 21:00 AM<br />
-							Half Day:<br />
-							Start Time: 06:00 PM<br />
-						</td>
-						<td>
-							Late mark after (minutes): 20<br />
-							Maximum check-in allowed in a day: 2<br />
-							Office opens on: Monday Tuesday Wednesday Thursday Friday<br />
-						</td>
-						<td>Yes</td>
-						<td>
-							<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
-							   data-bs-target=".bs-addEditShift-modal-lg"><i class="las la-pen text-secondary font-16"></i></a>
-						</td>
-					</tr><!--end tr-->
+				<tr>
+					<td>General Shift</td>
+					<td>
+						Start Time: 09:00 AM<br/>
+						Half Day:<br/>
+						Start Time: 06:00 PM<br/>
+					</td>
+					<td>
+						Late mark after (minutes): 20<br/>
+						Maximum check-in allowed in a day: 2<br/>
+						Office opens on: Monday Tuesday Wednesday Thursday Friday<br/>
+					</td>
+					<td>Yes</td>
+					<td>
+						<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
+						   data-bs-target=".bs-addEditShift-modal-lg">
+							<i class="las la-pen text-secondary font-16"></i>
+						</a>
+					</td>
+				</tr><!--end tr-->
+				<tr>
+					<td>Day Shift</td>
+					<td>
+						Start Time: 07:00 AM<br/>
+						Half Day:<br/>
+						Start Time: 17:00 PM<br/>
+					</td>
+					<td>
+						Late mark after (minutes): 20<br/>
+						Maximum check-in allowed in a day: 2<br/>
+						Office opens on: Monday Tuesday Wednesday Thursday Friday<br/>
+					</td>
+					<td>Yes</td>
+					<td>
+						<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
+						   data-bs-target=".bs-addEditShift-modal-lg">
+							<i class="las la-pen text-secondary font-16"></i>
+						</a>
+					</td>
+				</tr><!--end tr-->
+				<tr>
+					<td>Night Shift</td>
+					<td>
+						Start Time: 21:00 AM<br/>
+						Half Day:<br/>
+						Start Time: 06:00 PM<br/>
+					</td>
+					<td>
+						Late mark after (minutes): 20<br/>
+						Maximum check-in allowed in a day: 2<br/>
+						Office opens on: Monday Tuesday Wednesday Thursday Friday<br/>
+					</td>
+					<td>Yes</td>
+					<td>
+						<a href="#" data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal" data-animation="bounce"
+						   data-bs-target=".bs-addEditShift-modal-lg">
+							<i class="las la-pen text-secondary font-16"></i>
+						</a>
+					</td>
+				</tr><!--end tr-->
 				</tbody>
 			</table>
 		</div>
@@ -163,6 +168,3 @@
 		   }
 		});
 </script>
-
-
-

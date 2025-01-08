@@ -1,11 +1,6 @@
-namespace AvivCRM.UI.Areas.Environment.ViewModels
+namespace AvivCRM.UI.Areas.Environment.ViewModels;
+public class LeadCategoryVM
 {
-    public class LeadCategoryVM
-    {
-        public int Id { get; set; }
-        public string? CategoryName { get; set; }
-    }
+    public int Id { get; set; }
+    public string? CategoryName { get; set; }
 }
-
-
-

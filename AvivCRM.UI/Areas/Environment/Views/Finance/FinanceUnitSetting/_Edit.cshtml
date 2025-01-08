@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model FinanceUnitSettingVM;
+@model AvivCRM.UI.Areas.Environment.ViewModels.FinanceUnitSettingVM;
 
 <div class="modal-content">
 	<div class="modal-header">
@@ -7,7 +6,7 @@
 	</div>
 	<div class="modal-body">
 		<form id="UpdateFinanceUnitSetting" data-url="Edit" asp-action="UpdateFinanceUnitSetting" method="post">
-			<input id="txtId" type="hidden" name="Id" value="@Model.Id" />
+			<input id="txtId" type="hidden" name="Id" value="@Model.Id"/>
 			<div class="row mt-3">
 				<div class="col-lg-7">Name <span class="text-danger">*</span></div>
 				<div class="col-lg-5"></div>

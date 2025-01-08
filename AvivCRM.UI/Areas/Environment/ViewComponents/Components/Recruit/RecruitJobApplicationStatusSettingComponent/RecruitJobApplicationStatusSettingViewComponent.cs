@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Environment.ViewComponents.Components.Recruit.RecruitCustomQuestionSettingComponent;
-
 public class RecruitJobApplicationStatusSettingViewComponent : ViewComponent
 {
     public IViewComponentResult Invoke(List<RecruitJobApplicationStatusSettingVM> recruitJobApplicationStatusSettings)
@@ -10,16 +9,3 @@ public class RecruitJobApplicationStatusSettingViewComponent : ViewComponent
         return View(recruitJobApplicationStatusSettings);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

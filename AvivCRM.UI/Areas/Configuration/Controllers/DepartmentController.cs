@@ -6,14 +6,17 @@ namespace AvivCRM.UI.Areas.Configuration.Controllers;
 public class DepartmentController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
+
     public DepartmentController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
     }
+
     public async Task<IActionResult> Department()
     {
         // Page Title
@@ -23,9 +26,9 @@ public class DepartmentController : Controller
         ViewData["bGParent"] = "Configuration";
         ViewData["bParent"] = "Department";
         ViewData["bChild"] = "Department";
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var departmentList = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-        var Companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<DepartmentVM>? departmentList = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
+        List<CompanyVM>? Companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
         ViewBag.CompanyList = Companies;
         return View(departmentList);
     }
@@ -34,8 +37,8 @@ public class DepartmentController : Controller
     public async Task<IActionResult> Create()
     {
         DepartmentVM department = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var Companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CompanyVM>? Companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
         ViewBag.CompanyList = Companies;
         return PartialView("_Create", department);
     }
@@ -43,7 +46,7 @@ public class DepartmentController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(DepartmentVM department)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PostAsJsonAsync<DepartmentVM>("Department/Create", department);
         return RedirectToAction("Department");
     }
@@ -51,10 +54,14 @@ public class DepartmentController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var department = await client.GetFromJsonAsync<DepartmentVM>("Department/GetById/?Id=" + Id);
-        var Companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        DepartmentVM? department = await client.GetFromJsonAsync<DepartmentVM>("Department/GetById/?Id=" + Id);
+        List<CompanyVM>? Companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
         ViewBag.CompanyList = Companies;
         return PartialView("_Edit", department);
     }
@@ -62,8 +69,12 @@ public class DepartmentController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(DepartmentVM department)
     {
-        if (department.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (department.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<DepartmentVM>("Department/Update/", department);
 
         return RedirectToAction("Department");
@@ -72,10 +83,14 @@ public class DepartmentController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var department = await client.GetFromJsonAsync<DepartmentVM>("Department/GetById/?Id=" + Id);
-        var Companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        DepartmentVM? department = await client.GetFromJsonAsync<DepartmentVM>("Department/GetById/?Id=" + Id);
+        List<CompanyVM>? Companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
         ViewBag.CompanyList = Companies;
         return PartialView("_Delete", department);
     }
@@ -83,14 +98,15 @@ public class DepartmentController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(DepartmentVM department)
     {
-        if (department.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (department.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.DeleteAsync("Department/Delete?Id=" + department.Id);
         return RedirectToAction("Department");
     }
-
-
-
 
 
     //[HttpPost]
@@ -124,10 +140,4 @@ public class DepartmentController : Controller
     //        return await client.SendAsync(request);
     //    }
     //}
-
-
-
 }
-
-
-

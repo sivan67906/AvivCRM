@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class VendorCreditVM
 {
     public int Id { get; set; }
@@ -8,6 +7,3 @@ public class VendorCreditVM
     public string? VendorCreditNumberDigits { get; set; }
     public string? VendorCreditNumberExample { get; set; }
 }
-
-
-

@@ -1,16 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
 public class PaymentController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
+
     public PaymentController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
@@ -26,8 +27,8 @@ public class PaymentController : Controller
         ViewData["bParent"] = "Payment";
         ViewData["bChild"] = "Payment View";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var PaymentList = await client.GetFromJsonAsync<List<PaymentVM>>("Payment/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<PaymentVM>? PaymentList = await client.GetFromJsonAsync<List<PaymentVM>>("Payment/GetAll");
 
         return View(PaymentList);
     }
@@ -36,14 +37,14 @@ public class PaymentController : Controller
     public async Task<IActionResult> Create()
     {
         PaymentVM company = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         return PartialView("_Create", company);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(PaymentVM Payment)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PostAsJsonAsync<PaymentVM>("Payment/Create", Payment);
         return RedirectToAction("Payment");
     }
@@ -51,17 +52,25 @@ public class PaymentController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var Payment = await client.GetFromJsonAsync<PaymentVM>("Payment/GetById/?Id=" + Id);
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        PaymentVM? Payment = await client.GetFromJsonAsync<PaymentVM>("Payment/GetById/?Id=" + Id);
         return PartialView("_Edit", Payment);
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(PaymentVM Payment)
     {
-        if (Payment.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (Payment.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<PaymentVM>("Payment/Update/", Payment);
         return RedirectToAction("Payment");
     }
@@ -69,21 +78,26 @@ public class PaymentController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var Payment = await client.GetFromJsonAsync<PaymentVM>("Payment/GetById/?Id=" + Id);
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        PaymentVM? Payment = await client.GetFromJsonAsync<PaymentVM>("Payment/GetById/?Id=" + Id);
         return PartialView("_Delete", Payment);
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete(PaymentVM Payment)
     {
-        if (Payment.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (Payment.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.DeleteAsync("Payment/Delete?Id=" + Payment.Id);
         return RedirectToAction("Payment");
     }
 }
-
-
-

@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class RecruitJobApplicationStatusSettingVM
 {
     public int Id { get; set; }
@@ -11,6 +10,3 @@ public class RecruitJobApplicationStatusSettingVM
     public string? JASColor { get; set; }
     public int JASIsModelChecked { get; set; }
 }
-
-
-

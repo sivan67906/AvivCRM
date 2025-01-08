@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Configuration.ViewModels;
-
 public class BusinessLocationVM
 {
     public int Id { get; set; }
@@ -25,6 +24,3 @@ public class BusinessLocationVM
     public DateTime? UpdatedDate { get; set; }
     public bool IsActive { get; set; }
 }
-
-
-

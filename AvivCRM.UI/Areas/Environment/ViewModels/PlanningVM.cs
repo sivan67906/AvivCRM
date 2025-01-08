@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class PlanningVM
 {
     public int Id { get; set; }
@@ -14,6 +13,3 @@ public class PlanningVM
     public int Permission { get; set; }
     public string? Description { get; set; }
 }
-
-
-

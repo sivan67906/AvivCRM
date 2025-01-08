@@ -1,22 +1,23 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
 public class ContractController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
+
     public ContractController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
     }
 
-    public async Task<IActionResult> Contract(int id=0)
+    public async Task<IActionResult> Contract(int id = 0)
     {
         // Page Title
         ViewData["pTitle"] = "Contracts Profile";
@@ -26,19 +27,19 @@ public class ContractController : Controller
         ViewData["bParent"] = "Contract";
         ViewData["bChild"] = "Contract View";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+
         ContractVM contract;
 
         if (id > 0)
         {
             // Fetch the specific contract by ID
-            contract = await client.GetFromJsonAsync<ContractVM>($"Contract/GetById/?Id=" + id);
+            contract = await client.GetFromJsonAsync<ContractVM>("Contract/GetById/?Id=" + id);
         }
         else
         {
             // Fetch all contracts and take the first one
-            var contractList = await client.GetFromJsonAsync<List<ContractVM>>("Contract/GetAll");
+            List<ContractVM>? contractList = await client.GetFromJsonAsync<List<ContractVM>>("Contract/GetAll");
             contract = contractList?.FirstOrDefault();
         }
 
@@ -48,7 +49,6 @@ public class ContractController : Controller
         }
 
         return View(contract); // Pass the contract data to the view for editing
-
     }
 
 
@@ -60,10 +60,10 @@ public class ContractController : Controller
             return View(updatedContract); // Return the same view with validation errors
         }
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
         // Send the updated contract back to the API
-        var response = await client.PutAsJsonAsync("Contract/Update", updatedContract);
+        HttpResponseMessage? response = await client.PutAsJsonAsync("Contract/Update", updatedContract);
 
         if (response.IsSuccessStatusCode)
         {
@@ -74,7 +74,6 @@ public class ContractController : Controller
         ModelState.AddModelError("", "Failed to update the contract. Please try again.");
         return View(updatedContract); // Show the error on the same view
     }
-   
 
 
 //    [HttpGet]
@@ -129,6 +128,3 @@ public class ContractController : Controller
 //        return RedirectToAction("Contract");
 //    }
 }
-
-
-

@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Configuration.ViewModels;
-
 public class ConsumerVM
 {
     public int Id { get; set; }
@@ -15,6 +14,3 @@ public class ConsumerVM
     public DateTime CreatedDate { get; set; }
     public bool IsActive { get; set; } = true;
 }
-
-
-

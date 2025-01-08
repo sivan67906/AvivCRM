@@ -9,6 +9,3 @@ public class ProjectStatusesViewComponent : ViewComponent
         return View(projectStatuses);
     }
 }
-
-
-

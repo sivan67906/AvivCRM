@@ -1,6 +1,5 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model RecruitGeneralSettingVM
-<link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css" />
+@model AvivCRM.UI.Areas.Environment.ViewModels.RecruitGeneralSettingVM
+<link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css"/>
 
 @* <div class="modal fade" id="mdlProjectStatusShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
@@ -12,11 +11,11 @@
 			<div class="col">
 				<h4 class="card-title">General Index</h4>
 			</div><!--end col-->
-		</div>  <!--end row-->
+		</div> <!--end row-->
 	</div><!--end card-header-->
 	<div class="card-body">
 		<form id="RecruitGeneralSettingUpdate" enctype="multipart/form-data">
-			<input id="txtGeneralSettingId" type="hidden" name="Id" value="@Model.Id" />
+			<input id="txtGeneralSettingId" type="hidden" name="Id" value="@Model.Id"/>
 			<div class="row mt-4">
 				<div class="col-lg-4">Company Name</div>
 				<div class="col-lg-4">Company Website</div>
@@ -24,13 +23,13 @@
 			</div>
 			<div class="row mt-2">
 				<div class="col-lg-4">
-					<input id="txtGeneralCompanyName" type="text" class="form-control" name="GeneralCompanyName" 
-					placeholder="e.g. Acme Corporation" value="@Model.GeneralCompanyName">
+					<input id="txtGeneralCompanyName" type="text" class="form-control" name="GeneralCompanyName"
+					       placeholder="e.g. Acme Corporation" value="@Model.GeneralCompanyName">
 					<span asp-validation-for="GeneralCompanyName" class="text-danger"></span>
 				</div>
 				<div class="col-lg-4">
 					<input id="txtGeneralCompanyWebsite" type="text" class="form-control" name="GeneralCompanyWebsite"
-					placeholder="e.g. https://www.spacex.com/" value="@Model.GeneralCompanyWebsite">
+					       placeholder="e.g. https://www.spacex.com/" value="@Model.GeneralCompanyWebsite">
 					<span asp-validation-for="GeneralCompanyWebsite" class="text-danger"></span>
 				</div>
 				<div class="col-lg-4 form-group">
@@ -67,15 +66,15 @@
 			<div class="row">
 				@for (var i = 0; i < Model.GeneralCBSettings.Count; i++)
 				{
-				<div class="col-lg-2">
-					<div class="form-check custom-control custom-checkbox mt-4 mb-2">
-						<input type="hidden" name="GeneralCBSettings[@i].IsChecked" value="false" />
-						<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.GeneralCBSettings[i].Id" name="GeneralCBSettings[@i].IsChecked" value="true" @(Model.GeneralCBSettings[i].IsChecked ? "checked" : "") />
-						<label class="custom-control-label labelcustom" for="checkbox-@Model.GeneralCBSettings[i].Id">@Model.GeneralCBSettings[i].Name</label>
-						<input type="hidden" name="GeneralCBSettings[@i].Id" value="@Model.GeneralCBSettings[i].Id" />
-						<input type="hidden" name="GeneralCBSettings[@i].Name" value="@Model.GeneralCBSettings[i].Name" />
+					<div class="col-lg-2">
+						<div class="form-check custom-control custom-checkbox mt-4 mb-2">
+							<input type="hidden" name="GeneralCBSettings[@i].IsChecked" value="false"/>
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.GeneralCBSettings[i].Id" name="GeneralCBSettings[@i].IsChecked" value="true" @(Model.GeneralCBSettings[i].IsChecked ? "checked" : "")/>
+							<label class="custom-control-label labelcustom" for="checkbox-@Model.GeneralCBSettings[i].Id">@Model.GeneralCBSettings[i].Name</label>
+							<input type="hidden" name="GeneralCBSettings[@i].Id" value="@Model.GeneralCBSettings[i].Id"/>
+							<input type="hidden" name="GeneralCBSettings[@i].Name" value="@Model.GeneralCBSettings[i].Name"/>
+						</div>
 					</div>
-				</div>
 				}
 			</div>
 			<div class="row mt-4">
@@ -87,12 +86,12 @@
 			<div class="row mt-2">
 				<div class="col-lg-6">
 					<input id="txtGeneralDuplJobApplnRestrictDays" type="number" class="form-control" name="GeneralDuplJobApplnRestrictDays"
-						   placeholder="" value="@Model.GeneralDuplJobApplnRestrictDays">
+					       placeholder="" value="@Model.GeneralDuplJobApplnRestrictDays">
 					<span asp-validation-for="GeneralDuplJobApplnRestrictDays" class="text-danger"></span>
 				</div>
 				<div class="col-lg-6">
 					<input id="txtGeneralOLReminderToCandidate" type="number" class="form-control" name="GeneralOLReminderToCandidate"
-						   placeholder="" value="@Model.GeneralOLReminderToCandidate">
+					       placeholder="" value="@Model.GeneralOLReminderToCandidate">
 					<span asp-validation-for="GeneralOLReminderToCandidate" class="text-danger"></span>
 				</div>
 			</div>
@@ -126,12 +125,14 @@
 					</div>
 				</div>
 				<div class="row col-lg-12 mt-2">
-					<input id="txtGeneralBGColorCode" type="text" class="form-control" 
-					data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }"
-						   name="GeneralBGColorCode" placeholder="" value="@Model.GeneralBGColorCode">
+					<input id="txtGeneralBGColorCode" type="text" class="form-control"
+					       data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }"
+					       name="GeneralBGColorCode" placeholder="" value="@Model.GeneralBGColorCode">
 				</div>
 			</div>
-			<button id="updateRecruitGeneralSetting" type="button" class="btn btn-de-primary mt-2 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+			<button id="updateRecruitGeneralSetting" type="button" class="btn btn-de-primary mt-2 float-end">
+				<b><i class="mdi mdi-check-all me-2"></i>Update</b>
+			</button>
 		</form>
 	</div>
 
@@ -226,6 +227,3 @@
 			error: "Some error occurred.",
 		};
 </script>
-
-
-

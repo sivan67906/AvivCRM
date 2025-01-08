@@ -1,10 +1,9 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model TimeLogVM
+@model AvivCRM.UI.Areas.Environment.ViewModels.TimeLogVM
 
 <div class="row">
 	<div class="card">
 		<form id="TimeLogUpdate">
-			<input id="txtTimeLogId" type="hidden" name="Id" value="@Model.Id" />
+			<input id="txtTimeLogId" type="hidden" name="Id" value="@Model.Id"/>
 			<div class="card-header align-items-center">
 				<h4 class="header-title mt-2">Time Log Index</h4>
 			</div>
@@ -15,19 +14,19 @@
 						{
 							<div class="col-lg-6 g-2">
 								<div class="mb-3 text-start">
-									<input type="hidden" name="CBTimeLogSettings[@i].IsChecked" value="false" />
+									<input type="hidden" name="CBTimeLogSettings[@i].IsChecked" value="false"/>
 
 									<label class="custom-control-label labelcustom" for="checkbox-@Model.CBTimeLogSettings[i].Id">@Model.CBTimeLogSettings[i].Name</label>
 									<div class="form-check form-switch mt-2">
-										<input type="checkbox" class="form-check-input" id="checkbox-@Model.CBTimeLogSettings[i].Id" name="CBTimeLogSettings[@i].IsChecked" value="true" @(Model.CBTimeLogSettings[i].IsChecked ? "checked" : "") />
+										<input type="checkbox" class="form-check-input" id="checkbox-@Model.CBTimeLogSettings[i].Id" name="CBTimeLogSettings[@i].IsChecked" value="true" @(Model.CBTimeLogSettings[i].IsChecked ? "checked" : "")/>
 									</div>
-									<input type="hidden" name="CBTimeLogSettings[@i].Id" value="@Model.CBTimeLogSettings[i].Id" />
-									<input type="hidden" name="CBTimeLogSettings[@i].Name" value="@Model.CBTimeLogSettings[i].Name" />
+									<input type="hidden" name="CBTimeLogSettings[@i].Id" value="@Model.CBTimeLogSettings[i].Id"/>
+									<input type="hidden" name="CBTimeLogSettings[@i].Name" value="@Model.CBTimeLogSettings[i].Name"/>
 								</div>
 							</div>
 						}
 					</div>
-						<div class="row">
+					<div class="row">
 						<div class="col-lg-6 g-2">
 							<div class="row mb-3 text-start">
 								<div class="col-lg-12">
@@ -36,7 +35,7 @@
 									</label>
 									<div class="form-check form-switch mt-2 ">
 										<input id="IsTimeTrackerReminderEnabled" type="checkbox" class="form-check-input" name="IsTimeTrackerReminderEnabled" onclick="toggleTextbox('divTLTime')"
-											   placeholder="e.g. Acme Corporation" value="IsTimeTrackerReminderEnabled" @(Model.IsTimeTrackerReminderEnabled ? "checked" : "")>
+										       placeholder="e.g. Acme Corporation" value="IsTimeTrackerReminderEnabled" @(Model.IsTimeTrackerReminderEnabled ? "checked" : "")>
 										@* <span asp-validation-for="IsTimeTrackerReminderEnabled" class="text-danger"></span> *@
 									</div>
 								</div>
@@ -61,7 +60,7 @@
 									</label>
 									<div class="form-check form-switch mt-2 ">
 										<input id="IsDailyTimeLogReportEnabled" type="checkbox" class="form-check-input" name="IsDailyTimeLogReportEnabled" onclick="toggleTextbox('divTLRoles')"
-											   placeholder="e.g. Acme Corporation" value="IsDailyTimeLogReportEnabled" @(Model.IsDailyTimeLogReportEnabled ? "checked" : "")>
+										       placeholder="e.g. Acme Corporation" value="IsDailyTimeLogReportEnabled" @(Model.IsDailyTimeLogReportEnabled ? "checked" : "")>
 										@* <span asp-validation-for="IsDailyTimeLogReportEnabled" class="text-danger"></span> *@
 									</div>
 								</div>
@@ -73,8 +72,8 @@
 											Choose roles for email report
 											<span class="f-14 mr-1 text-danger">*</span>
 										</label>
-										<select class="form-select" name="RoleId" asp-for="@Model.RoleDDSettings!.SelectedRoleId" asp-items="@(new SelectList (Model.RoleDDSettings!.roleItems, "Id", "Name"))">
-										<option value="">--</option>
+										<select class="form-select" name="RoleId" asp-for="@Model.RoleDDSettings!.SelectedRoleId" asp-items="@(new SelectList(Model.RoleDDSettings!.roleItems, "Id", "Name"))">
+											<option value="">--</option>
 										</select>
 									</div>
 								</div>
@@ -177,7 +176,4 @@
 			});
 		});
 	</script>
-}   
-
-
-
+}

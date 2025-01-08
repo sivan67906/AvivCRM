@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model List<ProjectStatusVM>
+@model List<AvivCRM.UI.Areas.Environment.ViewModels.ProjectStatusVM>
 
 <div class="modal fade" id="mdlProjectStatusShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
@@ -15,71 +14,75 @@
 				</div>
 				<div class="col-lg-6 text-end">
 					<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-							data-target="#mdlProjectStatusShow" data-url="@Url.Action($"CreateProjectStatus")">
+					        data-target="#mdlProjectStatusShow" data-url="@Url.Action("CreateProjectStatus")">
 						<i class="fas fa-plus me-2"></i>Add Project Status
 					</button>
 				</div>
 			</div>
 			<!--end col-->
 
-		</div>  <!--end row-->
+		</div> <!--end row-->
 	</div><!--end card-header-->
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table mb-0">
 				<thead class="thead-light">
-					<tr>
-						<th>#</th>
-						<th>Name</th>
-						<th>Default Status</th>
-						<th>IsActive</th>
-						<th>Action</th>
-					</tr><!--end tr-->
+				<tr>
+					<th>#</th>
+					<th>Name</th>
+					<th>Default Status</th>
+					<th>IsActive</th>
+					<th>Action</th>
+				</tr><!--end tr-->
 				</thead>
 
 				<tbody>
-					@for (var i = 0; i < Model.Count(); i++)
-					{
-						<tr>
-							<td class="d-none">@Html.DisplayNameFor(m => Model[i].Id)</td>
-							<td>@(i + 1)</td>
-							<td><span><i class="bi bi-dot bg-info ps-2 pe-2  rounded-circle me-2"></i></span>@Model[i].Name</td>
-							<td>
-								@if (Model[i].IsDefaultStatus)
-								{
-									<label>Yes</label>
-								}
-								else
-								{
-									<label>No</label>
-								}
-							</td>
-							<td>
-								@if (Model[i].Status)
-								{
-									<label>Yes</label>
-								}
-								else
-								{
-									<label>No</label>
-								}
-							</td>
-							<td>
-								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
-										data-bs-target="#mdlProjectStatusShow" data-url="@Url.Action($"EditProjectStatus/{@Model[i].Id}")">
-									<i class="las la-pen text-secondary font-16"></i>
-								</button>
-								@if ((!Model[i].IsDefaultStatus))
-								{
-									<a id="deletePS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
-									   data-url="@Url.Action($"DeleteProjectStatus/{@Model[i].Id}")">
-										<i class="las la-trash-alt text-secondary font-16"></i>
-									</a>
-								}
-							</td>
-						</tr>
-						<!--end tr-->
-					}
+				@for (var i = 0; i < Model.Count(); i++)
+				{
+					<tr>
+						<td class="d-none">@Html.DisplayNameFor(m => Model[i].Id)</td>
+						<td>@(i + 1)</td>
+						<td>
+							<span>
+								<i class="bi bi-dot bg-info ps-2 pe-2  rounded-circle me-2"></i>
+							</span>@Model[i].Name
+						</td>
+						<td>
+							@if (Model[i].IsDefaultStatus)
+							{
+								<label>Yes</label>
+							}
+							else
+							{
+								<label>No</label>
+							}
+						</td>
+						<td>
+							@if (Model[i].Status)
+							{
+								<label>Yes</label>
+							}
+							else
+							{
+								<label>No</label>
+							}
+						</td>
+						<td>
+							<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+							        data-bs-target="#mdlProjectStatusShow" data-url="@Url.Action($"EditProjectStatus/{Model[i].Id}")">
+								<i class="las la-pen text-secondary font-16"></i>
+							</button>
+							@if (!Model[i].IsDefaultStatus)
+							{
+								<a id="deletePS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+								   data-url="@Url.Action($"DeleteProjectStatus/{Model[i].Id}")">
+									<i class="las la-trash-alt text-secondary font-16"></i>
+								</a>
+							}
+						</td>
+					</tr>
+					<!--end tr-->
+				}
 				</tbody>
 			</table>
 		</div>

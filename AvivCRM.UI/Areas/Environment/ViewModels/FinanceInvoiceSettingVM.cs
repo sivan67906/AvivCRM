@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class FinanceInvoiceSettingVM
 {
     public Guid Id { get; set; }
@@ -23,30 +22,31 @@ public class FinanceInvoiceSettingVM
     public List<FICBGeneralSettingVM>? FICBGeneralSettings { get; set; }
     public List<FICBClientInfoSettingVM>? FICBClientInfoSettings { get; set; }
 }
+
 public class FICBGeneralSettingVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class FICBClientInfoSettingVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class LanguageDDSettingVM
 {
     public LanguageVM? language { get; set; }
     public Guid SelectedLanguageId { get; set; }
     public List<LanguageVM>? languageItems { get; set; }
 }
+
 public class LanguageVM
 {
     public Guid Id { get; set; }
     public string? LanguageCode { get; set; }
     public string? LanguageName { get; set; }
 }
-
-
-

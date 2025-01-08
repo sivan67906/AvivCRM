@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class TimesheetSettingVM
 {
     public int Id { get; set; }
@@ -18,6 +17,3 @@ public class TimesheetSettingVM
     public string? Memo { get; set; }
     public int TotalHours { get; set; }
 }
-
-
-

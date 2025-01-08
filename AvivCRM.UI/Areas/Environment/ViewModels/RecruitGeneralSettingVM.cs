@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class RecruitGeneralSettingVM
 {
     public int Id { get; set; }
@@ -17,12 +16,12 @@ public class RecruitGeneralSettingVM
     public IFormFile? GeneralBGLogoImage { get; set; }
     public string? GeneralBGLogoPath { get; set; }
     public string? GeneralBGLogoImageFileName { get; set; }
+
     public string? GeneralBGColorCode { get; set; }
+
     //public string? GeneralRBJsonSettings { get; set; }
     public string? GeneralCBJsonSettings { get; set; }
+
     public List<GeneralCBSettingVM>? GeneralCBSettings { get; set; }
     //public List<GeneralRBSettingVM>? GeneralRBSettings { get; set; }
 }
-
-
-

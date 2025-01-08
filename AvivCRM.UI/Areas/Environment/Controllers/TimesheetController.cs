@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
@@ -11,10 +11,12 @@ public class TimesheetController : Controller
     {
         _httpClientFactory = httpClientFactory;
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
     }
+
     public async Task<IActionResult> Timesheet()
     {
         // Page Title
@@ -25,20 +27,19 @@ public class TimesheetController : Controller
         ViewData["bParent"] = "Timesheet";
         ViewData["bChild"] = "Timesheet";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        var timesheetSettings = await client.GetFromJsonAsync<List<TimesheetSettingVM>>("TimesheetSetting/GetAll");
+        List<TimesheetSettingVM>? timesheetSettings =
+            await client.GetFromJsonAsync<List<TimesheetSettingVM>>("TimesheetSetting/GetAll");
         return View(timesheetSettings);
     }
-
-
 
 
     [HttpGet]
     public async Task<IActionResult> Create()
     {
         TimesheetSettingVM timesheet = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         //ViewBag.ProjectSettings = await client.GetFromJsonAsync<List<ProjectSettingVM>>("ProjectSetting/GetAll");
         //ViewBag.Tasks = await client.GetFromJsonAsync<List<TaskVM>>("Task/GetAll");
         //ViewBag.Employees = await client.GetFromJsonAsync<List<EmployeeVM>>("Employee/GetAll");
@@ -97,6 +98,3 @@ public class TimesheetController : Controller
     //    return RedirectToAction("Company");
     //}
 }
-
-
-

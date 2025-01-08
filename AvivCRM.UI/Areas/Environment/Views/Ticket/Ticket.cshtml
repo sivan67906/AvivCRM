@@ -1,0 +1,90 @@
+﻿<div class="row">
+	<div class="col-12 col-lg-10 mx-auto">
+		<div class="card">
+			<div class="card-body">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist" id="ulTicketContainer">
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" href="#tbTicketGroups" data-url="@Url.Action("TicketGroup", "TicketGroup")" role="tab">Ticket Groups</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbTicketTypes" data-url="@Url.Action("TicketType", "TicketType")" role="tab">Ticket Types</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbTicketAgents" data-url="@Url.Action("TicketAgent", "TicketAgent")" role="tab">Ticket Agents</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbTicketChannels" data-url="@Url.Action("TicketChannel", "TicketChannel")" role="tab">Ticket Channels</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbTicketReplyTemplates" data-url="@Url.Action("TicketReplyTemplate", "TicketReplyTemplate")" role="tab">Ticket Reply Templates</a>
+					</li>
+				</ul>
+			</div><!--end card-body-->
+			<div class="card-body pt-0">
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active show" id="tbTicketGroups" role="tabpanel">
+					</div>
+					<div class="tab-pane" id="tbTicketTypes" role="tabpanel">
+					</div>
+					<div class="tab-pane" id="tbTicketAgents" role="tabpanel">
+					</div>
+					<div class="tab-pane" id="tbTicketChannels" role="tabpanel">
+					</div>
+					<div class="tab-pane" id="tbTicketReplyTemplates" role="tabpanel">
+					</div>
+				</div>
+			</div><!--end card-body-->
+		</div><!--end card-->
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+				  $('#ulTicketContainer a[href="#tbTicketGroups"]').ready(function() {
+		  // Clear the content of all tab panes
+				$('.tab-pane').empty();
+
+				// Load content for the selected tab
+				var tabId = $('#ulTicketContainer a[href="#tbTicketGroups"]').attr('href');
+				var url = $('#ulTicketContainer a[href="#tbTicketGroups"]').data('url');
+				$(tabId).load(url);
+		});
+
+		$('#ulTicketContainer a').on('click', function (e) {
+				e.preventDefault();
+
+				// Clear the content of all tab panes
+				$('.tab-pane').empty();
+
+				// Load content for the selected tab
+				var tabId = $(this).attr('href');
+				var url = $(this).data('url');
+				$(tabId).load(url);
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+		  let hash = document.location.hash;
+		  let prefix = "?tab=";
+
+		  //change hash url on page reload
+		  if (hash) {
+			$('.nav-tabs a[href=\"'+hash.replace(prefix,"")+'\"]').tab('show');
+		  }
+
+		  // change hash url on switch tab
+		  $('.nav-tabs a').on('shown.bs.tab', function (e) {
+			 window.location.hash = e.target.hash.replace("#", "#" + prefix);
+		  });
+		});
+
+		 $(window).on('load', function() {
+		 $('.modal').modal({backdrop: 'static', keyboard: false});
+		});
+	</script>
+}

@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model RecruitFooterSettingVM;
+@model AvivCRM.UI.Areas.Environment.ViewModels.RecruitFooterSettingVM;
 <style type="text/css">
 	
 </style>
@@ -16,8 +15,12 @@
 				<div class="col-lg-4">Status</div>
 			</div>
 			<div class="row mt-3 mb-2">
-				<div class="col-lg-4"><input class="form-control" type="text" value="Footer Test" id="reminderAftrMns"></div>
-				<div class="col-lg-4"><input class="form-control" type="text" value="" id="reminderAftrMns"></div>
+				<div class="col-lg-4">
+					<input class="form-control" type="text" value="Footer Test" id="reminderAftrMns">
+				</div>
+				<div class="col-lg-4">
+					<input class="form-control" type="text" value="" id="reminderAftrMns">
+				</div>
 				<div class="col-lg-4">
 					<select id="sltCheck" class="form-select" aria-label="">
 						<option value="">--</option>
@@ -48,7 +51,7 @@
 		</form>
 	</div>
 </div><!-- /.modal-content -->
-	@* <script type="text/javascript">
+@* <script type="text/javascript">
 		$(window).on('load', function() {
 		 $('#mdlRecruitFooterSettingShow').modal({backdrop: 'static', keyboard: false});
 		});
@@ -57,6 +60,3 @@
 
 
  *@
-
-
-

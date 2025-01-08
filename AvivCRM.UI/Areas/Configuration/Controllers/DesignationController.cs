@@ -11,10 +11,12 @@ public class DesignationController : Controller
     {
         _httpClientFactory = httpClientFactory;
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
     }
+
     public async Task<IActionResult> Designation()
     {
         // Page Title
@@ -25,10 +27,10 @@ public class DesignationController : Controller
         ViewData["bParent"] = "Designation";
         ViewData["bChild"] = "Designation";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var designationList = await client.GetFromJsonAsync<List<DesignationVM>>("Designation/GetAll");
-        var companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        var departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<DesignationVM>? designationList = await client.GetFromJsonAsync<List<DesignationVM>>("Designation/GetAll");
+        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
         ViewBag.CompanyList = companies;
         ViewBag.DepartmentList = departments;
         return View(designationList);
@@ -38,9 +40,9 @@ public class DesignationController : Controller
     public async Task<IActionResult> Create()
     {
         DesignationVM designation = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        var departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
         ViewBag.CompanyList = companies;
         ViewBag.DepartmentList = departments;
         return PartialView("_Create", designation);
@@ -49,7 +51,7 @@ public class DesignationController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(DesignationVM designation)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PostAsJsonAsync<DesignationVM>("Designation/Create", designation);
         return RedirectToAction("Designation");
     }
@@ -57,11 +59,15 @@ public class DesignationController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var designation = await client.GetFromJsonAsync<DesignationVM>("Designation/GetById/?Id=" + Id);
-        var companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        var departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        DesignationVM? designation = await client.GetFromJsonAsync<DesignationVM>("Designation/GetById/?Id=" + Id);
+        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
         ViewBag.CompanyList = companies;
         ViewBag.DepartmentList = departments;
         return PartialView("_Edit", designation);
@@ -70,8 +76,12 @@ public class DesignationController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(DesignationVM designation)
     {
-        if (designation.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (designation.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<DesignationVM>("Designation/Update/", designation);
         return RedirectToAction("Designation");
     }
@@ -79,11 +89,15 @@ public class DesignationController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var designation = await client.GetFromJsonAsync<DesignationVM>("Designation/GetById/?Id=" + Id);
-        var companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        var departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        DesignationVM? designation = await client.GetFromJsonAsync<DesignationVM>("Designation/GetById/?Id=" + Id);
+        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
         ViewBag.CompanyList = companies;
         ViewBag.DepartmentList = departments;
         return PartialView("_Delete", designation);
@@ -93,8 +107,12 @@ public class DesignationController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(DesignationVM designation)
     {
-        if (designation.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (designation.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.DeleteAsync("Designation/Delete?Id=" + designation.Id);
         return RedirectToAction("Designation");
     }
@@ -131,10 +149,4 @@ public class DesignationController : Controller
     //        return await client.SendAsync(request);
     //    }
     //}
-
-
-
 }
-
-
-

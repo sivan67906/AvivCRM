@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class RecruitCustomQuestionSettingVM
 {
     public int Id { get; set; }
@@ -12,6 +11,3 @@ public class RecruitCustomQuestionSettingVM
     public int CQStatusName { get; set; }
     public int CQIsRequiredId { get; set; }
 }
-
-
-

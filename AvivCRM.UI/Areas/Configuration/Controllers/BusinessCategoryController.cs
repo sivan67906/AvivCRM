@@ -1,16 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Configuration.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Configuration.Controllers;
 [Area("Configuration")]
 public class BusinessCategoryController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
+
     public BusinessCategoryController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
@@ -26,10 +27,12 @@ public class BusinessCategoryController : Controller
         ViewData["bParent"] = "BusinessCategory";
         ViewData["bChild"] = "BusinessCategory";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var businessTypeList = await client.GetFromJsonAsync<List<BusinessTypeVM>>("BusinessType/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<BusinessTypeVM>? businessTypeList =
+            await client.GetFromJsonAsync<List<BusinessTypeVM>>("BusinessType/GetAll");
         ViewBag.BusinessTypeList = businessTypeList;
-        var businessCategoryList = await client.GetFromJsonAsync<List<BusinessCategoryVM>>("BusinessCategory/GetAll");
+        List<BusinessCategoryVM>? businessCategoryList =
+            await client.GetFromJsonAsync<List<BusinessCategoryVM>>("BusinessCategory/GetAll");
 
         return View(businessCategoryList);
     }
@@ -38,8 +41,9 @@ public class BusinessCategoryController : Controller
     public async Task<IActionResult> Create()
     {
         BusinessCategoryVM businessCategory = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var businessTypeList = await client.GetFromJsonAsync<List<BusinessTypeVM>>("BusinessType/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<BusinessTypeVM>? businessTypeList =
+            await client.GetFromJsonAsync<List<BusinessTypeVM>>("BusinessType/GetAll");
         ViewBag.BusinessTypeList = businessTypeList;
         return PartialView("_Create", businessCategory);
     }
@@ -47,7 +51,7 @@ public class BusinessCategoryController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(BusinessCategoryVM businessCategory)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PostAsJsonAsync<BusinessCategoryVM>("BusinessCategory/Create", businessCategory);
         return RedirectToAction("BusinessCategory");
     }
@@ -55,19 +59,29 @@ public class BusinessCategoryController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var businessTypeList = await client.GetFromJsonAsync<List<BusinessTypeVM>>("BusinessType/GetAll");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<BusinessTypeVM>? businessTypeList =
+            await client.GetFromJsonAsync<List<BusinessTypeVM>>("BusinessType/GetAll");
         ViewBag.BusinessTypeList = businessTypeList;
-        var businessCategory = await client.GetFromJsonAsync<BusinessCategoryVM>("BusinessCategory/GetById/?Id=" + Id);
+        BusinessCategoryVM? businessCategory =
+            await client.GetFromJsonAsync<BusinessCategoryVM>("BusinessCategory/GetById/?Id=" + Id);
         return PartialView("_Edit", businessCategory);
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(BusinessCategoryVM businessCategory)
     {
-        if (businessCategory.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (businessCategory.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<BusinessCategoryVM>("BusinessCategory/Update/", businessCategory);
         return RedirectToAction("BusinessCategory");
     }
@@ -75,12 +89,13 @@ public class BusinessCategoryController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.DeleteAsync("BusinessCategory/Delete?Id=" + Id);
         return RedirectToAction("BusinessCategory");
     }
 }
-
-
-

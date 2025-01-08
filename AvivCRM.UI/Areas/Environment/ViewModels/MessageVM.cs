@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class MessageVM
 {
     public int Id { get; set; }
@@ -9,6 +8,3 @@ public class MessageVM
     public bool Allowchatclientadmin { get; set; }
     public bool SoundNotifyAlert { get; set; }
 }
-
-
-

@@ -1,6 +1,5 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model FinanceInvoiceSettingVM
-<link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css" />
+@model AvivCRM.UI.Areas.Environment.ViewModels.FinanceInvoiceSettingVM
+<link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css"/>
 
 <div class="card">
 	<div class="card-header">
@@ -8,7 +7,7 @@
 	</div><!--end card-header-->
 	<div class="card-body">
 		<form id="FinanceInvoiceSettingUpdate" enctype="multipart/form-data">
-			<input type="hidden" asp-for="@Model.Id" />
+			<input type="hidden" asp-for="@Model.Id"/>
 			<div class="row">
 				<div class="col-lg-4 form-group">
 					<div class="card">
@@ -44,7 +43,7 @@
 					<div>
 						@* <label for="dropdown">Choose an item:</label> *@
 						<select name="FILanguageId" class="form-select" asp-for="@Model!.LanguageDDSettings!.SelectedLanguageId"
-								asp-items="@(new SelectList (Model!.LanguageDDSettings!.languageItems, "Id", "LanguageName"))">
+						        asp-items="@(new SelectList(Model!.LanguageDDSettings!.languageItems, "Id", "LanguageName"))">
 							<option value="">--</option>
 						</select>
 					</div>
@@ -52,7 +51,7 @@
 				<div class="col-lg-6">
 					<div class="input-group">
 						<input id="txtFIDueAfter" type="number" class="form-control" name="FIDueAfter"
-							   placeholder="15" value="@Model.FIDueAfter">
+						       placeholder="15" value="@Model.FIDueAfter">
 						<span class="input-group-text" id="dueDays">Day(s)</span>
 					</div>
 				</div>
@@ -65,7 +64,7 @@
 				<div class="col-lg-6">
 					<div class="input-group">
 						<input id="txtFISendReminderBefore" type="number" class="form-control" name="FISendReminderBefore"
-							   placeholder="15" value="@Model.FISendReminderBefore">
+						       placeholder="15" value="@Model.FISendReminderBefore">
 						<span class="input-group-text" id="sendReminder">Day(s)</span>
 					</div>
 				</div>
@@ -79,7 +78,7 @@
 				<div class="col-lg-4" style="padding-left: 0px;">
 					<div class="input-group">
 						<input id="txtFISendReminderAfterEvery" type="number" class="form-control" name="FISendReminderAfterEvery"
-							   placeholder="15" value="@Model.FISendReminderAfterEvery">
+						       placeholder="15" value="@Model.FISendReminderAfterEvery">
 						<span class="input-group-text" id="dueDays">Day(s)</span>
 					</div>
 				</div>
@@ -91,11 +90,11 @@
 				{
 					<div class="col-lg-4">
 						<div class="form-check custom-control custom-checkbox mt-2">
-							<input type="hidden" name="FICBGeneralSettings[@i].IsChecked" value="false" />
-							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_FICBGeneralSettings_@Model.FICBGeneralSettings[i].Id" name="FICBGeneralSettings[@i].IsChecked" value="true" @(Model.FICBGeneralSettings[i].IsChecked ? "checked" : "") />
+							<input type="hidden" name="FICBGeneralSettings[@i].IsChecked" value="false"/>
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_FICBGeneralSettings_@Model.FICBGeneralSettings[i].Id" name="FICBGeneralSettings[@i].IsChecked" value="true" @(Model.FICBGeneralSettings[i].IsChecked ? "checked" : "")/>
 							<label class="custom-control-label labelcustom" for="checkbox_FICBGeneralSettings_@Model.FICBGeneralSettings[i].Id">@Model.FICBGeneralSettings[i].Name</label>
-							<input type="hidden" name="FICBGeneralSettings[@i].Id" value="@Model.FICBGeneralSettings[i].Id" />
-							<input type="hidden" name="FICBGeneralSettings[@i].Name" value="@Model.FICBGeneralSettings[i].Name" />
+							<input type="hidden" name="FICBGeneralSettings[@i].Id" value="@Model.FICBGeneralSettings[i].Id"/>
+							<input type="hidden" name="FICBGeneralSettings[@i].Name" value="@Model.FICBGeneralSettings[i].Name"/>
 						</div>
 					</div>
 				}
@@ -108,14 +107,13 @@
 			<div class="row">
 				@for (var i = 0; i < Model!.FICBClientInfoSettings!.Count; i++)
 				{
-
 					<div class="col-lg-4">
 						<div class="form-check custom-control custom-checkbox mt-2">
-							<input type="hidden" name="FICBClientInfoSettings[@i].IsChecked" value="false" />
-							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_FICBClientInfoSettings_@Model.FICBClientInfoSettings[i].Id" name="FICBClientInfoSettings[@i].IsChecked" value="true" @(Model.FICBClientInfoSettings[i].IsChecked ? "checked" : "") />
+							<input type="hidden" name="FICBClientInfoSettings[@i].IsChecked" value="false"/>
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox_FICBClientInfoSettings_@Model.FICBClientInfoSettings[i].Id" name="FICBClientInfoSettings[@i].IsChecked" value="true" @(Model.FICBClientInfoSettings[i].IsChecked ? "checked" : "")/>
 							<label class="custom-control-label labelcustom" for="checkbox_FICBClientInfoSettings_@Model.FICBClientInfoSettings[i].Id">@Model.FICBClientInfoSettings[i].Name</label>
-							<input type="hidden" name="FICBClientInfoSettings[@i].Id" value="@Model.FICBClientInfoSettings[i].Id" />
-							<input type="hidden" name="FICBClientInfoSettings[@i].Name" value="@Model.FICBClientInfoSettings[i].Name" />
+							<input type="hidden" name="FICBClientInfoSettings[@i].Id" value="@Model.FICBClientInfoSettings[i].Id"/>
+							<input type="hidden" name="FICBClientInfoSettings[@i].Name" value="@Model.FICBClientInfoSettings[i].Name"/>
 						</div>
 					</div>
 				}
@@ -138,7 +136,9 @@
 				</div>
 			</div>
 		</form>
-		<button id="btnUpdateFinanceInvoiceSetting" type="button" class="btn btn-de-primary mt-4 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+		<button id="btnUpdateFinanceInvoiceSetting" type="button" class="btn btn-de-primary mt-4 float-end">
+			<b><i class="mdi mdi-check-all me-2"></i>Update</b>
+		</button>
 	</div><!--end card-body-->
 </div>
 <script src="~/matrica/assets/libs/dropify/js/dropify.js"></script>
@@ -233,6 +233,3 @@
 		error: "Some error occurred.",
 	};
 </script>
-
-
-

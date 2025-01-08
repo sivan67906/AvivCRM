@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Environment.ViewComponents.Components.Finance.FinanceInvoiceSettingComponent;
-
 public class FinanceInvoiceSettingViewComponent : ViewComponent
 {
     public IViewComponentResult Invoke(FinanceInvoiceSettingVM financeInvoiceSetting)
@@ -10,6 +9,3 @@ public class FinanceInvoiceSettingViewComponent : ViewComponent
         return View(financeInvoiceSetting);
     }
 }
-
-
-

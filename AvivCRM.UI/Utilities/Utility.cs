@@ -1,29 +1,27 @@
 using System.Text.Json;
 
 namespace AvivCRM.UI.Utilities;
-
 public class Utility
 {
     public static Dictionary<string, List<string>> ExtractErrorsFromWebAPIResponse(string body)
     {
-        var response = new Dictionary<string, List<string>>();
+        Dictionary<string, List<string>>? response = new();
 
-        var jsonElement = JsonSerializer.Deserialize<JsonElement>(body);
-        var errorsJsonElement = jsonElement.GetProperty("errors");
-        foreach (var fieldWithErrors in errorsJsonElement.EnumerateObject())
+        JsonElement jsonElement = JsonSerializer.Deserialize<JsonElement>(body);
+        JsonElement errorsJsonElement = jsonElement.GetProperty("errors");
+        foreach (JsonProperty fieldWithErrors in errorsJsonElement.EnumerateObject())
         {
-            var field = fieldWithErrors.Name;
-            var errors = new List<string>();
-            foreach (var errorKind in fieldWithErrors.Value.EnumerateArray())
+            string? field = fieldWithErrors.Name;
+            List<string>? errors = new();
+            foreach (JsonElement errorKind in fieldWithErrors.Value.EnumerateArray())
             {
-                var error = errorKind.GetString();
+                string? error = errorKind.GetString();
                 errors.Add(error);
             }
+
             response.Add(field, errors);
         }
 
         return response;
     }
 }
-
-

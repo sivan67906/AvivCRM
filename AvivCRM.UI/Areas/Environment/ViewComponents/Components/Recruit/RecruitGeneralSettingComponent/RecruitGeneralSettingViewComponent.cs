@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Environment.ViewComponents.Components.Recruit.RecruitCustomQuestionSettingComponent;
-
 public class RecruitGeneralSettingViewComponent : ViewComponent
 {
     public IViewComponentResult Invoke(RecruitGeneralSettingVM recruitGeneralSetting)
@@ -10,8 +9,3 @@ public class RecruitGeneralSettingViewComponent : ViewComponent
         return View(recruitGeneralSetting);
     }
 }
-
-
-
-
-

@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class NotificationVM
 {
     public int Id { get; set; }
@@ -98,6 +97,3 @@ public class NotificationVM
     public bool RemovalRequestRejectUser { get; set; }
     public bool RemovalRequestApprovedUser { get; set; }
 }
-
-
-

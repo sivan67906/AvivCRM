@@ -1,67 +1,66 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model IEnumerable<LeadSourceVM>
+@model IEnumerable<AvivCRM.UI.Areas.Environment.ViewModels.LeadSourceVM>
 
 <div class="modal fade" Id="mdlLeadSourceShow">
-    <div class="modal-dialog" Id="PlaceHolderHere">
-    </div>
+	<div class="modal-dialog" Id="PlaceHolderHere">
+	</div>
 </div>
 
 <div class="row">
-    <div class="col-12 col-lg-12">
+	<div class="col-12 col-lg-12">
 
-        <div class="card" style="">
+		<div class="card" style="">
 
-            <div class="card-header">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h4 class="card-title">LeadSource Index</h4>
-                    </div><!--end col-->
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-                                data-target="#mdlLeadSourceShow" data-url="@Url.Action("Create")">
-                            <i class="fas fa-plus me-2"></i>Add LeadSource
-                        </button>
-                    </div><!--end col-->
-                </div>  <!--end row-->
-            </div><!--end card-header-->
+			<div class="card-header">
+				<div class="row align-items-center">
+					<div class="col">
+						<h4 class="card-title">LeadSource Index</h4>
+					</div><!--end col-->
+					<div class="col-auto">
+						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+						        data-target="#mdlLeadSourceShow" data-url="@Url.Action("Create")">
+							<i class="fas fa-plus me-2"></i>Add LeadSource
+						</button>
+					</div><!--end col-->
+				</div> <!--end row-->
+			</div><!--end card-header-->
 
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="table-responsive">
-                        <table class="table mb-0">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="d-none">@Html.DisplayNameFor(m => m.Id)</th>
-                                    <th>Source</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
+			<div class="card-body">
+				<div class="row mb-3">
+					<div class="table-responsive">
+						<table class="table mb-0">
+							<thead class="thead-light">
+							<tr>
+								<th class="d-none">@Html.DisplayNameFor(m => m.Id)</th>
+								<th>Source</th>
+								<th>Action</th>
+							</tr>
+							</thead>
+							<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
 
-                                        <td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
-                                        <td>@item.Name</td>
-                                        <td>
-                                            <button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
-                                                    data-target="#mdlLeadSourceShow" data-url="@Url.Action($"Edit/{item.Id}")" >
-                                                <i class="las la-pen text-secondary font-16"></i>
-                                            </button>
-                                            <a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
-                                               data-url="@Url.Action($"Delete/{item.Id}")">
-                                                <i class="las la-trash-alt text-secondary font-16"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+									<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
+									<td>@item.Name</td>
+									<td>
+										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+										        data-target="#mdlLeadSourceShow" data-url="@Url.Action($"Edit/{item.Id}")">
+											<i class="las la-pen text-secondary font-16"></i>
+										</button>
+										<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+										   data-url="@Url.Action($"Delete/{item.Id}")">
+											<i class="las la-trash-alt text-secondary font-16"></i>
+										</a>
+									</td>
+								</tr>
+							}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 @section Scripts {

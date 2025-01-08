@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json;
 using AvivCRM.UI.Areas.Environment.ViewModels;
 using AvivCRM.UI.Utilities;
@@ -9,6 +10,7 @@ public class EmployeeController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly JsonSerializerOptions _options;
+
     public EmployeeController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
@@ -26,12 +28,12 @@ public class EmployeeController : Controller
         ViewData["bParent"] = "Employee";
         ViewData["bChild"] = "Employee View";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
         ViewBag.CountryList = countries;
-        var departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
+        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
         ViewBag.DepartmentList = departments;
-        var businessLocationList = await client.GetFromJsonAsync<List<EmployeeVM>>("Company/GetAll");
+        List<EmployeeVM>? businessLocationList = await client.GetFromJsonAsync<List<EmployeeVM>>("Company/GetAll");
         return View(businessLocationList);
     }
 
@@ -39,43 +41,44 @@ public class EmployeeController : Controller
     public async Task<IActionResult> Create()
     {
         EmployeeVM Employee = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        var countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        var departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
+        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
 
         ViewBag.CompanyList = companies;
         ViewBag.CountryList = countries;
         ViewBag.DepartmentList = departments;
         return PartialView("_Create", Employee);
     }
+
     private void WriteExtractedError(Stream stream)
     {
+        Dictionary<string, List<string>>? errorsFromWebAPI = Utility.ExtractErrorsFromWebAPIResponse(stream.ToString());
 
-        var errorsFromWebAPI = Utility.ExtractErrorsFromWebAPIResponse(stream.ToString());
-
-        foreach (var fieldWithErrors in errorsFromWebAPI)
+        foreach (KeyValuePair<string, List<string>> fieldWithErrors in errorsFromWebAPI)
         {
             Console.WriteLine($"-{fieldWithErrors.Key}");
-            foreach (var error in fieldWithErrors.Value)
+            foreach (string? error in fieldWithErrors.Value)
             {
                 Console.WriteLine($"  {error}");
             }
         }
-
     }
-    [HttpPost, ActionName("GetStatesByCountryId")]
+
+    [HttpPost]
+    [ActionName("GetStatesByCountryId")]
     public async Task<IActionResult> GetStatesByCountryId(string countryId)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var states = new List<StateVM>();
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<StateVM>? states = new();
 
-        using (var response = await client.GetAsync("State/GetByParentId/?parentId=" + countryId
-            , HttpCompletionOption.ResponseHeadersRead))
+        using (HttpResponseMessage? response = await client.GetAsync("State/GetByParentId/?parentId=" + countryId
+                   , HttpCompletionOption.ResponseHeadersRead))
         {
-            var stream = await response.Content.ReadAsStreamAsync();
+            Stream? stream = await response.Content.ReadAsStreamAsync();
 
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            if (response.StatusCode == HttpStatusCode.BadRequest)
             {
                 WriteExtractedError(stream);
             }
@@ -83,23 +86,26 @@ public class EmployeeController : Controller
             {
                 states = await JsonSerializer.DeserializeAsync<List<StateVM>>(stream, _options);
             }
+
             return Json(states);
         }
     }
 
-    [HttpPost, ActionName("GetCitiesByStateId")]
+    [HttpPost]
+    [ActionName("GetCitiesByStateId")]
     public async Task<IActionResult> GetCitiesByStateId(string stateId)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var cities = new List<CityVM>();
-        using (var response = await client.GetAsync("City/GetByParentId/?parentId=" + stateId
-            , HttpCompletionOption.ResponseHeadersRead))
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CityVM>? cities = new();
+        using (HttpResponseMessage? response = await client.GetAsync("City/GetByParentId/?parentId=" + stateId
+                   , HttpCompletionOption.ResponseHeadersRead))
         {
             if (response.IsSuccessStatusCode)
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                Stream? stream = await response.Content.ReadAsStreamAsync();
                 cities = await JsonSerializer.DeserializeAsync<List<CityVM>>(stream, _options);
             }
+
             return Json(cities);
         }
     }
@@ -107,7 +113,7 @@ public class EmployeeController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(EmployeeVM Employee)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PostAsJsonAsync("Employee/Create", Employee);
         return RedirectToAction("Employee");
     }
@@ -115,44 +121,50 @@ public class EmployeeController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        var departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-        var countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        var states = await client.GetFromJsonAsync<List<StateVM>>("State/GetAll");
-        var cities = await client.GetFromJsonAsync<List<CityVM>>("City/GetAll");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
+        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
+        List<StateVM>? states = await client.GetFromJsonAsync<List<StateVM>>("State/GetAll");
+        List<CityVM>? cities = await client.GetFromJsonAsync<List<CityVM>>("City/GetAll");
         ViewBag.CompanyList = companies;
         ViewBag.DepartmentList = departments;
         ViewBag.CountryList = countries;
         ViewBag.StateList = states;
         ViewBag.CityList = cities;
-        var Employee = await client.GetFromJsonAsync<EmployeeVM>("Employee/GetById/?Id=" + Id);
+        EmployeeVM? Employee = await client.GetFromJsonAsync<EmployeeVM>("Employee/GetById/?Id=" + Id);
         return PartialView("_Edit", Employee);
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(EmployeeVM Employee)
     {
-        if (Employee.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (Employee.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<EmployeeVM>("Employee/Update/", Employee);
         return RedirectToAction("Employee");
     }
 
 
-
     [HttpPost]
     public async Task<IActionResult> Delete(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.DeleteAsync("Employee/Delete?Id=" + Id);
         return RedirectToAction("Employee");
     }
-
-
 }
-
-
-

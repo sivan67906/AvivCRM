@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model RecruitNotificationSettingVM
+@model AvivCRM.UI.Areas.Environment.ViewModels.RecruitNotificationSettingVM
 
 <div class="modal fade" id="mdlProjectStatusShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
@@ -11,56 +10,58 @@
 			<div class="col">
 				<h4 class="card-title">Notification Index</h4>
 			</div><!--end col-->
-		</div>  <!--end row-->
+		</div> <!--end row-->
 	</div><!--end card-header-->
 	<div class="card-body">
 		<form id="RecruitNotificationSettingUpdate">
-		<input id="txtRecruitNotificationSettingId" type="hidden" name="Id" value="@Model.Id" />
-		<div class="row">
-			<h4 style="padding: 0px;">
-				Mail Settings
-			</h4>
-		</div>
-		<div class="row">
-			<label>Send mail when application status changes to </label>
-		</div>
+			<input id="txtRecruitNotificationSettingId" type="hidden" name="Id" value="@Model.Id"/>
+			<div class="row">
+				<h4 style="padding: 0px;">
+					Mail Settings
+				</h4>
+			</div>
+			<div class="row">
+				<label>Send mail when application status changes to </label>
+			</div>
 			<div class="row">
 				@for (var i = 0; i < Model.CBEMailSettings.Count; i++)
 				{
 					<div class="col-lg-2">
 						<div class="form-check custom-control custom-checkbox mt-4 mb-2">
-							<input type="hidden" name="CBEMailSettings[@i].IsChecked" value="false" />
-							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.CBEMailSettings[i].Id" name="CBEMailSettings[@i].IsChecked" value="true" @(Model.CBEMailSettings[i].IsChecked ? "checked" : "") />
+							<input type="hidden" name="CBEMailSettings[@i].IsChecked" value="false"/>
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.CBEMailSettings[i].Id" name="CBEMailSettings[@i].IsChecked" value="true" @(Model.CBEMailSettings[i].IsChecked ? "checked" : "")/>
 							<label class="custom-control-label labelcustom" for="checkbox-@Model.CBEMailSettings[i].Id">@Model.CBEMailSettings[i].Name</label>
-							<input type="hidden" name="CBEMailSettings[@i].Id" value="@Model.CBEMailSettings[i].Id" />
-							<input type="hidden" name="CBEMailSettings[@i].Name" value="@Model.CBEMailSettings[i].Name" />
+							<input type="hidden" name="CBEMailSettings[@i].Id" value="@Model.CBEMailSettings[i].Id"/>
+							<input type="hidden" name="CBEMailSettings[@i].Name" value="@Model.CBEMailSettings[i].Name"/>
 						</div>
 					</div>
 				}
 			</div>
-			</form>
+		</form>
 		<form id="RecruitNotificationSettingUpdate1">
-		<div class="row mt-4">
-			<h4 style="padding: 0px;">
-				Email Notification Settings
-			</h4>
-		</div>
+			<div class="row mt-4">
+				<h4 style="padding: 0px;">
+					Email Notification Settings
+				</h4>
+			</div>
 			<div class="row">
 				@for (var i = 0; i < Model.CBEMailNotificationSettings.Count; i++)
 				{
 					<div class="col-lg-2">
 						<div class="form-check custom-control custom-checkbox mt-4 mb-2">
-							<input type="hidden" name="CBEMailNotificationSettings[@i].IsChecked" value="false" />
-							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.CBEMailNotificationSettings[i].Id" name="CBEMailNotificationSettings[@i].IsChecked" value="true" @(Model.CBEMailNotificationSettings[i].IsChecked ? "checked" : "") />
+							<input type="hidden" name="CBEMailNotificationSettings[@i].IsChecked" value="false"/>
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.CBEMailNotificationSettings[i].Id" name="CBEMailNotificationSettings[@i].IsChecked" value="true" @(Model.CBEMailNotificationSettings[i].IsChecked ? "checked" : "")/>
 							<label class="custom-control-label labelcustom" for="checkbox-@Model.CBEMailNotificationSettings[i].Id">@Model.CBEMailNotificationSettings[i].Name</label>
-							<input type="hidden" name="CBEMailNotificationSettings[@i].Id" value="@Model.CBEMailNotificationSettings[i].Id" />
-							<input type="hidden" name="CBEMailNotificationSettings[@i].Name" value="@Model.CBEMailNotificationSettings[i].Name" />
+							<input type="hidden" name="CBEMailNotificationSettings[@i].Id" value="@Model.CBEMailNotificationSettings[i].Id"/>
+							<input type="hidden" name="CBEMailNotificationSettings[@i].Name" value="@Model.CBEMailNotificationSettings[i].Name"/>
 						</div>
 					</div>
 				}
 			</div>
-	</form>
-		<button id="updateRecruitNotificationSetting" type="button" class="btn btn-de-primary mt-4 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+		</form>
+		<button id="updateRecruitNotificationSetting" type="button" class="btn btn-de-primary mt-4 float-end">
+			<b><i class="mdi mdi-check-all me-2"></i>Update</b>
+		</button>
 
 	</div><!--end card-body-->
 </div>
@@ -157,6 +158,3 @@
 		});
 	});
 </script>
-
-
-

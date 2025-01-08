@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model ProjectStatusVM;
+@model AvivCRM.UI.Areas.Environment.ViewModels.ProjectStatusVM;
 
 <style type="text/css">
 	
@@ -10,7 +9,7 @@
 	</div>
 	<div class="modal-body">
 		<form asp-action="UpdateProjectStatus" id="UpdateProjectStatus" data-url="Edit" method="post">
-			<input id="txtId" type="hidden" name="Id" value="@Model.Id" />
+			<input id="txtId" type="hidden" name="Id" value="@Model.Id"/>
 			<div class="row mt-3">
 				<div class="col-lg-7">Name <span class="text-danger">*</span></div>
 				<div class="col-lg-3">Label Color</div>
@@ -21,7 +20,7 @@
 					<input class="form-control" asp-for="@Model.Name" name="Name" type="text" id="txtName">
 				</div>
 				<div class="col-lg-3">
-					<input asp-for="@Model.ColorCode" style="width:100%;" type="color" name="ColorCode" class="form-control form-control-color" id="txtColorCode"  title="Choose your color">
+					<input asp-for="@Model.ColorCode" style="width:100%;" type="color" name="ColorCode" class="form-control form-control-color" id="txtColorCode" title="Choose your color">
 				</div>
 				<div class="col-lg-2">
 				</div>
@@ -39,7 +38,7 @@
 				</div>
 				<div class="col-lg-3">
 					<div class="form-check form-switch form-switch-success">
-						<input asp-for="Status" class="form-check-input" name="Status" type="checkbox" id="ipStatus"  style="width: 4em !important; height: 2em !important;">
+						<input asp-for="Status" class="form-check-input" name="Status" type="checkbox" id="ipStatus" style="width: 4em !important; height: 2em !important;">
 					</div>
 				</div>
 				<div class="col-lg-2"></div>

@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class ProjectSettingVM
 {
     public Guid Id { get; set; }
@@ -9,6 +8,3 @@ public class ProjectSettingVM
 
     public ICollection<ProjectReminderPersonVM>? projectReminderPersons { get; set; }
 }
-
-
-

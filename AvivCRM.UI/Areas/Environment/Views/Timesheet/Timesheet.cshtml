@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model List<TimesheetSettingVM>
+@model List<AvivCRM.UI.Areas.Environment.ViewModels.TimesheetSettingVM>
 
 <div id="PlaceHolderHere">
 </div>
@@ -13,50 +12,50 @@
 					</div><!--end col-->
 					<div class="col-auto">
 						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-						data-target="#mdlTimesheetShow" data-url="@Url.Action("Create")">
+						        data-target="#mdlTimesheetShow" data-url="@Url.Action("Create")">
 							<i class="fas fa-plus me-2"></i>Add Timesheet
 						</button>
 					</div><!--end col-->
-				</div>  <!--end row-->
+				</div> <!--end row-->
 			</div><!--end card-header-->
 			<div class="card-body">
 				<div class="table-responsive">
 					<table class="table  mb-0">
 						<thead class="thead-light">
-							<tr>
-								<th>Project</th>
-								<th>Task</th>
-								<th>Employee</th>
-								<th>Start Time</th>
-								<th>End Time</th>
-								<th>Total Hours</th>
-								<th>Action</th>
-							</tr>
+						<tr>
+							<th>Project</th>
+							<th>Task</th>
+							<th>Employee</th>
+							<th>Start Time</th>
+							<th>End Time</th>
+							<th>Total Hours</th>
+							<th>Action</th>
+						</tr>
 						</thead>
 						<tbody>
-							@for (var i = 0; i < Model.Count(); i++)
-							{
-								<tr>
-									<td class="d-none">@Html.DisplayNameFor(m => Model[i].Id)</td>
-									<td>@(i + 1)</td>
-									<td>@Model[i].ProjectName</td>
-									<td>@Model[i].TaskName</td>
-									<td>@Model[i].EmployeeName</td>
-									<td>@Model[i].StartDateTime</td>
-									<td>@Model[i].EndDateTime</td>
-									<td>@Model[i].TotalHours</td>
-									<td>
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-												data-target="#mdlTimesheetShow" data-url="@Url.Action($"Edit/{@Model[i].Id}")">
-											<i class="las la-pen text-secondary font-16"></i>
-										</button>
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-												data-target="#mdlTimesheetShow" data-url="@Url.Action($"Delete/{@Model[i].Id}")">
-											<i class="las la-trash-alt text-secondary font-16"></i>
-										</button>
-									</td>
-								</tr>
-							}
+						@for (var i = 0; i < Model.Count(); i++)
+						{
+							<tr>
+								<td class="d-none">@Html.DisplayNameFor(m => Model[i].Id)</td>
+								<td>@(i + 1)</td>
+								<td>@Model[i].ProjectName</td>
+								<td>@Model[i].TaskName</td>
+								<td>@Model[i].EmployeeName</td>
+								<td>@Model[i].StartDateTime</td>
+								<td>@Model[i].EndDateTime</td>
+								<td>@Model[i].TotalHours</td>
+								<td>
+									<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+									        data-target="#mdlTimesheetShow" data-url="@Url.Action($"Edit/{Model[i].Id}")">
+										<i class="las la-pen text-secondary font-16"></i>
+									</button>
+									<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+									        data-target="#mdlTimesheetShow" data-url="@Url.Action($"Delete/{Model[i].Id}")">
+										<i class="las la-trash-alt text-secondary font-16"></i>
+									</button>
+								</td>
+							</tr>
+						}
 						</tbody>
 					</table><!--end /table-->
 				</div><!--end /tableresponsive-->
@@ -75,6 +74,3 @@
 	</script>
 
 }
-
-
-

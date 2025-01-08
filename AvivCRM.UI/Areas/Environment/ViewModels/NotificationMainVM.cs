@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class NotificationMainVM
 {
     public Guid Id { get; set; }
@@ -24,68 +23,74 @@ public class NotificationMainVM
     public List<ProjectNotificationMainVM>? ProjectNotificationMains { get; set; }
     public List<ReminderNotificationMainVM>? ReminderNotificationMains { get; set; }
     public List<RequestNotificationMainVM>? RequestNotificationMains { get; set; }
-
 }
+
 public class CommonNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class LeaveNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class ProposalNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class InvoiceNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class PaymentNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class TaskNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class TicketNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class ProjectNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class ReminderNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
+
 public class RequestNotificationMainVM
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool IsChecked { get; set; }
 }
-
-
-

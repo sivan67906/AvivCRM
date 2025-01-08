@@ -1,16 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Configuration.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Configuration.Controllers;
 [Area("Configuration")]
 public class PlanTypeController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
+
     public PlanTypeController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
@@ -26,8 +27,8 @@ public class PlanTypeController : Controller
         ViewData["bParent"] = "PlanType";
         ViewData["bChild"] = "PlanType";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var planTypeList = await client.GetFromJsonAsync<List<PlanTypeVM>>("PlanType/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<PlanTypeVM>? planTypeList = await client.GetFromJsonAsync<List<PlanTypeVM>>("PlanType/GetAll");
 
         return View(planTypeList);
     }
@@ -36,14 +37,14 @@ public class PlanTypeController : Controller
     public async Task<IActionResult> Create()
     {
         PlanTypeVM planType = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         return PartialView("_Create", planType);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(PlanTypeVM planType)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PostAsJsonAsync<PlanTypeVM>("PlanType/Create", planType);
         return RedirectToAction("PlanType");
     }
@@ -51,17 +52,25 @@ public class PlanTypeController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var planType = await client.GetFromJsonAsync<PlanTypeVM>("PlanType/GetById/?Id=" + Id);
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        PlanTypeVM? planType = await client.GetFromJsonAsync<PlanTypeVM>("PlanType/GetById/?Id=" + Id);
         return PartialView("_Edit", planType);
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(PlanTypeVM planType)
     {
-        if (planType.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (planType.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<PlanTypeVM>("PlanType/Update/", planType);
         return RedirectToAction("PlanType");
     }
@@ -69,12 +78,13 @@ public class PlanTypeController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.DeleteAsync("PlanType/Delete?Id=" + Id);
         return RedirectToAction("PlanType");
     }
 }
-
-
-

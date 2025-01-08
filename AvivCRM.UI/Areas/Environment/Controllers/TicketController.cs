@@ -1,20 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using AvivCRM.UI.Areas.Environment.ViewModels;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
 public class TicketController : Controller
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public TicketController(IHttpClientFactory httpClientFactory)
-    {
-        _httpClientFactory = httpClientFactory;
-    }
-    public async Task<IActionResult> Index()
-    {
-        return View();
-    }
     public async Task<IActionResult> Ticket()
     {
         // Page Title
@@ -25,33 +14,34 @@ public class TicketController : Controller
         ViewData["bParent"] = "Ticket";
         ViewData["bChild"] = "Ticket";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        //var client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        //var ticketAgents = await client.GetFromJsonAsync<List<TicketAgentVM>>("TicketAgent/GetAll");
-        //var ticketGroups = await client.GetFromJsonAsync<List<TicketGroupVM>>("TicketGroup/GetAll");
-        //var ticketTypes = await client.GetFromJsonAsync<List<TicketTypeVM>>("TicketType/GetAll");
-        //var ticketChannels = await client.GetFromJsonAsync<List<TicketChannelVM>>("TicketChannel/GetAll");
-        //var ticketReplyTemplates = await client.GetFromJsonAsync<List<TicketReplyTemplateVM>>("TicketReplyTemplate/GetAll");
+        // all-ticketagent, byid-ticketagent, create-ticketagent, update-ticketagent, delete-ticketagent
+        //var ticketAgents = await client.GetFromJsonAsync<List<TicketAgentVM>>("TicketAgent/all-ticketagent");
+        //var ticketGroups = await client.GetFromJsonAsync<List<TicketGroupVM>>("TicketGroup/all-ticketgroup");
+        //var ticketTypes = await client.GetFromJsonAsync<List<TicketTypeVM>>("TicketType/all-tickettype");
+        //var ticketChannels = await client.GetFromJsonAsync<List<TicketChannelVM>>("TicketChannel/all-ticketchannel");
+        //var ticketReplyTemplates = await client.GetFromJsonAsync<List<TicketReplyTemplateVM>>("TicketReplyTemplate/all-ticketreplytemplate");
 
-        var ticketAgents = new List<TicketAgentVM>();
-        var ticketGroups = new List<TicketGroupVM>();
-        var ticketTypes = new List<TicketTypeVM>();
-        var ticketChannels = new List<TicketChannelVM>();
-        var ticketReplyTemplates = new List<TicketReplyTemplateVM>();
+        //var ticketGroups = new List<TicketGroupVM>();
+        //var ticketTypes = new List<TicketTypeVM>();
+        //var ticketAgents = new List<TicketAgentVM>();
+        //var ticketChannels = new List<TicketChannelVM>();
+        //var ticketReplyTemplates = new List<TicketReplyTemplateVM>();
 
+        //var tickets = new TicketVM
+        //{
+        //    TicketGroupsVMList = ticketGroups,
+        //    TicketTypesVMList = ticketTypes,
+        //    TicketAgentsVMList = ticketAgents,
+        //    TicketChannelVMList = ticketChannels,
+        //    TicketReplyTemplatesVMList = ticketReplyTemplates
+        //};
+        //var client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
+        //var ticketGroups = await client.GetFromJsonAsync<ApiResultResponse<List<TicketGroupVM>>>("TicketGroup/all-ticketgroup");
 
-        var tickets = new TicketVM
-        {
-            TicketAgentsVMList = ticketAgents,
-            TicketGroupsVMList = ticketGroups,
-            TicketTypesVMList = ticketTypes,
-            TicketChannelVMList = ticketChannels,
-            TicketReplyTemplatesVMList = ticketReplyTemplates
-        };
-        return View(tickets);
+        //return PartialView("~/Areas/Environment/Views/TicketGroup/_TicketGroup.cshtml", ticketGroups!.Data!.SingleOrDefault());
+        return View();
     }
 }
-
-
-

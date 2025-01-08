@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model List<ProjectCategoryVM>
+@model List<AvivCRM.UI.Areas.Environment.ViewModels.ProjectCategoryVM>
 
 <div class="modal fade" id="mdlProjectCategoryShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere1">
@@ -13,49 +12,50 @@
 			</div><!--end col-->
 			<div class="col-auto">
 				<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal1"
-						data-target="#mdlProjectCategoryShow" data-url="@Url.Action($"CreateProjectCategory")">
+				        data-target="#mdlProjectCategoryShow" data-url="@Url.Action("CreateProjectCategory")">
 					<i class="fas fa-plus me-2"></i>Add Project Category
 				</button>
 			</div><!--end col-->
-		</div>  <!--end row-->
+		</div> <!--end row-->
 	</div><!--end card-header-->
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table mb-0">
 				<thead class="thead-light">
-					<tr>
-						<th>#</th>
-						<th>Category Name</th>
-						<th>Action</th>
-					</tr><!--end tr-->
+				<tr>
+					<th>#</th>
+					<th>Category Name</th>
+					<th>Action</th>
+				</tr><!--end tr-->
 				</thead>
 
 				<tbody>
-					@for (var i = 0; i < Model.Count(); i++)
-					{
-						<tr>
-							<td class="d-none">@Html.DisplayNameFor(m => Model[i].Id)</td>
-							<td>@(i + 1)</td>
-							<td><span><i class="bi bi-dot bg-info ps-2 pe-2  rounded-circle me-2"></i></span>@Model[i].Name</td>
-							<td>
-								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
-										data-bs-target="#mdlProjectCategoryShow" data-url="@Url.Action($"EditProjectCategory/{@Model[i].Id}")">
-									<i class="las la-pen text-secondary font-16"></i>
-								</button>
-								<a id="deletePC" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
-								   data-url="@Url.Action($"DeleteProjectCategory/{@Model[i].Id}")">
-										<i class="las la-trash-alt text-secondary font-16"></i>
-									</a>
-							</td>
-						</tr>
+				@for (var i = 0; i < Model.Count(); i++)
+				{
+					<tr>
+						<td class="d-none">@Html.DisplayNameFor(m => Model[i].Id)</td>
+						<td>@(i + 1)</td>
+						<td>
+							<span>
+								<i class="bi bi-dot bg-info ps-2 pe-2  rounded-circle me-2"></i>
+							</span>@Model[i].Name
+						</td>
+						<td>
+							<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
+							        data-bs-target="#mdlProjectCategoryShow" data-url="@Url.Action($"EditProjectCategory/{Model[i].Id}")">
+								<i class="las la-pen text-secondary font-16"></i>
+							</button>
+							<a id="deletePC" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+							   data-url="@Url.Action($"DeleteProjectCategory/{Model[i].Id}")">
+								<i class="las la-trash-alt text-secondary font-16"></i>
+							</a>
+						</td>
+					</tr>
 
-						<!--end tr-->
-					}
+					<!--end tr-->
+				}
 				</tbody>
 			</table>
 		</div>
 	</div><!--end card-body-->
 </div>
-
-
-

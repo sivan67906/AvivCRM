@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class FinanceVM
 {
     public FinanceInvoiceSettingVM? FinanceInvoiceSettingVMList { get; set; }
@@ -7,6 +6,3 @@ public class FinanceVM
     public FinancePrefixSettingVM? FinancePrefixSettingVMList { get; set; }
     public List<FinanceUnitSettingVM>? FinanceUnitSettingVMList { get; set; }
 }
-
-
-

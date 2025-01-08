@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model AttendanceSettingVM
+@model AvivCRM.UI.Areas.Environment.ViewModels.AttendanceSettingVM
 <div class="card">
 	<div class="card-header align-items-center">
 		<h4 class="card-title"> Project Index</h4>
@@ -166,32 +165,34 @@
 						<div class="col-lg-12" id="divExpTable">
 							<table id="ExpTable" class="">
 								<thead style="display: -webkit-box;">
-									<tr class="">
-										<th class="col-form-label" style="font-weight: normal !important;">IP Address</th>
-										<th></th>
-									</tr>
+								<tr class="">
+									<th class="col-form-label" style="font-weight: normal !important;">IP Address</th>
+									<th></th>
+								</tr>
 								</thead>
 								<tbody>
-									@for (int i = 0; i < 1; i++)
-									{
-										<tr>
-											<td>
-												<input class="form-control" type="text" value="" id="txtipaddress-@i">
-											</td>
-											<td>
-												<button id="btnadd-@i" type="button" class="btn btn-sm btn-de-primary ml-1 visible" onclick="AddItem(this)"><i class="mdi mdi-check-all me-2"></i>Add IP Address</button>
-												<button id="btnremove-@i" type="button" class="btn btn-sm btn-de-danger invisible" onclick="DeleteItem(this)"><i class="mdi mdi-window-close me-2"></i>Delete</button>
-											</td>
-										</tr>
-									}
+								@for (var i = 0; i < 1; i++)
+								{
+									<tr>
+										<td>
+											<input class="form-control" type="text" value="" id="txtipaddress-@i">
+										</td>
+										<td>
+											<button id="btnadd-@i" type="button" class="btn btn-sm btn-de-primary ml-1 visible" onclick="AddItem(this)"><i class="mdi mdi-check-all me-2"></i>Add IP Address</button>
+											<button id="btnremove-@i" type="button" class="btn btn-sm btn-de-danger invisible" onclick="DeleteItem(this)"><i class="mdi mdi-window-close me-2"></i>Delete</button>
+										</td>
+									</tr>
+								}
 								</tbody>
-								<input type="hidden" id="hdnLastIndex" value="0" />
+								<input type="hidden" id="hdnLastIndex" value="0"/>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-			<button type="button" class="btn btn-de-primary mt-4 float-end"><b><i class="mdi mdi-check-all me-2"></i>Update</b></button>
+			<button type="button" class="btn btn-de-primary mt-4 float-end">
+				<b><i class="mdi mdi-check-all me-2"></i>Update</b>
+			</button>
 		</form>
 	</div><!--end card-body-->
 
@@ -200,6 +201,3 @@
 <script type="text/javascript">
 		
 </script>
-
-
-

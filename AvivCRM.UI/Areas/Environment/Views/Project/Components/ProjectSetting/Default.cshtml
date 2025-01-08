@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model ProjectSettingVM
+@model AvivCRM.UI.Areas.Environment.ViewModels.ProjectSettingVM
 <div class="card">
 	<div class="card-header align-items-center">
 		<h4 class="card-title"> Project Index</h4>
@@ -7,13 +6,13 @@
 
 	<div class="card-body">
 		<form action="ProjectSettingUpdate">
-			<input id="txtId" type="hidden" name="Id" value="@Model.Id" />
+			<input id="txtId" type="hidden" name="Id" value="@Model.Id"/>
 			<div class="form-group mb-3">
 				<div class="mb-3">
 					<div class="custom-control custom-checkbox">
 						<input name="IsSendReminder" type="checkbox" class="custom-control-input form-check-input-custom me-3"
-							   value="@(Model.IsSendReminder ? "1" : "0")"
-							   id="InlineCheckbox" @(Model.IsSendReminder ? "checked" : "")>
+						       value="@(Model.IsSendReminder ? "1" : "0")"
+						       id="InlineCheckbox" @(Model.IsSendReminder ? "checked" : "")>
 						<label class="custom-control-label mt-1" for="InlineCheckbox">Send Reminder</label>
 					</div>
 				</div>
@@ -29,7 +28,7 @@
 						<div class="col-md-4">
 							<div class="form-check">
 								<input class="form-check-input" type="radio" value="@reminderperson.Id"
-									   name="ProjectReminderPersonId" id="@reminderperson.Name" @((@reminderperson.Id == Model.ProjectReminderPersonId) ? "checked" : "")>
+								       name="ProjectReminderPersonId" id="@reminderperson.Name" @(reminderperson.Id == Model.ProjectReminderPersonId ? "checked" : "")>
 								<label class="form-check-label" for="@reminderperson.Name">
 									@reminderperson.Name
 								</label>
@@ -105,6 +104,3 @@
 		});
 	});
 </script>
-
-
-

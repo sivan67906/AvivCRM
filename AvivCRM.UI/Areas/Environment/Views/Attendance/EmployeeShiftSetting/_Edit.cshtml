@@ -1,5 +1,4 @@
-@using AvivCRM.UI.Areas.Environment.ViewModels
-@model EmployeeShiftSettingVM;
+@model AvivCRM.UI.Areas.Environment.ViewModels.EmployeeShiftSettingVM;
 <style type="text/css">
 	
 </style>
@@ -15,9 +14,15 @@
 				<div class="col-lg-4">Color Code <span class="text-danger">*</span></div>
 			</div>
 			<div class="row">
-				<div class="col-lg-4"><input type="text" class="form-control" id="" required="" value="General Shift"></div>
-				<div class="col-lg-4"><input type="text" class="form-control" id="" required="" value="GS#01"></div>
-				<div class="col-lg-4"><input id="txtLabelColor" class="form-control" value="#f7f8f9" data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }" style="background-color: rgb(247, 248, 249); color: rgb(34, 34, 34);"></div>
+				<div class="col-lg-4">
+					<input type="text" class="form-control" id="" required="" value="General Shift">
+				</div>
+				<div class="col-lg-4">
+					<input type="text" class="form-control" id="" required="" value="GS#01">
+				</div>
+				<div class="col-lg-4">
+					<input id="txtLabelColor" class="form-control" value="#f7f8f9" data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }" style="background-color: rgb(247, 248, 249); color: rgb(34, 34, 34);">
+				</div>
 			</div>
 			<div class="row mt-4">
 				<div class="col-lg-4">Shift Start Time <span class="text-danger">*</span></div>
@@ -25,9 +30,15 @@
 				<div class="col-lg-4">Half-day Mark Time <span class="text-danger">*</span></div>
 			</div>
 			<div class="row">
-				<div class="col-lg-4"><input class="form-control" type="time" value="09:00" id=""></div>
-				<div class="col-lg-4"><input class="form-control" type="time" value="18:00" id=""></div>
-				<div class="col-lg-4"><input class="form-control" type="time" value="00:00" id=""></div>
+				<div class="col-lg-4">
+					<input class="form-control" type="time" value="09:00" id="">
+				</div>
+				<div class="col-lg-4">
+					<input class="form-control" type="time" value="18:00" id="">
+				</div>
+				<div class="col-lg-4">
+					<input class="form-control" type="time" value="00:00" id="">
+				</div>
 			</div>
 			<div class="row mt-4">
 				<div class="col-lg-4">Early Clock In (minutes) <span class="text-danger">*</span></div>
@@ -35,9 +46,15 @@
 				<div class="col-lg-4">Maximum check-in allowed in a day <span class="text-danger">*</span></div>
 			</div>
 			<div class="row">
-				<div class="col-lg-4"><input type="number" class="form-control" id="" required=""></div>
-				<div class="col-lg-4"><input type="number" class="form-control" id="" required="" value="20"></div>
-				<div class="col-lg-4"><input type="number" class="form-control" id="" required="" value="2"></div>
+				<div class="col-lg-4">
+					<input type="number" class="form-control" id="" required="">
+				</div>
+				<div class="col-lg-4">
+					<input type="number" class="form-control" id="" required="" value="20">
+				</div>
+				<div class="col-lg-4">
+					<input type="number" class="form-control" id="" required="" value="2">
+				</div>
 			</div>
 			<div class="row mt-4">
 				<div class="col-lg-12">Office opens on <span class="text-danger">*</span></div>
@@ -82,8 +99,5 @@
 		</form>
 	</div>
 </div><!-- /.modal-content -->
-	<script type="text/javascript">
+<script type="text/javascript">
 	</script>
-
-
-

@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class PaymentVM
 {
     public int Id { get; set; }
@@ -7,6 +6,3 @@ public class PaymentVM
     public string? Description { get; set; }
     public bool Status { get; set; } = true;
 }
-
-
-

@@ -14,10 +14,12 @@ public class ProjectController : Controller
     {
         _httpClientFactory = httpClientFactory;
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
     }
+
     public async Task<IActionResult> Project()
     {
         // Page Title
@@ -28,7 +30,7 @@ public class ProjectController : Controller
         ViewData["bParent"] = "Project";
         ViewData["bChild"] = "Project";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
         ProjectSettingVM projectSetting = new();
         List<ProjectSettingVM> projectSettingList = new();
@@ -36,30 +38,39 @@ public class ProjectController : Controller
         List<ProjectCategoryVM> projectCategoriesList = new();
 
         // Get Project Setting List
-        var projectReminderPersonSettings = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectReminderPersonVM>>>("ProjectReminderPerson/all-projectreminderperson");
-        var projectSettings = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectSettingVM>>>("ProjectSetting/all-projectsetting");
+        ApiResultResponse<List<ProjectReminderPersonVM>>? projectReminderPersonSettings =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ProjectReminderPersonVM>>>(
+                "ProjectReminderPerson/all-projectreminderperson");
+        ApiResultResponse<List<ProjectSettingVM>>? projectSettings =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ProjectSettingVM>>>(
+                "ProjectSetting/all-projectsetting");
         if (projectSettings!.Data!.Count() > 0)
         {
             projectSettingList = projectSettings!.Data!;
             projectSetting = projectSettingList.FirstOrDefault();
         }
+
         projectSetting!.projectReminderPersons = projectReminderPersonSettings!.Data;
 
         // Get Project Status List
-        var projectStatusSettings = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectStatusVM>>>("ProjectStatus/all-projectstatus");
+        ApiResultResponse<List<ProjectStatusVM>>? projectStatusSettings =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ProjectStatusVM>>>("ProjectStatus/all-projectstatus");
         if (projectStatusSettings!.Data!.Count() > 0)
         {
             projectStatusSettingList = projectStatusSettings!.Data!;
         }
+
         // Get Project Category List
-        var projectCategories = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectCategoryVM>>>("ProjectCategory/all-projectcategory");
+        ApiResultResponse<List<ProjectCategoryVM>>? projectCategories =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ProjectCategoryVM>>>(
+                "ProjectCategory/all-projectcategory");
         if (projectCategories!.Data!.Count() > 0)
         {
             projectCategoriesList = projectCategories!.Data!;
         }
 
         // fill ProjectViewModel
-        var vmProject = new ProjectVM
+        ProjectVM? vmProject = new()
         {
             ProjectSetting = projectSetting,
             ProjectStatuses = projectStatusSettingList,
@@ -72,38 +83,46 @@ public class ProjectController : Controller
     [HttpPost]
     public async Task<IActionResult> ProjectSettingUpdate(ProjectSettingVM projSetting)
     {
-        if (GuidExtensions.IsNullOrEmpty(projSetting.Id)) return View();
+        if (GuidExtensions.IsNullOrEmpty(projSetting.Id))
+        {
+            return View();
+        }
+
         ApiResultResponse<ProjectSettingVM> setting = new();
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var jsonprojSetting = JsonConvert.SerializeObject(projSetting);
-        var projSettingContent = new StringContent(jsonprojSetting, Encoding.UTF8, "application/json");
-        var responseProjSetting = await client.PutAsync("ProjectSetting/update-projectsetting/", projSettingContent);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        string? jsonprojSetting = JsonConvert.SerializeObject(projSetting);
+        StringContent? projSettingContent = new(jsonprojSetting, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseProjSetting =
+            await client.PutAsync("ProjectSetting/update-projectsetting/", projSettingContent);
 
         if (responseProjSetting.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseProjSetting.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseProjSetting.Content.ReadAsStringAsync();
             setting = JsonConvert.DeserializeObject<ApiResultResponse<ProjectSettingVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseProjSetting.Content.ReadAsStringAsync();
+            string? errorContent = await responseProjSetting.Content.ReadAsStringAsync();
             setting = new ApiResultResponse<ProjectSettingVM>
             {
                 IsSuccess = false,
-                Message = responseProjSetting.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+                Message =
+                    responseProjSetting.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
             };
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
-        string serverErrorMessage = setting!.Message!.ToString();
+        List<string> serverErrorMessageList = new();
+        string serverErrorMessage = setting!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
         if (!setting!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 
     // Project Status
@@ -112,18 +131,19 @@ public class ProjectController : Controller
     {
         ApiResultResponse<ProjectStatusVM> pStatus = new();
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        var responseProjStatus = await client.PutAsJsonAsync("ProjectStatus/update-projectstatusdefaultstatus/", projStatus);
+        HttpResponseMessage? responseProjStatus =
+            await client.PutAsJsonAsync("ProjectStatus/update-projectstatusdefaultstatus/", projStatus);
 
         if (responseProjStatus.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseProjStatus.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseProjStatus.Content.ReadAsStringAsync();
             pStatus = JsonConvert.DeserializeObject<ApiResultResponse<ProjectStatusVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseProjStatus.Content.ReadAsStringAsync();
+            string? errorContent = await responseProjStatus.Content.ReadAsStringAsync();
             pStatus = new ApiResultResponse<ProjectStatusVM>
             {
                 IsSuccess = false,
@@ -132,14 +152,16 @@ public class ProjectController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
-        string serverErrorMessage = pStatus!.Message!.ToString();
+        List<string> serverErrorMessageList = new();
+        string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
         if (!pStatus!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpGet]
@@ -147,8 +169,10 @@ public class ProjectController : Controller
     {
         ProjectStatusVM projStatus = new();
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var projectStatus = await client.GetFromJsonAsync<ApiResultResponse<ProjectStatusVM>>("ProjectStatus/byid-projectstatus/?Id=" + Id);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        ApiResultResponse<ProjectStatusVM>? projectStatus =
+            await client.GetFromJsonAsync<ApiResultResponse<ProjectStatusVM>>("ProjectStatus/byid-projectstatus/?Id=" +
+                                                                              Id);
         projStatus = projectStatus!.Data!;
         return PartialView("~/Areas/Environment/Views/Project/ProjectStatuses/_Edit.cshtml", projStatus);
     }
@@ -158,20 +182,25 @@ public class ProjectController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+            return Json(new
+            {
+                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
+
         ApiResultResponse<ProjectStatusVM> pStatus = new();
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var responseProjStatus = await client.PutAsJsonAsync("ProjectStatus/update-projectstatus/", projectStatus);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpResponseMessage? responseProjStatus =
+            await client.PutAsJsonAsync("ProjectStatus/update-projectstatus/", projectStatus);
         if (responseProjStatus.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseProjStatus.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseProjStatus.Content.ReadAsStringAsync();
             pStatus = JsonConvert.DeserializeObject<ApiResultResponse<ProjectStatusVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseProjStatus.Content.ReadAsStringAsync();
+            string? errorContent = await responseProjStatus.Content.ReadAsStringAsync();
             pStatus = new ApiResultResponse<ProjectStatusVM>
             {
                 IsSuccess = false,
@@ -180,13 +209,15 @@ public class ProjectController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
-        string serverErrorMessage = pStatus!.Message!.ToString();
+        List<string> serverErrorMessageList = new();
+        string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
         if (!pStatus!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpPost]
@@ -194,37 +225,40 @@ public class ProjectController : Controller
     {
         ApiResultResponse<ProjectStatusVM> pStatus = new();
         //if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var responseProjectStatus = await client.DeleteAsync("ProjectStatus/delete-projectstatus?Id=" + Id);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpResponseMessage? responseProjectStatus =
+            await client.DeleteAsync("ProjectStatus/delete-projectstatus?Id=" + Id);
         if (responseProjectStatus.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseProjectStatus.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseProjectStatus.Content.ReadAsStringAsync();
             pStatus = JsonConvert.DeserializeObject<ApiResultResponse<ProjectStatusVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseProjectStatus.Content.ReadAsStringAsync();
+            string? errorContent = await responseProjectStatus.Content.ReadAsStringAsync();
             pStatus = new ApiResultResponse<ProjectStatusVM>
             {
-                IsSuccess = false,
-                Message = responseProjectStatus.StatusCode.ToString()
+                IsSuccess = false, Message = responseProjectStatus.StatusCode.ToString()
             };
         }
+
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
+        List<string> serverErrorMessageList = new();
         string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
         if (!pStatus!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpGet]
     public async Task<IActionResult> CreateProjectStatus()
     {
         ProjectStatusVM projectStatus = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         return PartialView("~/Areas/Environment/Views/Project/ProjectStatuses/_Create.cshtml", projectStatus);
     }
 
@@ -233,36 +267,42 @@ public class ProjectController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+            return Json(new
+            {
+                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
+
         ApiResultResponse<ProjectStatusVM> pStatus = new();
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var responseProjectStatus = await client.PostAsJsonAsync("ProjectStatus/create-projectstatus", projectStatus);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpResponseMessage? responseProjectStatus =
+            await client.PostAsJsonAsync("ProjectStatus/create-projectstatus", projectStatus);
         if (responseProjectStatus.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseProjectStatus.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseProjectStatus.Content.ReadAsStringAsync();
             pStatus = JsonConvert.DeserializeObject<ApiResultResponse<ProjectStatusVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseProjectStatus.Content.ReadAsStringAsync();
+            string? errorContent = await responseProjectStatus.Content.ReadAsStringAsync();
             pStatus = new ApiResultResponse<ProjectStatusVM>
             {
-                IsSuccess = false,
-                Message = responseProjectStatus.StatusCode.ToString()
+                IsSuccess = false, Message = responseProjectStatus.StatusCode.ToString()
             };
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
+        List<string> serverErrorMessageList = new();
         string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
         if (!pStatus!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 
     // Project Category
@@ -270,8 +310,10 @@ public class ProjectController : Controller
     public async Task<IActionResult> EditProjectCategory(Guid Id)
     {
         ProjectCategoryVM projCategory = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var projectCategory = await client.GetFromJsonAsync<ApiResultResponse<ProjectCategoryVM>>("ProjectCategory/byid-projectcategory/?Id=" + Id);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        ApiResultResponse<ProjectCategoryVM>? projectCategory =
+            await client.GetFromJsonAsync<ApiResultResponse<ProjectCategoryVM>>(
+                "ProjectCategory/byid-projectcategory/?Id=" + Id);
         projCategory = projectCategory!.Data!;
         return PartialView("~/Areas/Environment/Views/Project/ProjectCategories/_Edit.cshtml", projCategory);
     }
@@ -281,21 +323,26 @@ public class ProjectController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+            return Json(new
+            {
+                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
+
         ApiResultResponse<ProjectCategoryVM> pCategory = new();
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var responseCategory = await client.PutAsJsonAsync("ProjectCategory/update-projectcategory/", projectCategory);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpResponseMessage? responseCategory =
+            await client.PutAsJsonAsync("ProjectCategory/update-projectcategory/", projectCategory);
 
         if (responseCategory.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseCategory.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseCategory.Content.ReadAsStringAsync();
             pCategory = JsonConvert.DeserializeObject<ApiResultResponse<ProjectCategoryVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseCategory.Content.ReadAsStringAsync();
+            string? errorContent = await responseCategory.Content.ReadAsStringAsync();
             pCategory = new ApiResultResponse<ProjectCategoryVM>
             {
                 IsSuccess = false,
@@ -304,14 +351,16 @@ public class ProjectController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
-        string serverErrorMessage = pCategory!.Message!.ToString();
+        List<string> serverErrorMessageList = new();
+        string serverErrorMessage = pCategory!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
         if (!pCategory!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpPost]
@@ -319,39 +368,41 @@ public class ProjectController : Controller
     {
         ApiResultResponse<ProjectCategoryVM> pCategory = new();
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var responseCategory = await client.DeleteAsync("ProjectCategory/delete-projectcategory?Id=" + Id);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpResponseMessage? responseCategory =
+            await client.DeleteAsync("ProjectCategory/delete-projectcategory?Id=" + Id);
         if (responseCategory.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseCategory.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseCategory.Content.ReadAsStringAsync();
             pCategory = JsonConvert.DeserializeObject<ApiResultResponse<ProjectCategoryVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseCategory.Content.ReadAsStringAsync();
+            string? errorContent = await responseCategory.Content.ReadAsStringAsync();
             pCategory = new ApiResultResponse<ProjectCategoryVM>
             {
-                IsSuccess = false,
-                Message = responseCategory.StatusCode.ToString()
+                IsSuccess = false, Message = responseCategory.StatusCode.ToString()
             };
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
+        List<string> serverErrorMessageList = new();
         string serverErrorMessage = pCategory!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
         if (!pCategory!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpGet]
     public async Task<IActionResult> CreateProjectCategory()
     {
         ProjectCategoryVM projectCategory = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         return PartialView("~/Areas/Environment/Views/Project/ProjectCategories/_Create.cshtml", projectCategory);
     }
 
@@ -360,35 +411,41 @@ public class ProjectController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+            return Json(new
+            {
+                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
+
         ApiResultResponse<ProjectCategoryVM> pCategory = new();
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var responseCategory = await client.PostAsJsonAsync("ProjectCategory/create-projectcategory", projectCategory);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpResponseMessage? responseCategory =
+            await client.PostAsJsonAsync("ProjectCategory/create-projectcategory", projectCategory);
         if (responseCategory.IsSuccessStatusCode)
         {
-            var jsonResponseLeadSource = await responseCategory.Content.ReadAsStringAsync();
+            string? jsonResponseLeadSource = await responseCategory.Content.ReadAsStringAsync();
             pCategory = JsonConvert.DeserializeObject<ApiResultResponse<ProjectCategoryVM>>(jsonResponseLeadSource);
         }
         else
         {
-            var errorContent = await responseCategory.Content.ReadAsStringAsync();
+            string? errorContent = await responseCategory.Content.ReadAsStringAsync();
             pCategory = new ApiResultResponse<ProjectCategoryVM>
             {
-                IsSuccess = false,
-                Message = responseCategory.StatusCode.ToString()
+                IsSuccess = false, Message = responseCategory.StatusCode.ToString()
             };
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new List<string>();
+        List<string> serverErrorMessageList = new();
         string serverErrorMessage = pCategory!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
         if (!pCategory!.IsSuccess)
+        {
             return Json(new { success = false, errors = serverErrorMessageList });
-        else
-            return Json(new { success = true });
+        }
+
+        return Json(new { success = true });
     }
 }

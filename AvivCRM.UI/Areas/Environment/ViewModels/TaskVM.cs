@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class TaskVM
 {
     public int Id { get; set; }
@@ -31,6 +30,3 @@ public class TaskVM
     public bool CustomFields { get; set; }
     public bool CopyTaskLink { get; set; }
 }
-
-
-

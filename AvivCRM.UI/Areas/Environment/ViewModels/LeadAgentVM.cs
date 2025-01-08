@@ -1,11 +1,6 @@
-namespace AvivCRM.UI.Areas.Environment.ViewModels
+namespace AvivCRM.UI.Areas.Environment.ViewModels;
+public class LeadAgentVM
 {
-    public class LeadAgentVM
-    {
-        public int Id { get; set; }
-        public string? AgentName { get; set; }
-    }
+    public int Id { get; set; }
+    public string? AgentName { get; set; }
 }
-
-
-

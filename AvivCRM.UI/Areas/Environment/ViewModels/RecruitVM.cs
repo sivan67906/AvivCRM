@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class RecruitVM
 {
     public RecruitGeneralSettingVM? RecruitGeneralSettingVMList { get; set; }
@@ -9,6 +8,3 @@ public class RecruitVM
     public List<RecruitJobApplicationStatusSettingVM>? RecruitJobApplicationStatusSettingVMList { get; set; }
     public List<RecruitCustomQuestionSettingVM>? RecruitCustomQuestionSettingVMList { get; set; }
 }
-
-
-

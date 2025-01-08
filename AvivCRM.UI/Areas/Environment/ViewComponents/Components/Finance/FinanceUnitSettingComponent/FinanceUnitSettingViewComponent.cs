@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AvivCRM.UI.Areas.Environment.ViewComponents.Components.Finance.FinanceUnitSettingComponent;
-
 public class FinanceUnitSettingViewComponent : ViewComponent
 {
     public IViewComponentResult Invoke(List<FinanceUnitSettingVM> financeUnitSettings)
@@ -10,6 +9,3 @@ public class FinanceUnitSettingViewComponent : ViewComponent
         return View(financeUnitSettings);
     }
 }
-
-
-

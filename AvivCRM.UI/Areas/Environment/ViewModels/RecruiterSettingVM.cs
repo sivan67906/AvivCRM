@@ -1,5 +1,4 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
-
 public class RecruiterSettingVM
 {
     public int Id { get; set; }
@@ -7,6 +6,3 @@ public class RecruiterSettingVM
     public int RecruiterStatusId { get; set; }
     public string? RecruiterStatusName { get; set; }
 }
-
-
-

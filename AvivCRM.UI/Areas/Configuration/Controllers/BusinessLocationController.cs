@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json;
 using AvivCRM.UI.Areas.Configuration.ViewModels;
 using AvivCRM.UI.Utilities;
@@ -15,10 +16,12 @@ public class BusinessLocationController : Controller
         _httpClientFactory = httpClientFactory;
         _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     }
+
     public async Task<IActionResult> Index()
     {
         return View();
     }
+
     public async Task<IActionResult> BusinessLocation()
     {
         // Page Title
@@ -29,10 +32,11 @@ public class BusinessLocationController : Controller
         ViewData["bParent"] = "Business Location";
         ViewData["bChild"] = "Business Location";
 
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
         ViewBag.CountryList = countries;
-        var businessLocationList = await client.GetFromJsonAsync<List<BusinessLocationVM>>("BusinessLocation/GetAll");
+        List<BusinessLocationVM>? businessLocationList =
+            await client.GetFromJsonAsync<List<BusinessLocationVM>>("BusinessLocation/GetAll");
         return View(businessLocationList);
     }
 
@@ -40,40 +44,41 @@ public class BusinessLocationController : Controller
     public async Task<IActionResult> Create()
     {
         BusinessLocationVM businessLocation = new();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        var countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
         ViewBag.CompanyList = companies;
         ViewBag.CountryList = countries;
         return PartialView("_Create", businessLocation);
     }
+
     private void WriteExtractedError(Stream stream)
     {
+        Dictionary<string, List<string>>? errorsFromWebAPI = Utility.ExtractErrorsFromWebAPIResponse(stream.ToString());
 
-        var errorsFromWebAPI = Utility.ExtractErrorsFromWebAPIResponse(stream.ToString());
-
-        foreach (var fieldWithErrors in errorsFromWebAPI)
+        foreach (KeyValuePair<string, List<string>> fieldWithErrors in errorsFromWebAPI)
         {
             Console.WriteLine($"-{fieldWithErrors.Key}");
-            foreach (var error in fieldWithErrors.Value)
+            foreach (string? error in fieldWithErrors.Value)
             {
                 Console.WriteLine($"  {error}");
             }
         }
-
     }
-    [HttpPost, ActionName("GetStatesByCountryId")]
+
+    [HttpPost]
+    [ActionName("GetStatesByCountryId")]
     public async Task<IActionResult> GetStatesByCountryId(string countryId)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var states = new List<StateVM>();
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<StateVM>? states = new();
 
-        using (var response = await client.GetAsync("State/GetByParentId/?parentId=" + countryId
-            , HttpCompletionOption.ResponseHeadersRead))
+        using (HttpResponseMessage? response = await client.GetAsync("State/GetByParentId/?parentId=" + countryId
+                   , HttpCompletionOption.ResponseHeadersRead))
         {
-            var stream = await response.Content.ReadAsStreamAsync();
+            Stream? stream = await response.Content.ReadAsStreamAsync();
 
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            if (response.StatusCode == HttpStatusCode.BadRequest)
             {
                 WriteExtractedError(stream);
             }
@@ -81,23 +86,26 @@ public class BusinessLocationController : Controller
             {
                 states = await JsonSerializer.DeserializeAsync<List<StateVM>>(stream, _options);
             }
+
             return Json(states);
         }
     }
 
-    [HttpPost, ActionName("GetCitiesByStateId")]
+    [HttpPost]
+    [ActionName("GetCitiesByStateId")]
     public async Task<IActionResult> GetCitiesByStateId(string stateId)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var cities = new List<CityVM>();
-        using (var response = await client.GetAsync("City/GetByParentId/?parentId=" + stateId
-            , HttpCompletionOption.ResponseHeadersRead))
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CityVM>? cities = new();
+        using (HttpResponseMessage? response = await client.GetAsync("City/GetByParentId/?parentId=" + stateId
+                   , HttpCompletionOption.ResponseHeadersRead))
         {
             if (response.IsSuccessStatusCode)
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                Stream? stream = await response.Content.ReadAsStreamAsync();
                 cities = await JsonSerializer.DeserializeAsync<List<CityVM>>(stream, _options);
             }
+
             return Json(cities);
         }
     }
@@ -105,33 +113,43 @@ public class BusinessLocationController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(BusinessLocationVM businessLocation)
     {
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var businesslocation = await client.PostAsJsonAsync("BusinessLocation/Create", businessLocation);
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpResponseMessage? businesslocation =
+            await client.PostAsJsonAsync("BusinessLocation/Create", businessLocation);
         return RedirectToAction("BusinessLocation");
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        var companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        var countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        var states = await client.GetFromJsonAsync<List<StateVM>>("State/GetAll");
-        var cities = await client.GetFromJsonAsync<List<CityVM>>("City/GetAll");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
+        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
+        List<StateVM>? states = await client.GetFromJsonAsync<List<StateVM>>("State/GetAll");
+        List<CityVM>? cities = await client.GetFromJsonAsync<List<CityVM>>("City/GetAll");
         ViewBag.CompanyList = companies;
         ViewBag.CountryList = countries;
         ViewBag.StateList = states;
         ViewBag.CityList = cities;
-        var businessLocation = await client.GetFromJsonAsync<BusinessLocationVM>("BusinessLocation/GetById/?Id=" + Id);
+        BusinessLocationVM? businessLocation =
+            await client.GetFromJsonAsync<BusinessLocationVM>("BusinessLocation/GetById/?Id=" + Id);
         return PartialView("_Edit", businessLocation);
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(BusinessLocationVM businessLocation)
     {
-        if (businessLocation.Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (businessLocation.Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<BusinessLocationVM>("BusinessLocation/Update/", businessLocation);
         return RedirectToAction("BusinessLocation");
     }
@@ -156,8 +174,12 @@ public class BusinessLocationController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(int Id)
     {
-        if (Id == 0) return View();
-        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        if (Id == 0)
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.DeleteAsync("BusinessLocation/Delete?Id=" + Id);
         return RedirectToAction("BusinessLocation");
     }
@@ -194,6 +216,3 @@ public class BusinessLocationController : Controller
     //    }
     //}
 }
-
-
-
