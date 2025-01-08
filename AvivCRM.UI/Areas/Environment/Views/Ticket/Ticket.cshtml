@@ -1,4 +1,32 @@
-﻿<div class="row">
+﻿@section Scripts {
+	
+	<script>
+		$(document).ready(function () {
+				  $('#ulTicketContainer a[href="#tbTicketGroups"]').ready(function() {
+		  // Clear the content of all tab panes
+				$('.tab-pane').empty();
+
+				// Load content for the selected tab
+				var tabId = $('#ulTicketContainer a[href="#tbTicketGroups"]').attr('href');
+				var url = $('#ulTicketContainer a[href="#tbTicketGroups"]').data('url');
+				$(tabId).load(url);
+		});
+
+		$('#ulTicketContainer a').on('click', function (e) {
+				e.preventDefault();
+
+				// Clear the content of all tab panes
+				$('.tab-pane').empty();
+
+				// Load content for the selected tab
+				var tabId = $(this).attr('href');
+				var url = $(this).data('url');
+				$(tabId).load(url);
+			});
+		});
+	</script>
+}
+<div class="row">
 	<div class="col-12 col-lg-10 mx-auto">
 		<div class="card">
 			<div class="card-body">
@@ -39,52 +67,3 @@
 		</div><!--end card-->
 	</div>
 </div>
-
-@section Scripts {
-	<script>
-		$(document).ready(function () {
-				  $('#ulTicketContainer a[href="#tbTicketGroups"]').ready(function() {
-		  // Clear the content of all tab panes
-				$('.tab-pane').empty();
-
-				// Load content for the selected tab
-				var tabId = $('#ulTicketContainer a[href="#tbTicketGroups"]').attr('href');
-				var url = $('#ulTicketContainer a[href="#tbTicketGroups"]').data('url');
-				$(tabId).load(url);
-		});
-
-		$('#ulTicketContainer a').on('click', function (e) {
-				e.preventDefault();
-
-				// Clear the content of all tab panes
-				$('.tab-pane').empty();
-
-				// Load content for the selected tab
-				var tabId = $(this).attr('href');
-				var url = $(this).data('url');
-				$(tabId).load(url);
-			});
-		});
-	</script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-
-		  let hash = document.location.hash;
-		  let prefix = "?tab=";
-
-		  //change hash url on page reload
-		  if (hash) {
-			$('.nav-tabs a[href=\"'+hash.replace(prefix,"")+'\"]').tab('show');
-		  }
-
-		  // change hash url on switch tab
-		  $('.nav-tabs a').on('shown.bs.tab', function (e) {
-			 window.location.hash = e.target.hash.replace("#", "#" + prefix);
-		  });
-		});
-
-		 $(window).on('load', function() {
-		 $('.modal').modal({backdrop: 'static', keyboard: false});
-		});
-	</script>
-}
