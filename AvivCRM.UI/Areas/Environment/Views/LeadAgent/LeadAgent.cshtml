@@ -1,5 +1,5 @@
 @model IEnumerable<AvivCRM.UI.Areas.Environment.ViewModels.LeadAgentVM>;
-<div class="modal fade" id="mdlProductShow">
+<div class="modal fade" id="mdlLeadAgentShow">
 	<div class="modal-dialog" id="PlaceHolderHere">
 	</div>
 </div>
@@ -15,7 +15,7 @@
 					</div><!--end col-->
 					<div class="col-auto">
 						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-						        data-target="#mdlProductShow" data-url="@Url.Action("Create")">
+								data-target="#mdlLeadAgentShow" data-url="@Url.Action("Create")">
 							<i class="fas fa-plus me-2"></i>Add Lead Agent
 						</button>
 					</div><!--end col-->
@@ -42,7 +42,7 @@
 								<tr>
 
 									<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
-									<td>@item.AgentName</td>
+									<td>@item.Name</td>
 
 									<td>
 										@* <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
@@ -54,14 +54,14 @@
                                     <i class="las la-trash-alt text-secondary font-16"></i>
                                 </button> *@
 
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-										        data-target="#mdlProductShow" data-url="@Url.Action($"Edit/{item.Id}")">
+											<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+										        data-target="#mdlLeadAgentShow" data-url="@Url.Action($"Edit/{item.Id}")">
 											<i class="las la-pen text-secondary font-16"></i>
 										</button>
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-										        data-target="#mdlProductShow" data-url="@Url.Action($"Delete/{item.Id}")">
-											<i class="las la-trash-alt text-secondary font-16"></i>
-										</button>
+											<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+											   data-url="@Url.Action($"Delete/{item.Id}")">
+												<i class="las la-trash-alt text-secondary font-16"></i>
+											</a>
 									</td>
 								</tr>
 							}
@@ -77,9 +77,5 @@
 @section Scripts {
 	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
-	<script type="text/javascript">
-        $(window).on('load', function() {
-         $('#mdlProductShow').modal({backdrop: 'static', keyboard: false});
-        });
-    </script>
+	
 }

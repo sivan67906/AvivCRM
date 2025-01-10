@@ -1,5 +1,5 @@
 @model IEnumerable<AvivCRM.UI.Areas.Environment.ViewModels.LeadCategoryVM>;
-<div class="modal fade" id="mdlProductShow">
+<div class="modal fade" id="mdlLeadCategoryShow">
 	<div class="modal-dialog " id="PlaceHolderHere">
 	</div>
 </div>
@@ -11,11 +11,11 @@
 			<div class="card-header">
 				<div class="row align-items-center">
 					<div class="col">
-						<h4 class="card-title">LeadCategory Index</h4>
+						<h4 class="card-title">Lead Category Index</h4>
 					</div><!--end col-->
 					<div class="col-auto">
 						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-						        data-target="#mdlProductShow" data-url="@Url.Action("Create")">
+								data-target="#mdlLeadCategoryShow" data-url="@Url.Action("Create")">
 							<i class="fas fa-plus me-2"></i>Add Lead Category
 						</button>
 					</div><!--end col-->
@@ -41,7 +41,7 @@
 								<tr>
 
 									<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
-									<td>@item.CategoryName</td>
+									<td>@item.Name</td>
 
 									<td>
 										@* <button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
@@ -53,14 +53,14 @@
                                     <i class="las la-trash-alt text-secondary font-16"></i>
                                 </button> *@
 
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-										        data-target="#mdlProductShow" data-url="@Url.Action($"Edit/{item.Id}")">
+										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+										        data-target="#mdlLeadCategoryShow" data-url="@Url.Action($"Edit/{item.Id}")">
 											<i class="las la-pen text-secondary font-16"></i>
 										</button>
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-										        data-target="#mdlProductShow" data-url="@Url.Action($"Delete/{item.Id}")">
+										<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+										   data-url="@Url.Action($"Delete/{item.Id}")">
 											<i class="las la-trash-alt text-secondary font-16"></i>
-										</button>
+										</a>
 									</td>
 								</tr>
 							}
@@ -76,9 +76,5 @@
 @section Scripts {
 	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
-	<script type="text/javascript">
-        $(window).on('load', function() {
-         $('#mdlProductShow').modal({backdrop: 'static', keyboard: false});
-        });
-    </script>
+	
 }

@@ -1,9 +1,6 @@
 @model AvivCRM.UI.Areas.Environment.ViewModels.ContractVM;
 
-@section Styles {
-}
-
-<div class="modal fade" id="mdlCurrenceyShow">
+<div class="modal fade" id="mdlContractShow">
 	<div class="modal-dialog modal-xl" id="PlaceHolderHere">
 	</div>
 </div>
@@ -25,7 +22,7 @@
 						</div>
 						<div class="card" style="box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;">
 							<div class="card-body">
-								<form asp-action="Contract" method="post">
+								<form id="editFormContract" data-url="Edit" asp-action="Edit" method="post">
 									<input id="txtId" type="hidden" name="Id" value="@Model.Id"/>
 									<div class="row mt-2">
 										<span>Contract Prefix<span class="f-14 ms-1 text-danger">*</span></span>

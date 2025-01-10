@@ -1,5 +1,8 @@
+using System.Text;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
@@ -12,7 +15,7 @@ public class LeadAgentController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> LeadAgent(string searchQuery = null)
+    public async Task<IActionResult> LeadAgent(string searchQuery = null!)
     {
         ViewData["pTitle"] = "Lead Agents Profile";
 
@@ -24,90 +27,231 @@ public class LeadAgentController : Controller
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         //var productList = await client.GetFromJsonAsync<List<ProductVM>>("Product/GetAll");
 
-        List<LeadAgentVM> productList;
+        ApiResultResponse<List<LeadAgentVM>> leadAgentList = new();
 
         if (string.IsNullOrEmpty(searchQuery))
         {
             // Fetch all products if no search query is provided
-            productList = await client.GetFromJsonAsync<List<LeadAgentVM>>("LeadAgent/GetAll");
+            leadAgentList = await client.GetFromJsonAsync<ApiResultResponse<List<LeadAgentVM>>>("LeadAgent/all-leadagent");
         }
         else
         {
             // Fetch products matching the search query
-            productList =
-                await client.GetFromJsonAsync<List<LeadAgentVM>>($"LeadAgent/SearchByName?name={searchQuery}");
+            leadAgentList =
+                await client.GetFromJsonAsync<ApiResultResponse<List<LeadAgentVM>>>($"LeadAgent/SearchByName?name={searchQuery}");
         }
 
         ViewData["searchQuery"] = searchQuery; // Retain search query
-        return View(productList);
+        //ViewBag.ApiResult = leadSourceList!.Data;
+        //ViewBag.ApiMessage = leadSourceList!.Message;
+        //ViewBag.ApiStatus = leadSourceList.IsSuccess;
+        return View(leadAgentList!.Data);
 
-        return View();
+
     }
 
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        LeadAgentVM product = new();
-        return PartialView("_Create", product);
+        LeadAgentVM leadAgent = new();
+        return PartialView("_Create", leadAgent);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(LeadAgentVM product)
+    public async Task<IActionResult> Create(LeadAgentVM leadAgent)
     {
+        ApiResultResponse<LeadAgentVM> agent = new();
+
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        //if (leadAgent.Name == null)
+        //{
+        //    leadAgent.Name = "";
+        //}
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PostAsJsonAsync<LeadAgentVM>("LeadAgent/Create", product);
-        return RedirectToAction("LeadAgent");
+        string? jsonleadAgent = JsonConvert.SerializeObject(leadAgent);
+        StringContent? leadAgentcontent = new(jsonleadAgent, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseLeadAgent = await client.PostAsync("LeadAgent/create-leadagent", leadAgentcontent);
+        if (responseLeadAgent.IsSuccessStatusCode)
+        {
+            string? jsonResponseLeadAgent = await responseLeadAgent.Content.ReadAsStringAsync();
+            agent = JsonConvert.DeserializeObject<ApiResultResponse<LeadAgentVM>>(jsonResponseLeadAgent);
+        }
+        else
+        {
+            string? errorContent = await responseLeadAgent.Content.ReadAsStringAsync();
+            agent = new ApiResultResponse<LeadAgentVM>
+            {
+                IsSuccess = false,
+                Message = responseLeadAgent.StatusCode + "ErrorContent: " + errorContent
+            };
+        }
+
+        //ViewBag.ApiResult = source!.Data;
+        //ViewBag.ApiMessage = source!.Message;
+        //ViewBag.ApiStatus = source.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = source!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!agent!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
+        //return RedirectToAction("LeadAgent");
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(int Id)
+    public async Task<IActionResult> Edit(Guid Id)
     {
-        if (Id == 0)
+        if (GuidExtensions.IsNullOrEmpty(Id))
         {
             return View();
         }
 
+        ApiResultResponse<LeadAgentVM> leadagent = new();
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        LeadAgentVM? product = await client.GetFromJsonAsync<LeadAgentVM>("LeadAgent/GetById/?Id=" + Id);
-        return PartialView("_Edit", product);
+        leadagent = await client.GetFromJsonAsync<ApiResultResponse<LeadAgentVM>>("LeadAgent/byid-leadagent/?Id=" + Id);
+        //ViewBag.ApiResult = leadSource!.Data;
+        //ViewBag.ApiMessage = leadSource!.Message;
+        //ViewBag.ApiStatus = leadSource.IsSuccess;
+
+        if (!leadagent!.IsSuccess)
+        {
+            return View();
+        }
+        return PartialView("_Edit", leadagent.Data);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update(LeadAgentVM product)
+    public async Task<IActionResult> Edit(LeadAgentVM leadAgent)
     {
-        if (product.Id == 0)
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (leadAgent.Name == null)
+        {
+            leadAgent.Name = "";
+        }
+
+        ApiResultResponse<LeadAgentVM> agent = new();
+
+        if (GuidExtensions.IsNullOrEmpty(leadAgent.Id))
         {
             return View();
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PutAsJsonAsync<LeadAgentVM>("LeadAgent/Update/", product);
-        return RedirectToAction("LeadAgent");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Delete(int Id)
-    {
-        if (Id == 0)
+        string? jsonleadAgent = JsonConvert.SerializeObject(leadAgent);
+        StringContent? leadAgentcontent = new(jsonleadAgent, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseLeadAgent =
+            await client.PutAsync("LeadAgent/update-leadagent/", leadAgentcontent);
+        if (responseLeadAgent.IsSuccessStatusCode)
         {
-            return View();
+            string? jsonResponseLeadAgent = await responseLeadAgent.Content.ReadAsStringAsync();
+            agent = JsonConvert.DeserializeObject<ApiResultResponse<LeadAgentVM>>(jsonResponseLeadAgent);
+        }
+        else
+        {
+            string? errorContent = await responseLeadAgent.Content.ReadAsStringAsync();
+            agent = new ApiResultResponse<LeadAgentVM>
+            {
+                IsSuccess = false,
+                Message = responseLeadAgent.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
         }
 
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        LeadAgentVM? product = await client.GetFromJsonAsync<LeadAgentVM>("LeadAgent/GetById/?Id=" + Id);
-        return PartialView("_Delete", product);
-    }
+        //ViewBag.ApiResult = agent!.Data;
+        //ViewBag.ApiMessage = agent!.Message;
+        //ViewBag.ApiStatus = agent.IsSuccess;
 
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = agent!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!agent!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
+    }
     [HttpPost]
-    public async Task<IActionResult> Delete(LeadAgentVM product)
+    public async Task<IActionResult> Delete(Guid Id)
     {
-        if (product.Id == 0)
+        //if (GuidExtensions.IsNullOrEmpty(Id)) return View();
+        if (!ModelState.IsValid)
         {
-            return View();
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
+        ApiResultResponse<LeadAgentVM> agent = new();
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        HttpResponseMessage? productList = await client.DeleteAsync("LeadAgent/Delete?Id=" + product.Id);
-        return RedirectToAction("LeadAgent");
+        HttpResponseMessage? responseLeadAgent = await client.DeleteAsync("LeadAgent/delete-leadagent?Id=" + Id);
+        if (responseLeadAgent.IsSuccessStatusCode)
+        {
+            string? jsonResponseLeadSource = await responseLeadAgent.Content.ReadAsStringAsync();
+            agent = JsonConvert.DeserializeObject<ApiResultResponse<LeadAgentVM>>(jsonResponseLeadSource);
+        }
+        else
+        {
+            string? errorContent = await responseLeadAgent.Content.ReadAsStringAsync();
+            agent = new ApiResultResponse<LeadAgentVM>
+            {
+                IsSuccess = false,
+                Message = responseLeadAgent.StatusCode.ToString()
+            };
+        }
+
+        //ViewBag.ApiResult = source!.Data;
+        //ViewBag.ApiMessage = source!.Message;
+        //ViewBag.ApiStatus = source.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = source!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!agent!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 }

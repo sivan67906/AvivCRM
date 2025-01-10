@@ -5,7 +5,7 @@
 		<h6 class="modal-title m-0" id="ECurrencyLabel1">Edit Tax Details</h6>
 	</div>
 	<div class="modal-body">
-		<form action="Update">
+		<form id="editFormTax" data-url="Edit" asp-action="Edit" method="post">
 			<input id="txtId" type="hidden" name="Id" value="@Model.Id"/>
 
 			<div class="row">
