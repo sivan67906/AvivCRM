@@ -6,7 +6,7 @@
 		<h5 class="modal-title mt-0" id="">Edit Lead Category Details</h5>
 	</div>
 	<div class="modal-body">
-		<form action="Update">
+		<form id="editFormLeadCategory" data-url="Edit" asp-action="Edit" method="post">
 			<input id="txtId" type="hidden" name="Id" value="@Model.Id"/>
 			<div class="row mt-3">
 				<div class="col-lg-12">Category <span class="text-danger">*</span></div>
@@ -14,22 +14,17 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
-					<input id="txtName" type="text" class="form-control" name="CategoryName" placeholder="enter Name" value="@Model.CategoryName">
-					<span asp-validation-for="CategoryName" class="text-danger"></span>
+					<input id="txtName" type="text" class="form-control" name="Name" placeholder="enter Name" value="@Model.Name">
+					@* <span asp-validation-for="Name" class="text-danger"></span> *@
 				</div>
 
 			</div>
 			<div class="row mt-4 text-end ">
 				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="button" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
 				</div>
 			</div>
 		</form>
 	</div>
 </div>
-
-
-<script type="text/javascript">
-		
-	</script>

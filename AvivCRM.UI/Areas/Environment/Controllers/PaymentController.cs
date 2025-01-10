@@ -1,5 +1,8 @@
+using System.Text;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
@@ -12,92 +15,249 @@ public class PaymentController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Payment(string searchQuery = null!)
     {
-        return View();
-    }
-
-    public async Task<IActionResult> Payment()
-    {
-        // Page Title
         ViewData["pTitle"] = "Payments Profile";
 
         // Breadcrumb
         ViewData["bGParent"] = "Environment";
         ViewData["bParent"] = "Payment";
         ViewData["bChild"] = "Payment View";
-
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<PaymentVM>? PaymentList = await client.GetFromJsonAsync<List<PaymentVM>>("Payment/GetAll");
 
-        return View(PaymentList);
+        ApiResultResponse<List<PaymentVM>> paymentList = new();
+
+        if (string.IsNullOrEmpty(searchQuery))
+        {
+            // Fetch all products if no search query is provided
+            paymentList =
+                await client.GetFromJsonAsync<ApiResultResponse<List<PaymentVM>>>("Payment/all-payment");
+        }
+        else
+        {
+            // Fetch products matching the search query
+            paymentList =
+                await client.GetFromJsonAsync<ApiResultResponse<List<PaymentVM>>>(
+                    $"Payment/SearchByName?name={searchQuery}");
+        }
+
+        ViewData["searchQuery"] = searchQuery; // Retain search query
+
+        //ViewBag.ApiResult = paymentList!.Data;
+        //ViewBag.ApiMessage = paymentList!.Message;
+        //ViewBag.ApiStatus = paymentList.IsSuccess;
+        return View(paymentList!.Data);
     }
 
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        PaymentVM company = new();
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        return PartialView("_Create", company);
+        PaymentVM payment = new();
+        return PartialView("_Create", payment);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(PaymentVM Payment)
+    public async Task<IActionResult> Create(PaymentVM payment)
     {
+        ApiResultResponse<PaymentVM> payments = new();
+
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        //if (payment.Name == null)
+        //{
+        //    payment.Name = "";
+        //}
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PostAsJsonAsync<PaymentVM>("Payment/Create", Payment);
-        return RedirectToAction("Payment");
+
+        string? jsonpayment = JsonConvert.SerializeObject(payment);
+        StringContent? paymentcontent = new(jsonpayment, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responsePayment =
+            await client.PostAsync("Payment/create-payment", paymentcontent);
+
+        if (responsePayment.IsSuccessStatusCode)
+        {
+            string? jsonResponsePayment = await responsePayment.Content.ReadAsStringAsync();
+            payments = JsonConvert.DeserializeObject<ApiResultResponse<PaymentVM>>(jsonResponsePayment);
+        }
+        else
+        {
+            string? errorContent = await responsePayment.Content.ReadAsStringAsync();
+            payments = new ApiResultResponse<PaymentVM>
+            {
+                IsSuccess = false,
+                Message = responsePayment.StatusCode + "ErrorContent: " + errorContent
+            };
+        }
+
+        //ViewBag.ApiResult = payment!.Data;
+        //ViewBag.ApiMessage = payment!.Message;
+        //ViewBag.ApiStatus = payment.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = payment!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!payments!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(int Id)
+    public async Task<IActionResult> Edit(Guid Id)
     {
-        if (Id == 0)
+        if (GuidExtensions.IsNullOrEmpty(Id))
         {
             return View();
         }
 
+        ApiResultResponse<PaymentVM> payment = new();
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        PaymentVM? Payment = await client.GetFromJsonAsync<PaymentVM>("Payment/GetById/?Id=" + Id);
-        return PartialView("_Edit", Payment);
+        payment =
+            await client.GetFromJsonAsync<ApiResultResponse<PaymentVM>>("Payment/byid-payment/?Id=" + Id);
+
+        //ViewBag.ApiResult = payment!.Data;
+        //ViewBag.ApiMessage = payment!.Message;
+        //ViewBag.ApiStatus = payment.IsSuccess;
+
+        if (!payment!.IsSuccess)
+        {
+            return View();
+        }
+
+        return PartialView("_Edit", payment.Data);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update(PaymentVM Payment)
+    public async Task<IActionResult> Edit(PaymentVM payment)
     {
-        if (Payment.Id == 0)
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        //if (payment.Name == null)
+        //{
+        //    payment.Name = "";
+        //}
+
+        ApiResultResponse<PaymentVM> payments = new();
+
+        if (GuidExtensions.IsNullOrEmpty(payment.Id))
         {
             return View();
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PutAsJsonAsync<PaymentVM>("Payment/Update/", Payment);
-        return RedirectToAction("Payment");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Delete(int Id)
-    {
-        if (Id == 0)
+        string? jsonpayment = JsonConvert.SerializeObject(payment);
+        StringContent? paymentcontent = new(jsonpayment, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responsePayment =
+            await client.PutAsync("Payment/update-payment/", paymentcontent);
+        if (responsePayment.IsSuccessStatusCode)
         {
-            return View();
+            string? jsonResponsePayment = await responsePayment.Content.ReadAsStringAsync();
+            payments = JsonConvert.DeserializeObject<ApiResultResponse<PaymentVM>>(jsonResponsePayment);
+        }
+        else
+        {
+            string? errorContent = await responsePayment.Content.ReadAsStringAsync();
+            payments = new ApiResultResponse<PaymentVM>
+            {
+                IsSuccess = false,
+                Message = responsePayment.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
         }
 
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        PaymentVM? Payment = await client.GetFromJsonAsync<PaymentVM>("Payment/GetById/?Id=" + Id);
-        return PartialView("_Delete", Payment);
+        //ViewBag.ApiResult = payment!.Data;
+        //ViewBag.ApiMessage = payment!.Message;
+        //ViewBag.ApiStatus = payment.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = payment!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!payments!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpPost]
-    public async Task<IActionResult> Delete(PaymentVM Payment)
+    public async Task<IActionResult> Delete(Guid Id)
     {
-        if (Payment.Id == 0)
+        //if (GuidExtensions.IsNullOrEmpty(Id)) return View();
+        if (!ModelState.IsValid)
         {
-            return View();
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
 
+        ApiResultResponse<PaymentVM> payment = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.DeleteAsync("Payment/Delete?Id=" + Payment.Id);
-        return RedirectToAction("Payment");
+        HttpResponseMessage? responsePayment = await client.DeleteAsync("Payment/delete-payment?Id=" + Id);
+        if (responsePayment.IsSuccessStatusCode)
+        {
+            string? jsonResponsePayment = await responsePayment.Content.ReadAsStringAsync();
+            payment = JsonConvert.DeserializeObject<ApiResultResponse<PaymentVM>>(jsonResponsePayment);
+        }
+        else
+        {
+            string? errorContent = await responsePayment.Content.ReadAsStringAsync();
+            payment = new ApiResultResponse<PaymentVM>
+            {
+                IsSuccess = false,
+                Message = responsePayment.StatusCode.ToString()
+            };
+        }
+
+        //ViewBag.ApiResult = payment!.Data;
+        //ViewBag.ApiMessage = payment!.Message;
+        //ViewBag.ApiStatus = payment.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = payment!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!payment!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 }

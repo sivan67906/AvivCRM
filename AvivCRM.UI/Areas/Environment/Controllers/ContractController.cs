@@ -1,5 +1,8 @@
+using System.Text;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
@@ -12,119 +15,249 @@ public class ContractController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Contract(string searchQuery = null!)
     {
-        return View();
-    }
-
-    public async Task<IActionResult> Contract(int id = 0)
-    {
-        // Page Title
-        ViewData["pTitle"] = "Contracts Profile";
+        ViewData["pTitle"] = "contracts Profile";
 
         // Breadcrumb
         ViewData["bGParent"] = "Environment";
-        ViewData["bParent"] = "Contract";
-        ViewData["bChild"] = "Contract View";
-
+        ViewData["bParent"] = "contract";
+        ViewData["bChild"] = "contract View";
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        ContractVM contract;
+        ApiResultResponse<List<ContractVM>> contractList = new();
 
-        if (id > 0)
+        if (string.IsNullOrEmpty(searchQuery))
         {
-            // Fetch the specific contract by ID
-            contract = await client.GetFromJsonAsync<ContractVM>("Contract/GetById/?Id=" + id);
+            // Fetch all products if no search query is provided
+            contractList =
+                await client.GetFromJsonAsync<ApiResultResponse<List<ContractVM>>>("Contract/all-contract");
         }
         else
         {
-            // Fetch all contracts and take the first one
-            List<ContractVM>? contractList = await client.GetFromJsonAsync<List<ContractVM>>("Contract/GetAll");
-            contract = contractList?.FirstOrDefault();
+            // Fetch products matching the search query
+            contractList =
+                await client.GetFromJsonAsync<ApiResultResponse<List<ContractVM>>>(
+                    $"Contract/SearchByName?name={searchQuery}");
         }
 
-        if (contract == null)
-        {
-            return NotFound();
-        }
+        ViewData["searchQuery"] = searchQuery; // Retain search query
 
-        return View(contract); // Pass the contract data to the view for editing
+        //ViewBag.ApiResult = contractList!.Data;
+        //ViewBag.ApiMessage = contractList!.Message;
+        //ViewBag.ApiStatus = contractList.IsSuccess;
+        return View(contractList!.Data);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Create()
+    {
+        ContractVM contract = new();
+        return PartialView("_Create", contract);
+    }
 
     [HttpPost]
-    public async Task<IActionResult> Contract(ContractVM updatedContract)
+    public async Task<IActionResult> Create(ContractVM contract)
     {
+        ApiResultResponse<ContractVM> source = new();
+
         if (!ModelState.IsValid)
         {
-            return View(updatedContract); // Return the same view with validation errors
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
+
+        //if (contract.Name == null)
+        //{
+        //    contract.Name = "";
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        // Send the updated contract back to the API
-        HttpResponseMessage? response = await client.PutAsJsonAsync("Contract/Update", updatedContract);
+        string? jsoncontract = JsonConvert.SerializeObject(contract);
+        StringContent? contractcontent = new(jsoncontract, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseContract =
+            await client.PostAsync("Contract/create-contract", contractcontent);
 
-        if (response.IsSuccessStatusCode)
+        if (responseContract.IsSuccessStatusCode)
         {
-            // Redirect to the contract listing page or success message
-            return RedirectToAction("Contract");
+            string? jsonResponseContract = await responseContract.Content.ReadAsStringAsync();
+            source = JsonConvert.DeserializeObject<ApiResultResponse<ContractVM>>(jsonResponseContract);
+        }
+        else
+        {
+            string? errorContent = await responseContract.Content.ReadAsStringAsync();
+            source = new ApiResultResponse<ContractVM>
+            {
+                IsSuccess = false,
+                Message = responseContract.StatusCode + "ErrorContent: " + errorContent
+            };
         }
 
-        ModelState.AddModelError("", "Failed to update the contract. Please try again.");
-        return View(updatedContract); // Show the error on the same view
+        //ViewBag.ApiResult = source!.Data;
+        //ViewBag.ApiMessage = source!.Message;
+        //ViewBag.ApiStatus = source.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = source!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!source!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Edit(Guid Id)
+    {
+        if (GuidExtensions.IsNullOrEmpty(Id))
+        {
+            return View();
+        }
 
-//    [HttpGet]
-//    public async Task<IActionResult> Create()
-//    {
-//        ContractVM company = new();
-//        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-//        return PartialView("_Create", company);
-//    }
+        ApiResultResponse<ContractVM> contract = new();
 
-//    [HttpPost]
-//    public async Task<IActionResult> Create(ContractVM currency)
-//    {
-//        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-//        await client.PostAsJsonAsync<ContractVM>("Contract/Create", currency);
-//        return RedirectToAction("Contract");
-//    }
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        contract =
+            await client.GetFromJsonAsync<ApiResultResponse<ContractVM>>("Contract/byid-contract/?Id=" + Id);
 
-//    [HttpGet]
-//    public async Task<IActionResult> Edit(int Id)
-//    {
-//        if (Id == 0) return View();
-//        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-//        var currency = await client.GetFromJsonAsync<ContractVM>("Contract/GetById/?Id=" + Id);
-//        return PartialView("_Edit", currency);
-//    }
+        //ViewBag.ApiResult = contract!.Data;
+        //ViewBag.ApiMessage = contract!.Message;
+        //ViewBag.ApiStatus = contract.IsSuccess;
 
-//    [HttpPost]
-//    public async Task<IActionResult> Update(ContractVM currency)
-//    {
-//        if (currency.Id == 0) return View();
-//        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-//        await client.PutAsJsonAsync<ContractVM>("Contract/Update/", currency);
-//        return RedirectToAction("Contract");
-//    }
+        if (!contract!.IsSuccess)
+        {
+            return View();
+        }
 
-//    [HttpGet]
-//    public async Task<IActionResult> Delete(int Id)
-//    {
-//        if (Id == 0) return View();
-//        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-//        var currency = await client.GetFromJsonAsync<ContractVM>("Contract/GetById/?Id=" + Id);
-//        return PartialView("_Delete", currency);
-//    }
+        return PartialView("_Edit", contract.Data);
+    }
 
-//    [HttpPost]
-//    public async Task<IActionResult> Delete(ContractVM currency)
-//    {
-//        if (currency.Id == 0) return View();
-//        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-//        await client.DeleteAsync("Contract/Delete?Id=" + currency.Id);
-//        return RedirectToAction("Contract");
-//    }
+    [HttpPost]
+    public async Task<IActionResult> Edit(ContractVM contract)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        //if (contract.Name == null)
+        //{
+        //    contract.Name = "";
+        //}
+
+        ApiResultResponse<ContractVM> source = new();
+
+        if (GuidExtensions.IsNullOrEmpty(contract.Id))
+        {
+            return View();
+        }
+
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        string? jsoncontract = JsonConvert.SerializeObject(contract);
+        StringContent? contractcontent = new(jsoncontract, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseContract =
+            await client.PutAsync("Contract/update-contract/", contractcontent);
+        if (responseContract.IsSuccessStatusCode)
+        {
+            string? jsonResponseContract = await responseContract.Content.ReadAsStringAsync();
+            source = JsonConvert.DeserializeObject<ApiResultResponse<ContractVM>>(jsonResponseContract);
+        }
+        else
+        {
+            string? errorContent = await responseContract.Content.ReadAsStringAsync();
+            source = new ApiResultResponse<ContractVM>
+            {
+                IsSuccess = false,
+                Message = responseContract.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
+        }
+
+        //ViewBag.ApiResult = source!.Data;
+        //ViewBag.ApiMessage = source!.Message;
+        //ViewBag.ApiStatus = source.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = source!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!source!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid Id)
+    {
+        //if (GuidExtensions.IsNullOrEmpty(Id)) return View();
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        ApiResultResponse<ContractVM> source = new();
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        HttpResponseMessage? responseContract = await client.DeleteAsync("Contract/delete-contract?Id=" + Id);
+        if (responseContract.IsSuccessStatusCode)
+        {
+            string? jsonResponseContract = await responseContract.Content.ReadAsStringAsync();
+            source = JsonConvert.DeserializeObject<ApiResultResponse<ContractVM>>(jsonResponseContract);
+        }
+        else
+        {
+            string? errorContent = await responseContract.Content.ReadAsStringAsync();
+            source = new ApiResultResponse<ContractVM>
+            {
+                IsSuccess = false,
+                Message = responseContract.StatusCode.ToString()
+            };
+        }
+
+        //ViewBag.ApiResult = source!.Data;
+        //ViewBag.ApiMessage = source!.Message;
+        //ViewBag.ApiStatus = source.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = source!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!source!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
+    }
 }

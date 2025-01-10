@@ -1,5 +1,8 @@
+using System.Text;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
@@ -12,7 +15,7 @@ public class LeadCategoryController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> LeadCategory(string searchQuery = null)
+    public async Task<IActionResult> LeadCategory(string searchQuery = null!)
     {
         ViewData["pTitle"] = "Lead Categories Profile";
 
@@ -21,90 +24,234 @@ public class LeadCategoryController : Controller
         ViewData["bParent"] = "Lead Category";
         ViewData["bChild"] = "Lead Category View";
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        //var productList = await client.GetFromJsonAsync<List<ProductVM>>("Product/GetAll");
+        //var leadcategoryList = await client.GetFromJsonAsync<List<ProductVM>>("Product/GetAll");
+        ApiResultResponse<List<LeadCategoryVM>> leadcategoryList = new();
 
-        List<LeadCategoryVM> productList;
 
         if (string.IsNullOrEmpty(searchQuery))
         {
-            // Fetch all products if no search query is provided
-            productList = await client.GetFromJsonAsync<List<LeadCategoryVM>>("LeadCategory/GetAll");
+            // Fetch all leadcategorys if no search query is provided
+            leadcategoryList = await client.GetFromJsonAsync<ApiResultResponse<List<LeadCategoryVM>>>("LeadCategory/all-leadcategory");
         }
         else
         {
-            // Fetch products matching the search query
-            productList =
-                await client.GetFromJsonAsync<List<LeadCategoryVM>>($"LeadCategory/SearchByName?name={searchQuery}");
+            // Fetch leadcategorys matching the search query
+            leadcategoryList =
+                await client.GetFromJsonAsync<ApiResultResponse<List<LeadCategoryVM>>>($"LeadCategory/SearchByName?name={searchQuery}");
         }
 
         ViewData["searchQuery"] = searchQuery; // Retain search query
-        return View(productList);
+        //ViewBag.ApiResult = leadSourceList!.Data;
+        //ViewBag.ApiMessage = leadSourceList!.Message;
+        //ViewBag.ApiStatus = leadSourceList.IsSuccess;
+        return View(leadcategoryList!.Data);
     }
 
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        LeadCategoryVM product = new();
-        return PartialView("_Create", product);
+        LeadCategoryVM leadcategory = new();
+        return PartialView("_Create", leadcategory);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(LeadCategoryVM product)
+    public async Task<IActionResult> Create(LeadCategoryVM leadcategory)
     {
+        ApiResultResponse<LeadCategoryVM> category = new();
+
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        //if (leadcategory.Name == null)
+        //{
+        //    leadcategory.Name = "";
+        //}
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PostAsJsonAsync<LeadCategoryVM>("LeadCategory/Create", product);
-        return RedirectToAction("LeadCategory");
+        string? jsonleadcategory = JsonConvert.SerializeObject(leadcategory);
+        StringContent? leadcategorycontent = new(jsonleadcategory, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseleadcategory =
+        await client.PostAsJsonAsync<LeadCategoryVM>("LeadCategory/create-leadcategory", leadcategory);
+        if (responseleadcategory.IsSuccessStatusCode)
+        {
+            string? jsonResponseLeadCategory = await responseleadcategory.Content.ReadAsStringAsync();
+            category = JsonConvert.DeserializeObject<ApiResultResponse<LeadCategoryVM>>(jsonResponseLeadCategory);
+        }
+        else
+        {
+            string? errorContent = await responseleadcategory.Content.ReadAsStringAsync();
+            category = new ApiResultResponse<LeadCategoryVM>
+            {
+                IsSuccess = false,
+                Message = responseleadcategory.StatusCode + "ErrorContent: " + errorContent
+            };
+        }
+
+        //ViewBag.ApiResult = source!.Data;
+        //ViewBag.ApiMessage = source!.Message;
+        //ViewBag.ApiStatus = source.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = source!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!category!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(int Id)
+    public async Task<IActionResult> Edit(Guid Id)
     {
-        if (Id == 0)
+        if (GuidExtensions.IsNullOrEmpty(Id))
         {
             return View();
         }
 
+        ApiResultResponse<LeadCategoryVM> leadcategory = new();
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        LeadCategoryVM? product = await client.GetFromJsonAsync<LeadCategoryVM>("LeadCategory/GetById/?Id=" + Id);
-        return PartialView("_Edit", product);
+        leadcategory = await client.GetFromJsonAsync<ApiResultResponse<LeadCategoryVM>>("LeadCategory/byid-leadcategory/?Id=" + Id);
+        //ViewBag.ApiResult = leadSource!.Data;
+        //ViewBag.ApiMessage = leadSource!.Message;
+        //ViewBag.ApiStatus = leadSource.IsSuccess;
+
+        if (!leadcategory!.IsSuccess)
+        {
+            return View();
+        }
+
+        return PartialView("_Edit", leadcategory.Data);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update(LeadCategoryVM product)
+    public async Task<IActionResult> Edit(LeadCategoryVM leadCategory)
     {
-        if (product.Id == 0)
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (leadCategory.Name == null)
+        {
+            leadCategory.Name = "";
+        }
+
+        ApiResultResponse<LeadCategoryVM> category = new();
+
+        if (GuidExtensions.IsNullOrEmpty(leadCategory.Id))
         {
             return View();
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PutAsJsonAsync<LeadCategoryVM>("LeadCategory/Update/", product);
-        return RedirectToAction("LeadCategory");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Delete(int Id)
-    {
-        if (Id == 0)
+        string? jsonleadCategory = JsonConvert.SerializeObject(leadCategory);
+        StringContent? leadCategorycontent = new(jsonleadCategory, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseLeadCategory =
+            await client.PutAsync("LeadCategory/update-leadcategory/", leadCategorycontent);
+        if (responseLeadCategory.IsSuccessStatusCode)
         {
-            return View();
+            string? jsonResponseLeadCategory = await responseLeadCategory.Content.ReadAsStringAsync();
+            category = JsonConvert.DeserializeObject<ApiResultResponse<LeadCategoryVM>>(jsonResponseLeadCategory);
+        }
+        else
+        {
+            string? errorContent = await responseLeadCategory.Content.ReadAsStringAsync();
+            category = new ApiResultResponse<LeadCategoryVM>
+            {
+                IsSuccess = false,
+                Message = responseLeadCategory.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
         }
 
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        LeadCategoryVM? product = await client.GetFromJsonAsync<LeadCategoryVM>("LeadCategory/GetById/?Id=" + Id);
-        return PartialView("_Delete", product);
+        //ViewBag.ApiResult = category!.Data;
+        //ViewBag.ApiMessage = category!.Message;
+        //ViewBag.ApiStatus = category.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = category!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!category!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
     [HttpPost]
-    public async Task<IActionResult> Delete(LeadCategoryVM product)
+    public async Task<IActionResult> Delete(Guid Id)
     {
-        if (product.Id == 0)
+        //if (GuidExtensions.IsNullOrEmpty(Id)) return View();
+        if (!ModelState.IsValid)
         {
-            return View();
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
 
+        ApiResultResponse<LeadCategoryVM> category = new();
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        HttpResponseMessage? productList = await client.DeleteAsync("LeadCategory/Delete?Id=" + product.Id);
-        return RedirectToAction("LeadCategory");
+        HttpResponseMessage? responseLeadCategory = await client.DeleteAsync("LeadCategory/delete-leadcategory?Id=" + Id);
+        if (responseLeadCategory.IsSuccessStatusCode)
+        {
+            string? jsonResponseLeadSource = await responseLeadCategory.Content.ReadAsStringAsync();
+            category = JsonConvert.DeserializeObject<ApiResultResponse<LeadCategoryVM>>(jsonResponseLeadSource);
+        }
+        else
+        {
+            string? errorContent = await responseLeadCategory.Content.ReadAsStringAsync();
+            category = new ApiResultResponse<LeadCategoryVM>
+            {
+                IsSuccess = false,
+                Message = responseLeadCategory.StatusCode.ToString()
+            };
+        }
+
+        //ViewBag.ApiResult = source!.Data;
+        //ViewBag.ApiMessage = source!.Message;
+        //ViewBag.ApiStatus = source.IsSuccess;
+
+        //Server side Validation
+        //List<string> serverErrorMessageList = new List<string>();
+        //string serverErrorMessage = source!.Message!;
+        //serverErrorMessageList.Add(serverErrorMessage);
+
+        if (!category!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 }

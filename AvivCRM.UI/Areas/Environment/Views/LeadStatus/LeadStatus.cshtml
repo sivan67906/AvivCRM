@@ -48,17 +48,20 @@
 								<tr>
 
 									<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
-									<td>@item.Status</td>
-									<td>@item.Color</td>
+									<td>@item.Name</td>
+										<td>
+											<input type="color" class="form-control form-control-color" id="exampleColorInput" value="@item.Color" disabled>
+											
+										</td>
 									<td>
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
 										        data-target="#mdlLeadStatusShow" data-url="@Url.Action($"Edit/{item.Id}")">
 											<i class="las la-pen text-secondary font-16"></i>
 										</button>
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-										        data-target="#mdlLeadStatusShow" data-url="@Url.Action($"Delete/{item.Id}")">
+										<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+										   data-url="@Url.Action($"Delete/{item.Id}")">
 											<i class="las la-trash-alt text-secondary font-16"></i>
-										</button>
+										</a>
 									</td>
 								</tr>
 							}
@@ -74,9 +77,5 @@
 @section Scripts {
 	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
-	<script type="text/javascript">
-        $(window).on('load', function() {
-         $('#mdlLeadStatusShow').modal({backdrop: 'static', keyboard: false});
-        });
-    </script>
+	
 }
