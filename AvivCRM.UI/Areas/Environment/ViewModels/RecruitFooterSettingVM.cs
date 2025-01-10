@@ -19,12 +19,12 @@ public class RecruitFooterSettingVM
     public string? FooterDescription { get; set; }
     public ToggleDDSettingVM? ToggleDDSettings { get; set; }
 }
-public class ToggleValueVM
-{
-    public Guid Id { get; set; }
-    public string? TCode { get; set; }
-    public bool TValue { get; set; }
-}
+//public class ToggleValueVM
+//{
+//    public Guid Id { get; set; }
+//    public string? TCode { get; set; }
+//    public bool TValue { get; set; }
+//}
 public class ToggleDDSettingVM
 {
     public ToggleValueVM? ToggleValueVM { get; set; }

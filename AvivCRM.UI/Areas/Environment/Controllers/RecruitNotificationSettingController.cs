@@ -34,11 +34,11 @@ public class RecruitNotificationSettingController : Controller
 
         List<CBEMailSettingVM>? cbEmailItems = recruitNotificationSetting != null
             ? JsonConvert.DeserializeObject<List<CBEMailSettingVM>>(recruitNotificationSetting.CBEMailJsonSettings!)
-            : new List<CBEMailSettingVM>();
+            : [];
 
         List<CBEMailNotificationSettingVM>? cbEmailNotificationItems = recruitNotificationSetting != null
             ? JsonConvert.DeserializeObject<List<CBEMailNotificationSettingVM>>(recruitNotificationSetting.CBEMailNotificationJsonSettings!)
-            : new List<CBEMailNotificationSettingVM>();
+            : [];
 
         recruitNotificationSetting!.CBEMailSettings = cbEmailItems;
         recruitNotificationSetting.CBEMailNotificationSettings = cbEmailNotificationItems;
@@ -58,10 +58,12 @@ public class RecruitNotificationSettingController : Controller
         //    });
         //}
 
-        RecruitNotificationSettingVM recruitNotificationSetting = new();
-        recruitNotificationSetting.Id = Id; // Guid.Parse("E2F233CC-D34F-4FFD-8B55-08DD2EF06545");
-        recruitNotificationSetting.CBEMailJsonSettings = emailJsonData;
-        recruitNotificationSetting.CBEMailNotificationJsonSettings = emailNotfnJsonData;
+        RecruitNotificationSettingVM recruitNotificationSetting = new()
+        {
+            Id = Id, // Guid.Parse("E2F233CC-D34F-4FFD-8B55-08DD2EF06545");
+            CBEMailJsonSettings = emailJsonData,
+            CBEMailNotificationJsonSettings = emailNotfnJsonData
+        };
 
         //HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         //await client.PutAsJsonAsync("RecruitNotificationSetting/Update/", recruitNotificationSetting);

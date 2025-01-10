@@ -30,7 +30,7 @@ public class RecruitFooterSettingController : Controller
         ApiResultResponse<List<RecruitFooterSettingVM>>? RecruitFooterSettings =
             await client.GetFromJsonAsync<ApiResultResponse<List<RecruitFooterSettingVM>>>("RecruitFooterSetting/all-recruitfootersetting");
 
-        var recruitFooterSetting = RecruitFooterSettings!.Data!;
+        List<RecruitFooterSettingVM> recruitFooterSetting = RecruitFooterSettings!.Data!;
 
         //List<ToggleValueVM>? toggleList = new()
         //{
@@ -76,33 +76,33 @@ public class RecruitFooterSettingController : Controller
     /// Created: 05-Jan-2025 by Sivan T
     /// </remarks>
     //[HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         RecruitFooterSettingVM recruitFooterSetting = new();
 
-        List<ToggleValueVM>? toggleList = new()
-        {
-            new ToggleValueVM
-            {
-                Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), TCode = "YES", TValue = true
-            },
-            new ToggleValueVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), TCode = "NO", TValue = false }
-        };
+        //List<ToggleValueVM>? toggleList = new()
+        //{
+        //    new ToggleValueVM
+        //    {
+        //        Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), TCode = "YES", TValue = true
+        //    },
+        //    new ToggleValueVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), TCode = "NO", TValue = false }
+        //};
 
-        foreach (ToggleValueVM toggleValueVM in toggleList)
-        {
-            if (toggleValueVM.TValue) toggleValueVM.TCode = "Active";
-            else toggleValueVM.TCode = "Inactive";
-        }
+        //foreach (ToggleValueVM toggleValueVM in toggleList)
+        //{
+        //    if (toggleValueVM.TValue) toggleValueVM.TCode = "Active";
+        //    else toggleValueVM.TCode = "Inactive";
+        //}
 
-        ToggleDDSettingVM? toggleDDSetting = new()
-        {
-            ToggleValueVM = null,
-            SelectedToggleValueId = Guid.Empty,
-            toggleValues = toggleList?.Select(i => new ToggleValueVM { Id = i.Id, TCode = i.TCode, TValue = i.TValue }).ToList()
-        };
+        //ToggleDDSettingVM? toggleDDSetting = new()
+        //{
+        //    ToggleValueVM = null,
+        //    SelectedToggleValueId = Guid.Empty,
+        //    toggleValues = toggleList?.Select(i => new ToggleValueVM { Id = i.Id, TCode = i.TCode, TValue = i.TValue }).ToList()
+        //};
 
-        recruitFooterSetting.ToggleDDSettings = toggleDDSetting;
+        //recruitFooterSetting.ToggleDDSettings = toggleDDSetting;
         return PartialView("_Create", recruitFooterSetting);
     }
 
@@ -191,35 +191,35 @@ public class RecruitFooterSettingController : Controller
 
 
 
-        List<ToggleValueVM>? toggleList = new()
-        {
-            new ToggleValueVM
-            {
-                Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), TCode = "YES", TValue = true
-            },
-            new ToggleValueVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), TCode = "NO", TValue = false }
-        };
+        //List<ToggleValueVM>? toggleList = new()
+        //{
+        //    new ToggleValueVM
+        //    {
+        //        Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), TCode = "YES", TValue = true
+        //    },
+        //    new ToggleValueVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), TCode = "NO", TValue = false }
+        //};
 
 
 
-        foreach (ToggleValueVM toggleValueVM in toggleList)
-        {
-            if (toggleValueVM.TValue) toggleValueVM.TCode = "Active";
-            else toggleValueVM.TCode = "Inactive";
-        }
-        ToggleValueVM? toggle = new()
-        {
-            Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"),
-            TCode = "Active",
-            TValue = true
-        };
+        //foreach (ToggleValueVM toggleValueVM in toggleList)
+        //{
+        //    if (toggleValueVM.TValue) toggleValueVM.TCode = "Active";
+        //    else toggleValueVM.TCode = "Inactive";
+        //}
+        //ToggleValueVM? toggle = new()
+        //{
+        //    Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"),
+        //    TCode = "Active",
+        //    TValue = true
+        //};
 
-        ToggleDDSettingVM? toggleDDSetting = new()
-        {
-            ToggleValueVM = toggle,
-            SelectedToggleValueId = toggle.Id,
-            toggleValues = toggleList?.Select(i => new ToggleValueVM { Id = i.Id, TCode = i.TCode, TValue = i.TValue }).ToList()
-        };
+        //ToggleDDSettingVM? toggleDDSetting = new()
+        //{
+        //    ToggleValueVM = toggle,
+        //    SelectedToggleValueId = toggle.Id,
+        //    toggleValues = toggleList?.Select(i => new ToggleValueVM { Id = i.Id, TCode = i.TCode, TValue = i.TValue }).ToList()
+        //};
 
 
         ApiResultResponse<RecruitFooterSettingVM> recruitFooterSetting = new();
@@ -229,7 +229,7 @@ public class RecruitFooterSettingController : Controller
         recruitFooterSetting =
             await client.GetFromJsonAsync<ApiResultResponse<RecruitFooterSettingVM>>("RecruitFooterSetting/byid-recruitfootersetting/?Id=" + Id);
 
-        recruitFooterSetting!.Data!.ToggleDDSettings = toggleDDSetting;
+        //recruitFooterSetting!.Data!.ToggleDDSettings = toggleDDSetting;
 
         if (!recruitFooterSetting!.IsSuccess)
         {

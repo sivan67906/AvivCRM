@@ -47,7 +47,7 @@ public class RecruitJobApplicationStatusSettingController : Controller
     /// Created: 05-Jan-2025 by Sivan T
     /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         RecruitJobApplicationStatusSettingVM recruitJobApplicationStatusSetting = new();
         return PartialView("_Create", recruitJobApplicationStatusSetting);

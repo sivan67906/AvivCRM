@@ -15,7 +15,7 @@ public class ProjectController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -33,9 +33,9 @@ public class ProjectController : Controller
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
         ProjectSettingVM projectSetting = new();
-        List<ProjectSettingVM> projectSettingList = new();
-        List<ProjectStatusVM> projectStatusSettingList = new();
-        List<ProjectCategoryVM> projectCategoriesList = new();
+        List<ProjectSettingVM> projectSettingList = [];
+        List<ProjectStatusVM> projectStatusSettingList = [];
+        List<ProjectCategoryVM> projectCategoriesList = [];
 
         // Get Project Setting List
         ApiResultResponse<List<ProjectReminderPersonVM>>? projectReminderPersonSettings =
@@ -113,7 +113,7 @@ public class ProjectController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = setting!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
@@ -152,7 +152,7 @@ public class ProjectController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
@@ -184,7 +184,8 @@ public class ProjectController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -209,7 +210,7 @@ public class ProjectController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
         if (!pStatus!.IsSuccess)
@@ -238,12 +239,13 @@ public class ProjectController : Controller
             string? errorContent = await responseProjectStatus.Content.ReadAsStringAsync();
             pStatus = new ApiResultResponse<ProjectStatusVM>
             {
-                IsSuccess = false, Message = responseProjectStatus.StatusCode.ToString()
+                IsSuccess = false,
+                Message = responseProjectStatus.StatusCode.ToString()
             };
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
         if (!pStatus!.IsSuccess)
@@ -255,7 +257,7 @@ public class ProjectController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateProjectStatus()
+    public IActionResult CreateProjectStatus()
     {
         ProjectStatusVM projectStatus = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
@@ -269,7 +271,8 @@ public class ProjectController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -288,12 +291,13 @@ public class ProjectController : Controller
             string? errorContent = await responseProjectStatus.Content.ReadAsStringAsync();
             pStatus = new ApiResultResponse<ProjectStatusVM>
             {
-                IsSuccess = false, Message = responseProjectStatus.StatusCode.ToString()
+                IsSuccess = false,
+                Message = responseProjectStatus.StatusCode.ToString()
             };
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
@@ -325,7 +329,8 @@ public class ProjectController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -351,7 +356,7 @@ public class ProjectController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = pCategory!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
@@ -381,12 +386,13 @@ public class ProjectController : Controller
             string? errorContent = await responseCategory.Content.ReadAsStringAsync();
             pCategory = new ApiResultResponse<ProjectCategoryVM>
             {
-                IsSuccess = false, Message = responseCategory.StatusCode.ToString()
+                IsSuccess = false,
+                Message = responseCategory.StatusCode.ToString()
             };
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = pCategory!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 
@@ -399,7 +405,7 @@ public class ProjectController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateProjectCategory()
+    public IActionResult CreateProjectCategory()
     {
         ProjectCategoryVM projectCategory = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
@@ -413,7 +419,8 @@ public class ProjectController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -432,12 +439,13 @@ public class ProjectController : Controller
             string? errorContent = await responseCategory.Content.ReadAsStringAsync();
             pCategory = new ApiResultResponse<ProjectCategoryVM>
             {
-                IsSuccess = false, Message = responseCategory.StatusCode.ToString()
+                IsSuccess = false,
+                Message = responseCategory.StatusCode.ToString()
             };
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = pCategory!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 

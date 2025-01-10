@@ -33,7 +33,7 @@ public class RecruitGeneralSettingController : Controller
         RecruitGeneralSettingVM? recruitGeneralSetting = RecruitGeneralSettings!.Data!.FirstOrDefault();
         List<GeneralCBSettingVM>? cbItems = recruitGeneralSetting != null
             ? JsonConvert.DeserializeObject<List<GeneralCBSettingVM>>(recruitGeneralSetting.GeneralCBJsonSettings!)
-            : new List<GeneralCBSettingVM>();
+            : [];
         recruitGeneralSetting!.GeneralCBSettings = cbItems;
 
         return PartialView("_RecruitGeneralSetting", recruitGeneralSetting);

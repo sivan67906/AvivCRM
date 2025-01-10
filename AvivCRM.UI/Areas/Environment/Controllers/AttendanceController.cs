@@ -12,7 +12,7 @@ public class AttendanceController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -40,7 +40,8 @@ public class AttendanceController : Controller
         //List<EmployeeShiftSettingVM> employeeShiftSettings = new();
         AttendanceVM? viewModel = new()
         {
-            AttendanceSetting = attendanceSetting, EmployeeShiftSettings = employeeShiftSettings
+            AttendanceSetting = attendanceSetting,
+            EmployeeShiftSettings = employeeShiftSettings
         };
         return View(viewModel);
     }

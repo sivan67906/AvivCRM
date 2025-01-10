@@ -744,30 +744,30 @@
 <script src="~/matrica/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="~/matrica/assets/js/pages/sweet-alert.init.js"></script>
 <script type="text/javascript">
-		$(document).ready(function() {
+		// $(document).ready(function() {
 
-		  let hash = document.location.hash;
-		  let prefix = "";
+		//   let hash = document.location.hash;
+		//   let prefix = "";
 
-		  if(hash = "")
-		  {
-			  window.location.hash = $(".nav-link.active").attr('href');
-		  }
+		//   if(hash = "")
+		//   {
+		// 	  window.location.hash = $(".nav-link.active").attr('href');
+		//   }
 
-		  //change hash url on page reload
-		  if (hash) {
-			$('.nav-tabs a[href=\"'+hash.replace(prefix,"")+'\"]').tab('show');
-		  }
+		//   //change hash url on page reload
+		//   if (hash) {
+		// 	$('.nav-tabs a[href=\"'+hash.replace(prefix,"")+'\"]').tab('show');
+		//   }
 
-		  // change hash url on switch tab
-		  $('.nav-tabs a').on('shown.bs.tab', function (e) {
-			 window.location.hash = e.target.hash.replace("#", "#" + prefix);
-		  });
-		});
+		//   // change hash url on switch tab
+		//   $('.nav-tabs a').on('shown.bs.tab', function (e) {
+		// 	 window.location.hash = e.target.hash.replace("#", "#" + prefix);
+		//   });
+		// });
 
-		 $(window).on('load', function() {
-		 $('.modal').modal({backdrop: 'static', keyboard: false});
-		});
+		//  $(window).on('load', function() {
+		//  $('.modal').modal({backdrop: 'static', keyboard: false});
+		// });
 	</script>
 @if (IsSectionDefined("Scripts"))
 {

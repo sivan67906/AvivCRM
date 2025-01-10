@@ -15,7 +15,7 @@ public class TicketChannelController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -39,7 +39,7 @@ public class TicketChannelController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         TicketChannelVM ticketChannel = new();
         return PartialView("_Create", ticketChannel);
@@ -54,7 +54,8 @@ public class TicketChannelController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -80,7 +81,8 @@ public class TicketChannelController : Controller
             string? errorContent = await responseTicketChannel.Content.ReadAsStringAsync();
             source = new ApiResultResponse<TicketChannelVM>
             {
-                IsSuccess = false, Message = responseTicketChannel.StatusCode + "ErrorContent: " + errorContent
+                IsSuccess = false,
+                Message = responseTicketChannel.StatusCode + "ErrorContent: " + errorContent
             };
         }
 
@@ -97,7 +99,8 @@ public class TicketChannelController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -138,7 +141,8 @@ public class TicketChannelController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -188,7 +192,8 @@ public class TicketChannelController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -203,7 +208,8 @@ public class TicketChannelController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -221,7 +227,8 @@ public class TicketChannelController : Controller
             string? errorContent = await responseTicketChannel.Content.ReadAsStringAsync();
             source = new ApiResultResponse<TicketChannelVM>
             {
-                IsSuccess = false, Message = responseTicketChannel.StatusCode.ToString()
+                IsSuccess = false,
+                Message = responseTicketChannel.StatusCode.ToString()
             };
         }
 
@@ -238,7 +245,8 @@ public class TicketChannelController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 

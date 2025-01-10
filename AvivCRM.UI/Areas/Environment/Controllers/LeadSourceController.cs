@@ -66,7 +66,7 @@ public class LeadSourceController : Controller
     /// Created: 05-Jan-2025 by Sivan T
     /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         LeadSourceVM leadSource = new();
         return PartialView("_Create", leadSource);

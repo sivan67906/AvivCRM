@@ -15,7 +15,7 @@ public class TicketGroupController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -39,7 +39,7 @@ public class TicketGroupController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         TicketGroupVM ticketGroup = new();
         return PartialView("_Create", ticketGroup);
@@ -54,7 +54,8 @@ public class TicketGroupController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -80,7 +81,8 @@ public class TicketGroupController : Controller
             string? errorContent = await responseTicketGroup.Content.ReadAsStringAsync();
             source = new ApiResultResponse<TicketGroupVM>
             {
-                IsSuccess = false, Message = responseTicketGroup.StatusCode + "ErrorContent: " + errorContent
+                IsSuccess = false,
+                Message = responseTicketGroup.StatusCode + "ErrorContent: " + errorContent
             };
         }
 
@@ -97,7 +99,8 @@ public class TicketGroupController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -137,7 +140,8 @@ public class TicketGroupController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -187,7 +191,8 @@ public class TicketGroupController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -202,7 +207,8 @@ public class TicketGroupController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -219,7 +225,8 @@ public class TicketGroupController : Controller
             string? errorContent = await responseTicketGroup.Content.ReadAsStringAsync();
             source = new ApiResultResponse<TicketGroupVM>
             {
-                IsSuccess = false, Message = responseTicketGroup.StatusCode.ToString()
+                IsSuccess = false,
+                Message = responseTicketGroup.StatusCode.ToString()
             };
         }
 
@@ -236,7 +243,8 @@ public class TicketGroupController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 

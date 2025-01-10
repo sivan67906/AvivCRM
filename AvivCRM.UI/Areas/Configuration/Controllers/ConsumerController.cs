@@ -13,7 +13,7 @@ public class ConsumerController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -28,7 +28,7 @@ public class ConsumerController : Controller
         ViewData["bParent"] = "Consumer";
         ViewData["bChild"] = "Consumer";
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<ConsumerVM> consumerList = new();
+        List<ConsumerVM> consumerList = [];
 
 
         if (TempData["SearchData"] == null)

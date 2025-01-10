@@ -4,7 +4,7 @@ namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
 public class TicketController : Controller
 {
-    public async Task<IActionResult> Ticket()
+    public IActionResult Ticket()
     {
         // Page Title
         ViewData["pTitle"] = "Tickets Profile";

@@ -51,7 +51,7 @@ public class LeadStatusController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         LeadStatusVM leadStatus = new();
         return PartialView("_Create", leadStatus);

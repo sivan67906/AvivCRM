@@ -12,7 +12,7 @@ public class CurrencyController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -34,7 +34,7 @@ public class CurrencyController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         CurrencyVM company = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");

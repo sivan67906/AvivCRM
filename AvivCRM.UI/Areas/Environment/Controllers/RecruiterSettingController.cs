@@ -45,7 +45,7 @@ public class RecruiterSettingController : Controller
     /// Created: 05-Jan-2025 by Sivan T
     /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         RecruiterSettingVM recruiterSetting = new();
         return PartialView("_Create", recruiterSetting);

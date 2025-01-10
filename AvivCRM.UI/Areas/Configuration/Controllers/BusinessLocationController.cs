@@ -17,7 +17,7 @@ public class BusinessLocationController : Controller
         _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -71,7 +71,7 @@ public class BusinessLocationController : Controller
     public async Task<IActionResult> GetStatesByCountryId(string countryId)
     {
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<StateVM>? states = new();
+        List<StateVM>? states = [];
 
         using (HttpResponseMessage? response = await client.GetAsync("State/GetByParentId/?parentId=" + countryId
                    , HttpCompletionOption.ResponseHeadersRead))
@@ -96,7 +96,7 @@ public class BusinessLocationController : Controller
     public async Task<IActionResult> GetCitiesByStateId(string stateId)
     {
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CityVM>? cities = new();
+        List<CityVM>? cities = [];
         using (HttpResponseMessage? response = await client.GetAsync("City/GetByParentId/?parentId=" + stateId
                    , HttpCompletionOption.ResponseHeadersRead))
         {

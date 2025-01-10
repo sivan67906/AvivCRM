@@ -14,7 +14,7 @@ public class TimeLogController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -37,25 +37,27 @@ public class TimeLogController : Controller
 
         List<CBTimeLogSettingVM>? cbTimeLogItems = timeLog != null
             ? JsonConvert.DeserializeObject<List<CBTimeLogSettingVM>>(timeLog.CBTimeLogJsonSettings!)
-            : new List<CBTimeLogSettingVM>();
+            : [];
         timeLog!.CBTimeLogSettings = cbTimeLogItems;
 
         //var roleList = await client.GetFromJsonAsync<List<RoleVM>>("Role/all-role");
         //var role = await client.GetFromJsonAsync<RoleVM>("Role/byid-role/?Id=" + timeLog?.RoleId);
 
-        List<RoleVM>? roleList = new()
-        {
+        List<RoleVM>? roleList =
+        [
             new RoleVM
             {
                 Id = new Guid("EDC3C550-82A3-4DC6-8842-F29351BB4BD8"), Code = "ADM", Name = "App Administrator"
             },
             new RoleVM { Id = Guid.Parse("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), Code = "EMP", Name = "Employee" },
             new RoleVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), Code = "MEM", Name = "Membership" }
-        };
+        ];
 
         RoleVM? role = new()
         {
-            Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), Code = "ADM", Name = "App Administrator"
+            Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"),
+            Code = "ADM",
+            Name = "App Administrator"
         };
 
         RoleDDSetting? roleDDValue = new()
@@ -96,7 +98,7 @@ public class TimeLogController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = result!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 

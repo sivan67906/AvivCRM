@@ -50,7 +50,7 @@ public class PaymentController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         PaymentVM payment = new();
         return PartialView("_Create", payment);

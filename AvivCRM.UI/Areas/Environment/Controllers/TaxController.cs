@@ -50,7 +50,7 @@ public class TaxController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         TaxVM tax = new();
         return PartialView("_Create", tax);

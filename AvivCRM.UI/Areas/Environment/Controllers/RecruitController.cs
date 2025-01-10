@@ -12,12 +12,12 @@ public class RecruitController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
 
-    public async Task<IActionResult> Recruit()
+    public IActionResult Recruit()
     {
         // Page Title
         ViewData["pTitle"] = "Recruits Profile";
@@ -168,7 +168,7 @@ public class RecruitController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateRecruitFooterSetting()
+    public IActionResult CreateRecruitFooterSetting()
     {
         RecruitFooterSettingVM recruitFooterSetting = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
@@ -226,7 +226,7 @@ public class RecruitController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateRecruiterSetting()
+    public IActionResult CreateRecruiterSetting()
     {
         RecruiterSettingVM recruiterSetting = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
@@ -246,10 +246,12 @@ public class RecruitController : Controller
     public async Task<IActionResult> RecruitNotificationSettingUpdate(string emailJsonData, string emailNotfnJsonData)
     {
         //if (Id == 0) return View();
-        RecruitNotificationSettingVM recruitNotificationSetting = new();
-        recruitNotificationSetting.Id = Guid.Parse("E2F233CC-D34F-4FFD-8B55-08DD2EF06545");
-        recruitNotificationSetting.CBEMailJsonSettings = emailJsonData;
-        recruitNotificationSetting.CBEMailNotificationJsonSettings = emailNotfnJsonData;
+        RecruitNotificationSettingVM recruitNotificationSetting = new()
+        {
+            Id = Guid.Parse("E2F233CC-D34F-4FFD-8B55-08DD2EF06545"),
+            CBEMailJsonSettings = emailJsonData,
+            CBEMailNotificationJsonSettings = emailNotfnJsonData
+        };
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync("RecruitNotificationSetting/Update/", recruitNotificationSetting);
@@ -301,7 +303,7 @@ public class RecruitController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateRecruitJobApplicationStatusSetting()
+    public IActionResult CreateRecruitJobApplicationStatusSetting()
     {
         RecruitJobApplicationStatusSettingVM recruitJobApplicationStatusSetting = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
@@ -363,7 +365,7 @@ public class RecruitController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateRecruitCustomQuestionSetting()
+    public IActionResult CreateRecruitCustomQuestionSetting()
     {
         RecruitCustomQuestionSettingVM recruitCustomQuestionSetting = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");

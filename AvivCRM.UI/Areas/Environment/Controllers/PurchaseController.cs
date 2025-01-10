@@ -13,7 +13,7 @@ public class PurchaseController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -39,17 +39,19 @@ public class PurchaseController : Controller
 
         List<CBPurchasePrefixVM>? cbPrefixItems = purchasePrefixSetting != null
             ? JsonConvert.DeserializeObject<List<CBPurchasePrefixVM>>(purchasePrefixSetting.PurchasePrefixJsonSettings!)
-            : new List<CBPurchasePrefixVM>();
+            : [];
         CBPurchasePrefixVM? cbPrefixItem = new();
         if (cbPrefixItems!.Count > 0)
         {
             cbPrefixItem = cbPrefixItems?.FirstOrDefault();
         }
 
-        CBPurchasePrefixVM finalPrefixItems = new();
-        finalPrefixItems.PPurchaseVM = cbPrefixItem!.PPurchaseVM;
-        finalPrefixItems.PBillOrderVM = cbPrefixItem.PBillOrderVM;
-        finalPrefixItems.PVendorCreditVM = cbPrefixItem.PVendorCreditVM;
+        CBPurchasePrefixVM finalPrefixItems = new()
+        {
+            PPurchaseVM = cbPrefixItem!.PPurchaseVM,
+            PBillOrderVM = cbPrefixItem.PBillOrderVM,
+            PVendorCreditVM = cbPrefixItem.PVendorCreditVM
+        };
 
         #endregion
 
@@ -87,7 +89,7 @@ public class PurchaseController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = fStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
         if (!fStatus!.IsSuccess)
