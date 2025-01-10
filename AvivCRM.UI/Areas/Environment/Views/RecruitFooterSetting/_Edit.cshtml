@@ -8,7 +8,8 @@
 		@* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
 	</div>
 	<div class="modal-body">
-		<form action="UpdateRecruitFooterSetting">
+			<form id="editFormTicketAgent" data-url="Edit" asp-action="Edit" method="post">
+			<input type="hidden" asp-for="@Model.Id" />
 			<div class="row mt-3 mb-2">
 				<div class="col-lg-4">Title <span class="text-danger">*</span></div>
 				<div class="col-lg-4">Slug <span class="text-danger">*</span></div>
@@ -16,17 +17,17 @@
 			</div>
 			<div class="row mt-3 mb-2">
 				<div class="col-lg-4">
-					<input class="form-control" type="text" value="Footer Test" id="reminderAftrMns">
+					<input asp-for="@Model.FooterTitle" class="form-control" />
 				</div>
 				<div class="col-lg-4">
-					<input class="form-control" type="text" value="" id="reminderAftrMns">
+					<input asp-for="@Model.FooterSlug" class="form-control" />
 				</div>
 				<div class="col-lg-4">
-					<select id="sltCheck" class="form-select" aria-label="">
+					<select class="form-select" name="FooterStatusId" asp-for="@Model.ToggleDDSettings!.toggleValues" asp-items="@(new SelectList(Model.ToggleDDSettings!.toggleValues, "TValue", "TCode"))">
 						<option value="">--</option>
-						<option value="1" selected="selected"> Active </option>
-						<option value="2"> Inactive </option>
 					</select>
+
+					@* <select asp-for="SelectedValue" asp-items="Model.Options" id="dropdown"></select> *@
 				</div>
 			</div>
 			<div class="row mt-3">
@@ -37,7 +38,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							@* <textarea id="txtfooterDescription">Hello, World!</textarea> *@
-							<textarea class="form-control" placeholder="" rows="5" id="">FooterTest Description</textarea>
+							<textarea asp-for="FooterDescription" class="form-control" placeholder="" rows="5" id=""></textarea>
 						</div>
 					</div>
 				</div>
@@ -45,7 +46,7 @@
 			<div class="row mt-4 text-end ">
 				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="button" class="btn btn-sm btn-de-primary"><i class="mdi mdi-check-all me-2"></i>Update</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
 				</div>
 			</div>
 		</form>

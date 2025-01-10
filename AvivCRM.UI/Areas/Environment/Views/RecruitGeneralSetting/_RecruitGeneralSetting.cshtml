@@ -1,5 +1,6 @@
-@model AvivCRM.UI.Areas.Environment.ViewModels.RecruitGeneralSettingVM
-<link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css"/>
+﻿@model AvivCRM.UI.Areas.Environment.ViewModels.RecruitGeneralSettingVM
+<link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css" />
+<link href="~/matrica/assets/css/app-custom.css" rel="stylesheet" type="text/css" />
 
 @* <div class="modal fade" id="mdlProjectStatusShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
@@ -15,7 +16,7 @@
 	</div><!--end card-header-->
 	<div class="card-body">
 		<form id="RecruitGeneralSettingUpdate" enctype="multipart/form-data">
-			<input id="txtGeneralSettingId" type="hidden" name="Id" value="@Model.Id"/>
+			<input id="txtGeneralSettingId" type="hidden" name="Id" value="@Model.Id" />
 			<div class="row mt-4">
 				<div class="col-lg-4">Company Name</div>
 				<div class="col-lg-4">Company Website</div>
@@ -24,13 +25,13 @@
 			<div class="row mt-2">
 				<div class="col-lg-4">
 					<input id="txtGeneralCompanyName" type="text" class="form-control" name="GeneralCompanyName"
-					       placeholder="e.g. Acme Corporation" value="@Model.GeneralCompanyName">
-					<span asp-validation-for="GeneralCompanyName" class="text-danger"></span>
+						   placeholder="e.g. Acme Corporation" value="@Model.GeneralCompanyName">
+					@* <span asp-validation-for="GeneralCompanyName" class="text-danger"></span> *@
 				</div>
 				<div class="col-lg-4">
 					<input id="txtGeneralCompanyWebsite" type="text" class="form-control" name="GeneralCompanyWebsite"
-					       placeholder="e.g. https://www.spacex.com/" value="@Model.GeneralCompanyWebsite">
-					<span asp-validation-for="GeneralCompanyWebsite" class="text-danger"></span>
+						   placeholder="e.g. https://www.spacex.com/" value="@Model.GeneralCompanyWebsite">
+					@* <span asp-validation-for="GeneralCompanyWebsite" class="text-danger"></span> *@
 				</div>
 				<div class="col-lg-4 form-group">
 					<div class="card">
@@ -38,7 +39,7 @@
 							<h4 class="card-title">Upload Image <i class="fa fa-question-circle" aria-hidden="true"></i></h4>
 						</div><!--end card-header-->
 						<div class="card-body">
-							<input type="file" class="form-control-file dropify" id="txtGeneralCompanyLogoImage" name="GeneralCompanyLogoImage" data-allowed-file-extensions="png jpg jpeg svg bmp" data-height="100" autocomplete="off">
+							<input type="file" class="dropify" id="txtGeneralCompanyLogoImage" name="GeneralCompanyLogoImage" data-allowed-file-extensions="png jpg jpeg svg bmp" data-height="100" autocomplete="off">
 						</div><!--end card-body-->
 					</div>
 				</div>
@@ -48,8 +49,8 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
-					<textarea id="txtGeneralAboutCompany" class="form-control" rows="5" placeholder="" 
-					name="GeneralAboutCompany">@Model.GeneralAboutCompany</textarea>
+					<textarea id="txtGeneralAboutCompany" class="form-control" rows="5" placeholder=""
+							  name="GeneralAboutCompany">@Model.GeneralAboutCompany</textarea>
 				</div>
 			</div>
 			<div class="row mt-4">
@@ -60,19 +61,19 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<textarea id="txtGeneralLegalTerm" class="form-control" rows="5" placeholder=""
-					name="GeneralLegalTerm">@Model.GeneralLegalTerm</textarea>
+							  name="GeneralLegalTerm">@Model.GeneralLegalTerm</textarea>
 				</div>
 			</div>
 			<div class="row">
-				@for (var i = 0; i < Model.GeneralCBSettings.Count; i++)
+				@for (var i = 0; i < Model.GeneralCBSettings!.Count; i++)
 				{
 					<div class="col-lg-2">
 						<div class="form-check custom-control custom-checkbox mt-4 mb-2">
-							<input type="hidden" name="GeneralCBSettings[@i].IsChecked" value="false"/>
-							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.GeneralCBSettings[i].Id" name="GeneralCBSettings[@i].IsChecked" value="true" @(Model.GeneralCBSettings[i].IsChecked ? "checked" : "")/>
+							<input type="hidden" name="GeneralCBSettings[@i].IsChecked" value="false" />
+							<input type="checkbox" class="form-check-input form-check-input-custom" id="checkbox-@Model.GeneralCBSettings[i].Id" name="GeneralCBSettings[@i].IsChecked" value="true" @(Model.GeneralCBSettings[i].IsChecked ? "checked" : "") />
 							<label class="custom-control-label labelcustom" for="checkbox-@Model.GeneralCBSettings[i].Id">@Model.GeneralCBSettings[i].Name</label>
-							<input type="hidden" name="GeneralCBSettings[@i].Id" value="@Model.GeneralCBSettings[i].Id"/>
-							<input type="hidden" name="GeneralCBSettings[@i].Name" value="@Model.GeneralCBSettings[i].Name"/>
+							<input type="hidden" name="GeneralCBSettings[@i].Id" value="@Model.GeneralCBSettings[i].Id" />
+							<input type="hidden" name="GeneralCBSettings[@i].Name" value="@Model.GeneralCBSettings[i].Name" />
 						</div>
 					</div>
 				}
@@ -86,12 +87,12 @@
 			<div class="row mt-2">
 				<div class="col-lg-6">
 					<input id="txtGeneralDuplJobApplnRestrictDays" type="number" class="form-control" name="GeneralDuplJobApplnRestrictDays"
-					       placeholder="" value="@Model.GeneralDuplJobApplnRestrictDays">
+						   placeholder="" value="@Model.GeneralDuplJobApplnRestrictDays">
 					<span asp-validation-for="GeneralDuplJobApplnRestrictDays" class="text-danger"></span>
 				</div>
 				<div class="col-lg-6">
 					<input id="txtGeneralOLReminderToCandidate" type="number" class="form-control" name="GeneralOLReminderToCandidate"
-					       placeholder="" value="@Model.GeneralOLReminderToCandidate">
+						   placeholder="" value="@Model.GeneralOLReminderToCandidate">
 					<span asp-validation-for="GeneralOLReminderToCandidate" class="text-danger"></span>
 				</div>
 			</div>
@@ -125,9 +126,9 @@
 					</div>
 				</div>
 				<div class="row col-lg-12 mt-2">
-					<input id="txtGeneralBGColorCode" type="text" class="form-control"
-					       data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }"
-					       name="GeneralBGColorCode" placeholder="" value="@Model.GeneralBGColorCode">
+					<input id="txtGeneralBGColorCode" type="color" class="form-control w-25"
+						   data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }"
+						   name="GeneralBGColorCode" placeholder="" value="@Model.GeneralBGColorCode">
 				</div>
 			</div>
 			<button id="updateRecruitGeneralSetting" type="button" class="btn btn-de-primary mt-2 float-end">
@@ -137,7 +138,10 @@
 	</div>
 
 </div><!--end card-body-->
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
 <script src="~/matrica/assets/libs/dropify/js/dropify.js"></script>
+
 <script>
 	$(document).ready(function() {
 		  $("input[id$='txtGeneralBGImage']").click(function() {
@@ -148,6 +152,17 @@
 			 $("#divBackroundColor").css("display", "block");
 			 $("#divBackroundImage").css("display", "none");
 		  });
+
+		  $(".dropify").attr("data-default-file", window.location.origin + "/matrica/assets/images/logo-sm.png");
+		  $('.dropify').dropify();
+
+	  const dropifyMessages = {
+		default: "Choose a file",
+		replace: "Drop a file or click to replace",
+		remove: "Remove",
+		error: "Some error occurred.",
+	};
+
 		  });
 
 	$(document).ready(function() {
@@ -197,7 +212,7 @@
 
 
 			$.ajax({
-				url: '@Url.Action("RecruitGeneralSettingUpdate", "Recruit")',
+				url: '@Url.Action("RecruitGeneralSettingUpdate", "RecruitGeneralSetting")',
 				type: 'POST',
 				data: formData,
 				processData: false,
@@ -217,13 +232,5 @@
 	});
 </script>
 <script type="text/javascript">
-		$(".dropify").attr("data-default-file", window.location.origin + "/matrica/assets/images/logo-sm.png");
-		$('.dropify').dropify();
-
-		  const dropifyMessages = {
-			default: "Choose a file",
-			replace: "Drop a file or click to replace",
-			remove: "Remove",
-			error: "Some error occurred.",
-		};
+	
 </script>

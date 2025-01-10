@@ -1,6 +1,5 @@
 using AvivCRM.UI.Areas.Environment.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
@@ -28,51 +27,52 @@ public class RecruitController : Controller
         ViewData["bParent"] = "Recruit";
         ViewData["bChild"] = "Recruit";
 
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        //HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        // General Settings
-        List<RecruitGeneralSettingVM>? recruitGeneralSettings =
-            await client.GetFromJsonAsync<List<RecruitGeneralSettingVM>>("RecruitGeneralSetting/GetAll");
-        RecruitGeneralSettingVM? recruitGeneralSetting = recruitGeneralSettings?.FirstOrDefault();
-        List<GeneralCBSettingVM>? cbItems = recruitGeneralSetting != null
-            ? JsonConvert.DeserializeObject<List<GeneralCBSettingVM>>(recruitGeneralSetting.GeneralCBJsonSettings)
-            : new List<GeneralCBSettingVM>();
-        recruitGeneralSetting.GeneralCBSettings = cbItems;
+        //// General Settings
+        //List<RecruitGeneralSettingVM>? recruitGeneralSettings =
+        //    await client.GetFromJsonAsync<List<RecruitGeneralSettingVM>>("RecruitGeneralSetting/GetAll");
+        //RecruitGeneralSettingVM? recruitGeneralSetting = recruitGeneralSettings?.FirstOrDefault();
+        //List<GeneralCBSettingVM>? cbItems = recruitGeneralSetting != null
+        //    ? JsonConvert.DeserializeObject<List<GeneralCBSettingVM>>(recruitGeneralSetting.GeneralCBJsonSettings)
+        //    : new List<GeneralCBSettingVM>();
+        //recruitGeneralSetting.GeneralCBSettings = cbItems;
 
-        List<RecruitFooterSettingVM>? recruitFooterSettings =
-            await client.GetFromJsonAsync<List<RecruitFooterSettingVM>>("RecruitFooterSetting/GetAll");
-        List<RecruiterSettingVM>? recruiterSettings =
-            await client.GetFromJsonAsync<List<RecruiterSettingVM>>("RecruiterSetting/GetAll");
+        //List<RecruitFooterSettingVM>? recruitFooterSettings =
+        //    await client.GetFromJsonAsync<List<RecruitFooterSettingVM>>("RecruitFooterSetting/GetAll");
+        //List<RecruiterSettingVM>? recruiterSettings =
+        //    await client.GetFromJsonAsync<List<RecruiterSettingVM>>("RecruiterSetting/GetAll");
 
-        // Recruit Notification Settings
-        List<RecruitNotificationSettingVM>? recruitNotificationSettings =
-            await client.GetFromJsonAsync<List<RecruitNotificationSettingVM>>("RecruitNotificationSetting/GetAll");
-        RecruitNotificationSettingVM? recruitNotificationSetting = recruitNotificationSettings?.FirstOrDefault();
-        List<CBEMailSettingVM>? cbEmailItems = recruitNotificationSetting != null
-            ? JsonConvert.DeserializeObject<List<CBEMailSettingVM>>(recruitNotificationSetting.CBEMailJsonSettings)
-            : new List<CBEMailSettingVM>();
-        List<CBEMailNotificationSettingVM>? cbEmailNotificationItems = recruitNotificationSetting != null
-            ? JsonConvert.DeserializeObject<List<CBEMailNotificationSettingVM>>(recruitNotificationSetting
-                .CBEMailNotificationJsonSettings)
-            : new List<CBEMailNotificationSettingVM>();
-        recruitNotificationSetting.CBEMailSettings = cbEmailItems;
-        recruitNotificationSetting.CBEMailNotificationSettings = cbEmailNotificationItems;
+        //// Recruit Notification Settings
+        //List<RecruitNotificationSettingVM>? recruitNotificationSettings =
+        //    await client.GetFromJsonAsync<List<RecruitNotificationSettingVM>>("RecruitNotificationSetting/GetAll");
+        //RecruitNotificationSettingVM? recruitNotificationSetting = recruitNotificationSettings?.FirstOrDefault();
+        //List<CBEMailSettingVM>? cbEmailItems = recruitNotificationSetting != null
+        //    ? JsonConvert.DeserializeObject<List<CBEMailSettingVM>>(recruitNotificationSetting.CBEMailJsonSettings)
+        //    : new List<CBEMailSettingVM>();
+        //List<CBEMailNotificationSettingVM>? cbEmailNotificationItems = recruitNotificationSetting != null
+        //    ? JsonConvert.DeserializeObject<List<CBEMailNotificationSettingVM>>(recruitNotificationSetting
+        //        .CBEMailNotificationJsonSettings)
+        //    : new List<CBEMailNotificationSettingVM>();
+        //recruitNotificationSetting.CBEMailSettings = cbEmailItems;
+        //recruitNotificationSetting.CBEMailNotificationSettings = cbEmailNotificationItems;
 
-        List<RecruitJobApplicationStatusSettingVM>? recruitJobApplicationStatusSettings =
-            await client.GetFromJsonAsync<List<RecruitJobApplicationStatusSettingVM>>(
-                "RecruitJobApplicationStatusSetting/GetAll");
-        List<RecruitCustomQuestionSettingVM>? recruitCustomQuestionSettings =
-            await client.GetFromJsonAsync<List<RecruitCustomQuestionSettingVM>>("RecruitCustomQuestionSetting/GetAll");
-        RecruitVM? viewModel = new()
-        {
-            RecruitGeneralSettingVMList = recruitGeneralSetting,
-            RecruitFooterSettingVMList = recruitFooterSettings,
-            RecruiterSettingVMList = recruiterSettings,
-            RecruitNotificationSettingVMList = recruitNotificationSetting,
-            RecruitJobApplicationStatusSettingVMList = recruitJobApplicationStatusSettings,
-            RecruitCustomQuestionSettingVMList = recruitCustomQuestionSettings
-        };
-        return View(viewModel);
+        //List<RecruitJobApplicationStatusSettingVM>? recruitJobApplicationStatusSettings =
+        //    await client.GetFromJsonAsync<List<RecruitJobApplicationStatusSettingVM>>(
+        //        "RecruitJobApplicationStatusSetting/GetAll");
+        //List<RecruitCustomQuestionSettingVM>? recruitCustomQuestionSettings =
+        //    await client.GetFromJsonAsync<List<RecruitCustomQuestionSettingVM>>("RecruitCustomQuestionSetting/GetAll");
+        //RecruitVM? viewModel = new()
+        //{
+        //    RecruitGeneralSettingVMList = recruitGeneralSetting,
+        //    RecruitFooterSettingVMList = recruitFooterSettings,
+        //    RecruiterSettingVMList = recruiterSettings,
+        //    RecruitNotificationSettingVMList = recruitNotificationSetting,
+        //    RecruitJobApplicationStatusSettingVMList = recruitJobApplicationStatusSettings,
+        //    RecruitCustomQuestionSettingVMList = recruitCustomQuestionSettings
+        //};
+        //return View(viewModel);
+        return View();
     }
 
     //General Settings
@@ -80,10 +80,10 @@ public class RecruitController : Controller
     public async Task<IActionResult> RecruitGeneralSettingUpdate(RecruitGeneralSettingVM recruitGeneralSetting,
         string jsonData)
     {
-        if (recruitGeneralSetting.Id == 0)
-        {
-            return View();
-        }
+        //if (recruitGeneralSetting.Id == 0)
+        //{
+        //    return View();
+        //}
 
         //if (recruitGeneralSetting.GeneralCBSettings != null && recruitGeneralSetting.GeneralCBSettings.Count > 0)
         //{
@@ -144,10 +144,10 @@ public class RecruitController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateRecruitFooterSetting(RecruitFooterSettingVM recruitFooterSetting)
     {
-        if (recruitFooterSetting.Id == 0)
-        {
-            return View();
-        }
+        //if (recruitFooterSetting.Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync("RecruitFooterSetting/Update/", recruitFooterSetting);
@@ -202,10 +202,10 @@ public class RecruitController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateRecruiterSetting(RecruiterSettingVM recruiterSetting)
     {
-        if (recruiterSetting.Id == 0)
-        {
-            return View();
-        }
+        //if (recruiterSetting.Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync("RecruiterSetting/Update/", recruiterSetting);
@@ -247,7 +247,7 @@ public class RecruitController : Controller
     {
         //if (Id == 0) return View();
         RecruitNotificationSettingVM recruitNotificationSetting = new();
-        recruitNotificationSetting.Id = 1;
+        recruitNotificationSetting.Id = Guid.Parse("E2F233CC-D34F-4FFD-8B55-08DD2EF06545");
         recruitNotificationSetting.CBEMailJsonSettings = emailJsonData;
         recruitNotificationSetting.CBEMailNotificationJsonSettings = emailNotfnJsonData;
 
@@ -277,10 +277,10 @@ public class RecruitController : Controller
     public async Task<IActionResult> UpdateRecruitJobApplicationStatusSetting(
         RecruitJobApplicationStatusSettingVM recruitJobApplicationStatusSetting)
     {
-        if (recruitJobApplicationStatusSetting.Id == 0)
-        {
-            return View();
-        }
+        //if (recruitJobApplicationStatusSetting.Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync("RecruitJobApplicationStatusSetting/Update/", recruitJobApplicationStatusSetting);
@@ -339,10 +339,10 @@ public class RecruitController : Controller
     public async Task<IActionResult> UpdateRecruitCustomQuestionSetting(
         RecruitCustomQuestionSettingVM recruitCustomQuestionSetting)
     {
-        if (recruitCustomQuestionSetting.Id == 0)
-        {
-            return View();
-        }
+        //if (recruitCustomQuestionSetting.Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync("RecruitCustomQuestionSetting/Update/", recruitCustomQuestionSetting);

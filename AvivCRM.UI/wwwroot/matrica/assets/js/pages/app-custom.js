@@ -12,6 +12,15 @@
         },
         buttonsStyling: false
     });
+    function reloadernav(tabactive) {
+        // Clear the content of all tab panes
+        $('.tab-pane').empty();
+
+        // Load content for the selected tab
+        var tabId = $('#ulTicketContainer a[href=' + "'" + activeTabId + "'" + ']').attr('href');
+        var url = $('#ulTicketContainer a[href=' + "'" + activeTabId + "'" + ']').data('url');
+        $(tabId).load(url);
+    }
 
     // Script for Popup of Create & Edit
     $('button[data-toggle="ajax-modal"]').click(function (event) {
@@ -30,10 +39,7 @@
         })
     });
 
-   
-
     PlaceHolderElement.on('click', '[data-save="modal"]', function (event) {
-
         if ((document.querySelector('div[id="divErrorList"]') === null) != true) {
             $("#divErrorList").remove();
         }
@@ -57,7 +63,14 @@
                         allowOutsideClick: false
                     }).then(okay => {
                         if (okay) {
-                            location.reload();
+                            if ((PlaceHolderElement.find('.modal').length) == 0) {
+                                PlaceHolderElement.parents('.modal').modal('hide');
+                            }
+                            else {
+                                PlaceHolderElement.find('.modal').modal('hide');
+                            }
+                            var activeTabId = window.location.hash;
+                            tabactive(activeTabId);
                         }
                     });
                 } else {
@@ -82,8 +95,6 @@
 
     $('a[data-toggle="ajax-modal"]').click(function (event) {
         event.preventDefault();
-
-
         swalWithBootstrapButtons.fire({
             title: "Are you sure?",
             text: "Do You want to delete this?",
@@ -113,7 +124,8 @@
                                 allowOutsideClick: false
                             }).then(okay => {
                                 if (okay) {
-                                    location.reload();
+                                    var activeTabId = window.location.hash;
+                                    tabactive(activeTabId);
                                 }
                             });
                         } else {
@@ -145,8 +157,6 @@
         });
     });
 
-
-
     // Script for Popup of Create & Edit
     $('button[data-toggle="ajax-modal1"]').click(function (event) {
         //$("#divBlocker").removeClass("d-none").addClass("screenblocker");
@@ -164,10 +174,7 @@
         })
     });
 
-
-
     PlaceHolderElement1.on('click', '[data-save="modal1"]', function (event) {
-
         if ((document.querySelector('div[id="divErrorList"]') === null) != true) {
             $("#divErrorList").remove();
         }
@@ -191,7 +198,14 @@
                         allowOutsideClick: false
                     }).then(okay => {
                         if (okay) {
-                            location.reload();
+                            var hash = window.location.hash;
+                            if (hash) {
+                                // Find the corresponding tab link and show it 
+                                $('a[href="' + hash + '"]').tab('show');
+                            } else {
+                                // Default to show the first tab 
+                                $('a[href="#default"]').tab('show');
+                            }
                         }
                     });
                 } else {

@@ -1,4 +1,4 @@
-@model List<AvivCRM.UI.Areas.Environment.ViewModels.RecruitCustomQuestionSettingVM>
+﻿@model List<AvivCRM.UI.Areas.Environment.ViewModels.RecruitCustomQuestionSettingVM>
 
 <div class="modal fade" id="mdlProjectStatusShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
@@ -13,7 +13,7 @@
 			</div><!--end col-->
 			<div class="col-auto">
 				<button type="button" class="btn btn-de-primary" data-bs-toggle="modal"
-				        data-animation="bounce" data-bs-target=".bs-addNewCustomQn-modal-lg">
+						data-animation="bounce" data-bs-target=".bs-addNewCustomQn-modal-lg">
 					<i class="fas fa-plus me-2"></i>Add Question
 				</button>
 			</div><!--end col-->
@@ -23,40 +23,40 @@
 		<div class="table-responsive">
 			<table class="table mb-0">
 				<thead class="thead-light">
-				<tr>
-					<th>#</th>
-					<th>Question</th>
-					<th>Category</th>
-					<th>Type</th>
-					<th>Is Required</th>
-					<th>Status</th>
-					<th>Action</th>
-				</tr><!--end tr-->
+					<tr>
+						<th>#</th>
+						<th>Question</th>
+						<th>Category</th>
+						<th>Type</th>
+						<th>Is Required</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr><!--end tr-->
 				</thead>
 
 				<tbody>
-				@for (var i = 0; i < Model.Count(); i++)
-				{
-					<tr>
-						<td>@(i + 1)</td>
-						<td>@Model[i].CQQuestion</td>
-						<td>@Model[i].CustomQuestionCategoryName</td>
-						<td>@Model[i].CustomQuestionTypeName</td>
-						<td>@Model[i].CQIsRequiredId</td>
-						<td>@Model[i].CQStatusId</td>
-						<td>
-							<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
-							        data-bs-target="#mdlRecruitCustomQuestionSettingShow" data-url="@Url.Action($"EditRecruitCustomQuestionSetting/{Model[i].Id}")">
-								<i class="las la-pen text-secondary font-16"></i>
-							</button>
-							<a id="deleteRCQS" name="Id" href="#" class="ms-2"
-							   data-target="" data-url="@Url.Action($"DeleteRecruitCustomQuestionSetting/{Model[i].Id}")">
-								<i class="las la-trash-alt text-secondary font-16"></i>
-							</a>
-						</td>
-					</tr>
-					<!--end tr-->
-				}
+					@for (var i = 0; i < Model.Count(); i++)
+					{
+						<tr>
+							<td>@(i + 1)</td>
+							<td>@Model[i].CQQuestion</td>
+							<td>@Model[i].CustomQuestionCategoryName</td>
+							<td>@Model[i].CustomQuestionTypeName</td>
+							<td>@Model[i].CQIsRequiredId</td>
+							<td>@Model[i].CQStatusId</td>
+							<td>
+								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
+										data-bs-target="#mdlRecruitCustomQuestionSettingShow" data-url="@Url.Action($"EditRecruitCustomQuestionSetting/{Model[i].Id}")">
+									<i class="las la-pen text-secondary font-16"></i>
+								</button>
+								<a id="deleteRCQS" name="Id" href="#" class="ms-2"
+								   data-target="" data-url="@Url.Action($"DeleteRecruitCustomQuestionSetting/{Model[i].Id}")">
+									<i class="las la-trash-alt text-secondary font-16"></i>
+								</a>
+							</td>
+						</tr>
+						<!--end tr-->
+					}
 				</tbody>
 			</table>
 		</div>
