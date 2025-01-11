@@ -33,7 +33,7 @@
 						<th>#</th>
 						<th>Title</th>
 						<th>Description</th>
-						<th>Status</th>
+						 <th>Status</th> 
 						<th>Action</th>
 					</tr><!--end tr-->
 				</thead>
@@ -45,7 +45,7 @@
 							<td>@(i + 1)</td>
 							<td>@Model[i].FooterTitle</td>
 							<td>@Model[i].FooterDescription</td>
-							<td>@(Model[i].FooterStatusId ? "Active" : "Inactive")</td>
+							<td>@(Model[i].FooterStatusName == "Yes" ? "Active" : "Inactive")</td>
 							<td>
 								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
 										data-target="#mdlRecruitFooterSettingShow" data-url="@Url.Action($"Edit/{Model[i].Id}")">

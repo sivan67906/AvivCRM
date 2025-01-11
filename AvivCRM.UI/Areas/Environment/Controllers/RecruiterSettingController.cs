@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using AvivCRM.UI.Areas.Environment.ViewModels;
+using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -29,7 +30,29 @@ public class RecruiterSettingController : Controller
         ApiResultResponse<List<RecruiterSettingVM>>? RecruiterSettings =
             await client.GetFromJsonAsync<ApiResultResponse<List<RecruiterSettingVM>>>("RecruiterSetting/all-recruitersetting");
 
-        return PartialView("_RecruiterSetting", RecruiterSettings!.Data!);
+        List<RecruiterSettingVM> recruiterSetting = RecruiterSettings!.Data!;
+
+        ApiResultResponse<List<ToggleValueVM>>? ToggleValues =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ToggleValueVM>>>("ToggleValue/all-togglevalue");
+
+        List<ToggleValueVM> toggleList = ToggleValues!.Data!;
+
+        foreach (ToggleValueVM parent in toggleList!)
+        {
+            foreach (RecruiterSettingVM? child in recruiterSetting.Where(c => c.RecruiterStatusId == parent.Id))
+            {
+                ToggleDDSettingVM? toggleDDSetting = new()
+                {
+                    ToggleValueVM = parent,
+                    SelectedToggleValueId = child!.RecruiterStatusId,
+                    toggleValues = toggleList.ToList()
+                };
+                child.ToggleDDSettings = toggleDDSetting;
+                child.RecruiterStatusName = parent.Name;
+            }
+        }
+
+        return PartialView("_RecruiterSetting", recruiterSetting);
     }
     #region Create Recruiter Setting functionionality
     /// <summary>
@@ -45,9 +68,33 @@ public class RecruiterSettingController : Controller
     /// Created: 05-Jan-2025 by Sivan T
     /// </remarks>
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
         RecruiterSettingVM recruiterSetting = new();
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        ApiResultResponse<List<ToggleValueVM>>? ToggleValues =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ToggleValueVM>>>("ToggleValue/all-togglevalue");
+
+        List<ToggleValueVM> toggleList = ToggleValues!.Data!;
+
+        foreach (ToggleValueVM entity in toggleList)
+        {
+            if (entity.Name == "Yes")
+            {
+                entity.Name = "Enabled";
+            }
+            else if (entity.Name == "No")
+            {
+                entity.Name = "Disabled";
+            }
+        }
+        ToggleDDSettingVM? toggleDDSetting = new()
+        {
+            ToggleValueVM = null,
+            SelectedToggleValueId = Guid.Empty,
+            toggleValues = toggleList.ToList()
+        };
+        recruiterSetting.ToggleDDSettings = toggleDDSetting;
         return PartialView("_Create", recruiterSetting);
     }
 
@@ -66,8 +113,14 @@ public class RecruiterSettingController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(RecruiterSettingVM recruiterSetting)
     {
-        ApiResultResponse<RecruiterSettingVM> resultRecruiterSetting = new();
 
+        if (GuidExtensions.IsNullOrEmpty(recruiterSetting.RecruiterStatusId))
+        {
+            // Remove the default error for the "FooterStatusId" property
+            ModelState.Remove(nameof(recruiterSetting.RecruiterStatusId));
+            // Add a custom error message for the "FooterStatusId" property
+            ModelState.AddModelError("RecruiterStatusId", "Please select a status");
+        }
         if (!ModelState.IsValid)
         {
             return Json(new
@@ -76,6 +129,7 @@ public class RecruiterSettingController : Controller
                 errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
+        ApiResultResponse<RecruiterSettingVM> resultRecruiterSetting = new();
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 

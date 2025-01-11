@@ -1,6 +1,6 @@
 ﻿@model List<AvivCRM.UI.Areas.Environment.ViewModels.RecruiterSettingVM>
 
-<div class="modal fade" id="mdlProjectStatusShow" style="">
+<div class="modal fade" id="mdlRecruiterSettingShow" style="">
 	<div class="modal-dialog" id="PlaceHolderHere">
 	</div>
 </div>
@@ -12,9 +12,9 @@
 				<h4 class="card-title">Recruiter Index</h4>
 			</div><!--end col-->
 			<div class="col-auto">
-				<button type="button" class="btn btn-de-primary" data-bs-toggle="modal"
-						data-animation="bounce" data-bs-target=".bs-addNewRecruiter-modal-lg">
-					<i class="fas fa-plus me-2"></i>Add Recruiter
+				<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+						data-target="#mdlRecruiterSettingShow" data-url="@Url.Action("Create")">
+					<i class="fas fa-plus me-2"></i>Add Recruiter Setting
 				</button>
 			</div><!--end col-->
 		</div> <!--end row-->
@@ -37,10 +37,10 @@
 						<tr>
 							<td>@(i + 1)</td>
 							<td>@Model[i].RecruiterName</td>
-							<td>@Model[i].RecruiterStatusId</td>
+							<td>@(Model[i].RecruiterStatusName == "Yes" ? "Enabled" : "Disabled")</td>
 							<td>
 								<a id="deleteRS" name="Id" href="#" class="ms-2"
-								   data-target="" data-url="@Url.Action($"DeleteRecruiterSetting/{Model[i].Id}")">
+								   data-target="" data-url="@Url.Action($"Delete/{Model[i].Id}")">
 									<i class="las la-trash-alt text-secondary font-16"></i>
 								</a>
 							</td>
@@ -52,6 +52,29 @@
 		</div>
 	</div><!--end card-body-->
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/matrica/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+
+		  let hash = document.location.hash;
+		  let prefix = "";
+
+		  //change hash url on page reload
+		  if (hash) {
+			$('.nav-tabs a[href=\"'+hash.replace(prefix,"")+'\"]').tab('show');
+		  }
+
+		  // change hash url on switch tab
+		  $('.nav-tabs a').on('shown.bs.tab', function (e) {
+			 window.location.hash = e.target.hash.replace("#", "#" + prefix);
+		  });
+
+		  // Popup Close on Outside Click disable
+		 $('.modal').modal({backdrop: 'static', keyboard: false});
+	});
+</script>
 <script type="text/javascript">
 	$(document).on("click", "#deleteRS", function (e) {
 		   e.preventDefault();

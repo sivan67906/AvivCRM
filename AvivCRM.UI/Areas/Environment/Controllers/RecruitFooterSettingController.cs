@@ -32,32 +32,25 @@ public class RecruitFooterSettingController : Controller
 
         List<RecruitFooterSettingVM> recruitFooterSetting = RecruitFooterSettings!.Data!;
 
-        //List<ToggleValueVM>? toggleList = new()
-        //{
-        //    new ToggleValueVM
-        //    {
-        //        Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), Code = "YES", Value = true
-        //    },
-        //    new ToggleValueVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), Code = "NO", Value = false }
-        //};
+        ApiResultResponse<List<ToggleValueVM>>? ToggleValues =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ToggleValueVM>>>("ToggleValue/all-togglevalue");
 
-        //ToggleValueVM? toggle = new()
-        //{
-        //    Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"),
-        //    Code = "YES",
-        //    Value = true
-        //};
+        List<ToggleValueVM> toggleList = ToggleValues!.Data!;
 
-        //foreach (var recruitFooter in recruitFooterSetting)
-        //{
-        //    ToggleDDSettingVM? toggleDDSetting = new()
-        //    {
-        //        ToggleValueVM = toggle,
-        //        SelectedToggleValueId = toggle!.Id,
-        //        toggleValues = toggleList?.Select(i => new ToggleValueVM { Id = i.Id, Code = i.Code, Value = i.Value }).ToList()
-        //    };
-        //    recruitFooter.ToggleDDSettings = toggleDDSetting;
-        //}
+        foreach (ToggleValueVM parent in toggleList!)
+        {
+            foreach (RecruitFooterSettingVM? child in recruitFooterSetting.Where(c => c.FooterStatusId == parent.Id))
+            {
+                ToggleDDSettingVM? toggleDDSetting = new()
+                {
+                    ToggleValueVM = parent,
+                    SelectedToggleValueId = child!.FooterStatusId,
+                    toggleValues = toggleList.ToList()
+                };
+                child.ToggleDDSettings = toggleDDSetting;
+                child.FooterStatusName = parent.Name;
+            }
+        }
 
         return PartialView("_RecruitFooterSetting", recruitFooterSetting);
     }
@@ -75,34 +68,36 @@ public class RecruitFooterSettingController : Controller
     /// <remarks> 
     /// Created: 05-Jan-2025 by Sivan T
     /// </remarks>
-    //[HttpGet]
-    public IActionResult Create()
+    [HttpGet]
+    public async Task<IActionResult> Create()
     {
         RecruitFooterSettingVM recruitFooterSetting = new();
 
-        //List<ToggleValueVM>? toggleList = new()
-        //{
-        //    new ToggleValueVM
-        //    {
-        //        Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), TCode = "YES", TValue = true
-        //    },
-        //    new ToggleValueVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), TCode = "NO", TValue = false }
-        //};
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        ApiResultResponse<List<ToggleValueVM>>? ToggleValues =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ToggleValueVM>>>("ToggleValue/all-togglevalue");
 
-        //foreach (ToggleValueVM toggleValueVM in toggleList)
-        //{
-        //    if (toggleValueVM.TValue) toggleValueVM.TCode = "Active";
-        //    else toggleValueVM.TCode = "Inactive";
-        //}
+        List<ToggleValueVM> toggleList = ToggleValues!.Data!;
 
-        //ToggleDDSettingVM? toggleDDSetting = new()
-        //{
-        //    ToggleValueVM = null,
-        //    SelectedToggleValueId = Guid.Empty,
-        //    toggleValues = toggleList?.Select(i => new ToggleValueVM { Id = i.Id, TCode = i.TCode, TValue = i.TValue }).ToList()
-        //};
+        foreach (ToggleValueVM entity in toggleList)
+        {
+            if (entity.Name == "Yes")
+            {
+                entity.Name = "Active";
+            }
+            else if (entity.Name == "No")
+            {
+                entity.Name = "Inactive";
+            }
+        }
+        ToggleDDSettingVM? toggleDDSetting = new()
+        {
+            ToggleValueVM = null,
+            SelectedToggleValueId = Guid.Empty,
+            toggleValues = toggleList.ToList()
+        };
+        recruitFooterSetting.ToggleDDSettings = toggleDDSetting;
 
-        //recruitFooterSetting.ToggleDDSettings = toggleDDSetting;
         return PartialView("_Create", recruitFooterSetting);
     }
 
@@ -119,9 +114,20 @@ public class RecruitFooterSettingController : Controller
     /// Created: 05-Jan-2025 by Sivan T
     /// </remarks>
     [HttpPost]
+    //public async Task<IActionResult> Create(RecruitFooterSettingVM recruitFooterSetting,
+    //    [Bind("FooterStatusId")] Guid footerStatusId)
     public async Task<IActionResult> Create(RecruitFooterSettingVM recruitFooterSetting)
     {
-        ApiResultResponse<RecruitFooterSettingVM> resultRecruitFooterSetting = new();
+        // Remove the property from ModelState validation
+        //ModelState.Remove(nameof(recruitFooterSetting.FooterStatusId));
+        //recruitFooterSetting.FooterStatusId = footerStatusId;
+        if (GuidExtensions.IsNullOrEmpty(recruitFooterSetting.FooterStatusId))
+        {
+            // Remove the default error for the "FooterStatusId" property
+            ModelState.Remove(nameof(recruitFooterSetting.FooterStatusId));
+            // Add a custom error message for the "FooterStatusId" property
+            ModelState.AddModelError("FooterStatusId", "Please select a status");
+        }
 
         if (!ModelState.IsValid)
         {
@@ -132,6 +138,7 @@ public class RecruitFooterSettingController : Controller
             });
         }
 
+        ApiResultResponse<RecruitFooterSettingVM> resultRecruitFooterSetting = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
         string? jsonRecruitFooterSetting = JsonConvert.SerializeObject(recruitFooterSetting);
@@ -188,48 +195,34 @@ public class RecruitFooterSettingController : Controller
         {
             return View();
         }
-
-
-
-        //List<ToggleValueVM>? toggleList = new()
-        //{
-        //    new ToggleValueVM
-        //    {
-        //        Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"), TCode = "YES", TValue = true
-        //    },
-        //    new ToggleValueVM { Id = new Guid("0BBE1696-596A-433B-ABB7-AFD60DCD826A"), TCode = "NO", TValue = false }
-        //};
-
-
-
-        //foreach (ToggleValueVM toggleValueVM in toggleList)
-        //{
-        //    if (toggleValueVM.TValue) toggleValueVM.TCode = "Active";
-        //    else toggleValueVM.TCode = "Inactive";
-        //}
-        //ToggleValueVM? toggle = new()
-        //{
-        //    Id = new Guid("E0BB7E72-CA1A-4C2B-B531-89E720D6ABCD"),
-        //    TCode = "Active",
-        //    TValue = true
-        //};
-
-        //ToggleDDSettingVM? toggleDDSetting = new()
-        //{
-        //    ToggleValueVM = toggle,
-        //    SelectedToggleValueId = toggle.Id,
-        //    toggleValues = toggleList?.Select(i => new ToggleValueVM { Id = i.Id, TCode = i.TCode, TValue = i.TValue }).ToList()
-        //};
-
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
         ApiResultResponse<RecruitFooterSettingVM> recruitFooterSetting = new();
-
-
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         recruitFooterSetting =
             await client.GetFromJsonAsync<ApiResultResponse<RecruitFooterSettingVM>>("RecruitFooterSetting/byid-recruitfootersetting/?Id=" + Id);
 
-        //recruitFooterSetting!.Data!.ToggleDDSettings = toggleDDSetting;
+        ApiResultResponse<List<ToggleValueVM>>? ToggleValues =
+            await client.GetFromJsonAsync<ApiResultResponse<List<ToggleValueVM>>>("ToggleValue/all-togglevalue");
+
+        List<ToggleValueVM> toggleList = ToggleValues!.Data!;
+        foreach (ToggleValueVM entity in toggleList)
+        {
+            if (entity.Name == "Yes")
+            {
+                entity.Name = "Active";
+            }
+            else if (entity.Name == "No")
+            {
+                entity.Name = "Inactive";
+            }
+        }
+        ToggleDDSettingVM? toggleDDSetting = new()
+        {
+            ToggleValueVM = null,
+            SelectedToggleValueId = recruitFooterSetting!.Data!.FooterStatusId,
+            toggleValues = toggleList.ToList()
+        };
+        recruitFooterSetting!.Data!.ToggleDDSettings = toggleDDSetting;
 
         if (!recruitFooterSetting!.IsSuccess)
         {
@@ -254,6 +247,13 @@ public class RecruitFooterSettingController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(RecruitFooterSettingVM recruitFooterSetting)
     {
+        if (GuidExtensions.IsNullOrEmpty(recruitFooterSetting.FooterStatusId))
+        {
+            // Remove the default error for the "FooterStatusId" property
+            ModelState.Remove(nameof(recruitFooterSetting.FooterStatusId));
+            // Add a custom error message for the "FooterStatusId" property
+            ModelState.AddModelError("FooterStatusId", "Please select a status");
+        }
         if (!ModelState.IsValid)
         {
             return Json(new
@@ -269,8 +269,6 @@ public class RecruitFooterSettingController : Controller
         {
             return View();
         }
-
-
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         string? jsonRecruitFooterSetting = JsonConvert.SerializeObject(recruitFooterSetting);

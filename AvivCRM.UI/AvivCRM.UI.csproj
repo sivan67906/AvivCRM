@@ -8,9 +8,17 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Configuration\Views\Role\**" />
+    <Compile Remove="Areas\Environment\Views\LeadSource1\**" />
+    <Compile Remove="Areas\Environment\Views\LeadSources\**" />
     <Content Remove="Areas\Configuration\Views\Role\**" />
+    <Content Remove="Areas\Environment\Views\LeadSource1\**" />
+    <Content Remove="Areas\Environment\Views\LeadSources\**" />
     <EmbeddedResource Remove="Areas\Configuration\Views\Role\**" />
+    <EmbeddedResource Remove="Areas\Environment\Views\LeadSource1\**" />
+    <EmbeddedResource Remove="Areas\Environment\Views\LeadSources\**" />
     <None Remove="Areas\Configuration\Views\Role\**" />
+    <None Remove="Areas\Environment\Views\LeadSource1\**" />
+    <None Remove="Areas\Environment\Views\LeadSources\**" />
   </ItemGroup>
 
   <ItemGroup>

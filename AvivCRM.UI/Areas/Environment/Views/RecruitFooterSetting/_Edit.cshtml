@@ -23,10 +23,9 @@
 					<input asp-for="@Model.FooterSlug" class="form-control" />
 				</div>
 				<div class="col-lg-4">
-					<select class="form-select" name="FooterStatusId" asp-for="@Model.ToggleDDSettings!.toggleValues" asp-items="@(new SelectList(Model.ToggleDDSettings!.toggleValues, "TValue", "TCode"))">
+					<select class="form-select" name="FooterStatusId" asp-for="@Model.FooterStatusId" asp-items="@(new SelectList(Model.ToggleDDSettings!.toggleValues, "Id", "Name"))">
 						<option value="">--</option>
 					</select>
-
 					@* <select asp-for="SelectedValue" asp-items="Model.Options" id="dropdown"></select> *@
 				</div>
 			</div>

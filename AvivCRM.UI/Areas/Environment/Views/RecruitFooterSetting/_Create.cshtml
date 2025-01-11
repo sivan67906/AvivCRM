@@ -28,7 +28,7 @@
 					@* <input class="form-control" type="text" value="" id="reminderAftrMns"> *@
 				</div>
 				<div class="col-lg-4">
-					<select class="form-select" name="FooterStatusId" asp-for="@Model.ToggleDDSettings!.SelectedToggleValueId" asp-items="@(new SelectList(Model.ToggleDDSettings!.toggleValues, "TValue", "TCode"))">
+					<select class="form-select" name="FooterStatusId" asp-items="@(new SelectList(Model.ToggleDDSettings!.toggleValues, "Id", "Name"))">
 						<option value="">--</option>
 					</select>
 				</div>
