@@ -19,7 +19,7 @@ public class PlanningVM
     public int Validity { get; set; } = default!;
 
     [Required(ErrorMessage = "Employee should not be empty")]
-    [Range(0, 50, ErrorMessage = "Employee must not exceed 50 ")]
+    [Range(0, 50, ErrorMessage = " Employee must not exceed 50 ")]
     public int Employee { get; set; } = default!;
 
     [Required(ErrorMessage = "Designation should not be empty")]

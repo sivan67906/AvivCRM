@@ -6,7 +6,7 @@
 		<h5 class="modal-title mt-0" id="">Currency Setup</h5>
 	</div>
 	<div class="modal-body">
-		<form action="Create">
+		<form id="createFormCurrency" data-url="Create" asp-action="Create" method="post">
 
 			<div class="row">
 				<div class="col-md-4 g-2">
@@ -15,11 +15,8 @@
 							Currency Name
 							<span class="f-14 mr-1 text-danger">*</span>
 						</label>
-
 						<input class="form-control mt-2" type="text" placeholder="e.g. Doller" name="CurrencyName" id="cname">
-						<span asp-validation-for="CurrencyName" class="text-danger"></span>
-
-
+						@* <span asp-validation-for="CurrencyName" class="text-danger"></span> *@
 					</div>
 				</div>
 				<div class="col-lg-4 g-2">
@@ -28,9 +25,8 @@
 							Currency Symbol
 							<span class="f-14 mr-1 text-danger">*</span>
 						</label>
-
 						<input class="form-control mt-2" type="text" placeholder="e.g. $" name="CurrencySymbol" id="csymbol">
-						<span asp-validation-for="CurrencySymbol" class="text-danger"></span>
+						@* <span asp-validation-for="CurrencySymbol" class="text-danger"></span> *@
 					</div>
 				</div>
 				<div class="col-lg-4 g-2">
@@ -39,28 +35,22 @@
 							Currency Code
 							<span class="f-14 mr-1 text-danger">*</span>
 						</label>
-
 						<input class="form-control mt-2" type="text" placeholder="e.g. USD" name="CurrencyCode" id="ccode">
-						<span asp-validation-for="CurrencyCode" class="text-danger"></span>
+						@* <span asp-validation-for="CurrencyCode" class="text-danger"></span> *@
 					</div>
 				</div>
 			</div>
 			<div class="row">
-
 				<div class="col-lg-6 g-2">
 					<div class="mb-3 text-start">
-						<label for="tax">
-							Is Cryptocurrency
-						</label>
+						<label for="tax">Is Cryptocurrency</label>
 						<div class="col-sm-7 text-start mt-2">
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" name="IsCryptocurrency" id="icc1" value="1">
-								<span asp-validation-for="IsCryptocurrency" class="text-danger"></span>
 								<label class="form-check-label" for="icc1">Yes</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="IsCryptocurrency" id="icc2" value="0" default>
-								<span asp-validation-for="IsCryptocurrency" class="text-danger"></span>
+								<input class="form-check-input" type="radio" name="IsCryptocurrency" id="icc2" value="0">
 								<label class="form-check-label" for="icc2">No</label>
 							</div>
 						</div>
@@ -68,29 +58,17 @@
 				</div>
 				<div class="col-lg-6 g-2" id="yestextbox" style="display: none;">
 					<div class="mb-3 text-start">
-						<label for="usdprice">
-							USD Price
-							<span class="f-14 mr-1 text-danger">*</span>
-						</label>
-
-						<input class="form-control mt-2" type="text" placeholder="e.g.100000" value="" name="USDPrice" id="usdprice">
-						<span asp-validation-for="USDPrice" class="text-danger"></span>
+						<label for="usdprice">USD Price<span class="f-14 mr-1 text-danger">*</span></label>
+						<input class="form-control mt-2" type="text" placeholder="e.g. 100000" name="USDPrice" id="usdprice">
 					</div>
 				</div>
-				<div class="col-lg-6 g-2" id="notextbox">
+				<div class="col-lg-6 g-2" id="notextbox" style="display: none;">
 					<div class="mb-3 text-start">
-						<label for="exchangerate">
-							Exchange Rate
-							<span class="f-14 mr-1 text-danger">*</span>
-						</label>
-
-						<input class="form-control mt-2" type="number" placeholder="e.g.10000" value="" name="ExchangeRate" id="exchangerate">
-						<span asp-validation-for="ExchangeRate" class="text-danger"></span>
+						<label for="exchangerate">Exchange Rate<span class="f-14 mr-1 text-danger">*</span></label>
+						<input class="form-control mt-2" type="number" placeholder="e.g. 10000" name="ExchangeRate" id="exchangerate">
 					</div>
 				</div>
 			</div>
-
-
 			<div class="row">
 				<div class="col-12 text-start">
 					<h6>Currency Format Settings</h6>
@@ -101,27 +79,22 @@
 					<div class="mb-3 text-start">
 						<label for="cposition">
 							Currency Position
-
 						</label>
-
 						<select class="form-select mt-2" id="cposition" name="CurrencyPosition" aria-label="Default select example">
-
 							<option value="" selected>--</option>
 							<option value="1">Left</option>
 							<option value="2">Right</option>
 							<option value="3">Left with Space</option>
 							<option value="4">Right with Space</option>
 						</select>
-						<span asp-validation-for="CurrencyPosition" class="text-danger"></span>
+						@* <span asp-validation-for="CurrencyPosition" class="text-danger"></span> *@
 					</div>
 				</div>
 				<div class="col-lg-6 g-2">
 					<div class="mb-3 text-start">
 						<label for="sep">
 							Thousand Separator
-
 						</label>
-
 						<input class="form-control mt-2" type="text" placeholder="" value="" name="ThousandSeparator" id="sep">
 						<span asp-validation-for="ThousandSeparator" class="text-danger"></span>
 					</div>
@@ -132,9 +105,7 @@
 					<div class="mb-3 text-start">
 						<label for="dsep">
 							Decimal Separator
-
 						</label>
-
 						<input class="form-control mt-2" type="text" placeholder="" value="" name="DecimalSeparator" id="dsep">
 						<span asp-validation-for="DecimalSeparator" class="text-danger"></span>
 					</div>
@@ -144,18 +115,15 @@
 						<label for="ndecimal">
 							Number of Decimals
 						</label>
-
 						<input class="form-control mt-2" type="number" placeholder="" value="" name="NumberofDecimals" id="ndecimal">
 						<span asp-validation-for="NumberofDecimals" class="text-danger"></span>
 					</div>
 				</div>
 			</div>
-
-
 			<div class="row mt-4 text-end ">
 				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="button" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
 				</div>
 			</div>
 		</form>
@@ -163,5 +131,41 @@
 </div>
 
 <script type="text/javascript">
-        
-    </script>
+
+	// 	document.addEventListener("DOMContentLoaded", function () {
+	// 	const yesRadio = document.getElementById("icc1");
+	// 	const noRadio = document.getElementById("icc2");
+	// 	const yesTextboxContainer = document.getElementById("yestextbox");
+	// 	const noTextboxContainer = document.getElementById("notextbox");
+
+	// 	// Function to toggle textboxes based on radio selection
+	// 	function toggleTextboxes() {
+	// 		if (yesRadio.checked) {
+	// 			yesTextboxContainer.style.display = "block"; // Show Yes textbox
+	// 			noTextboxContainer.style.display = "none";  // Hide No textbox
+	// 		} else if (noRadio.checked) {
+	// 			noTextboxContainer.style.display = "block"; // Show No textbox
+	// 			yesTextboxContainer.style.display = "none"; // Hide Yes textbox
+	// 		}
+	// 	}
+
+	// 	// Initialize toggle state on page load
+	// 	toggleTextboxes();
+
+	// 	// Add event listeners for the radio buttons
+	// 	yesRadio.addEventListener("change", toggleTextboxes);
+	// 	noRadio.addEventListener("change", toggleTextboxes);
+	// });
+
+	$(document).ready(function() {
+		  $("input[id$='icc1']").click(function() {
+			 $("#yestextbox").css("display", "block");
+			 $("#notextbox").css("display", "none");
+		  });
+		 $("input[id$='icc2']").click(function() {
+			 $("#notextbox").css("display", "block");
+			 $("#yestextbox").css("display", "none");
+		  });
+		  });
+</script>
+
