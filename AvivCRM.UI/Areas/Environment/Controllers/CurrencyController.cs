@@ -50,7 +50,7 @@ public class CurrencyController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         CurrencyVM currency = new();
         return PartialView("_Create", currency);

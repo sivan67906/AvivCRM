@@ -15,7 +15,7 @@ public class FinanceController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -40,7 +40,7 @@ public class FinanceController : Controller
 
         List<FICBGeneralSettingVM>? cbGeneralSettingItems = financeInvoiceSetting != null
             ? JsonConvert.DeserializeObject<List<FICBGeneralSettingVM>>(financeInvoiceSetting!.FICBGeneralJsonSettings!)
-            : new List<FICBGeneralSettingVM>();
+            : [];
         if (cbGeneralSettingItems!.Count > 0)
         {
             financeInvoiceSetting!.FICBGeneralSettings = cbGeneralSettingItems!;
@@ -49,7 +49,7 @@ public class FinanceController : Controller
         List<FICBClientInfoSettingVM>? cbClientInfoItems = financeInvoiceSetting != null
             ? JsonConvert.DeserializeObject<List<FICBClientInfoSettingVM>>(financeInvoiceSetting!
                 .FICBClientInfoJsonSettings!)
-            : new List<FICBClientInfoSettingVM>();
+            : [];
         if (cbClientInfoItems!.Count > 0)
         {
             financeInvoiceSetting!.FICBClientInfoSettings = cbClientInfoItems;
@@ -82,7 +82,7 @@ public class FinanceController : Controller
         List<FIRBTemplateSettingVM>? rbTemplateItems = financeInvoiceTemplateSetting != null
             ? JsonConvert.DeserializeObject<List<FIRBTemplateSettingVM>>(financeInvoiceTemplateSetting!
                 .FIRBTemplateJsonSettings!)
-            : new List<FIRBTemplateSettingVM>();
+            : [];
         if (rbTemplateItems!.Count > 0)
         {
             financeInvoiceTemplateSetting!.FIRBTemplateSettings = rbTemplateItems;
@@ -95,18 +95,20 @@ public class FinanceController : Controller
 
         List<FICBPrefixSettingVM>? cbPrefixItems = financePrefixSetting != null
             ? JsonConvert.DeserializeObject<List<FICBPrefixSettingVM>>(financePrefixSetting.FICBPrefixJsonSettings!)
-            : new List<FICBPrefixSettingVM>();
+            : [];
         FICBPrefixSettingVM? cbPrefixItem = new();
         if (cbPrefixItems!.Count > 0)
         {
             cbPrefixItem = cbPrefixItems?.FirstOrDefault();
         }
 
-        FICBPrefixSettingVM finalPrefixItems = new();
-        finalPrefixItems.FPInvoiceVM = cbPrefixItem!.FPInvoiceVM;
-        finalPrefixItems.FPOrderVM = cbPrefixItem.FPOrderVM;
-        finalPrefixItems.FPCreditNoteVM = cbPrefixItem.FPCreditNoteVM;
-        finalPrefixItems.FPEstimationVM = cbPrefixItem.FPEstimationVM;
+        FICBPrefixSettingVM finalPrefixItems = new()
+        {
+            FPInvoiceVM = cbPrefixItem!.FPInvoiceVM,
+            FPOrderVM = cbPrefixItem.FPOrderVM,
+            FPCreditNoteVM = cbPrefixItem.FPCreditNoteVM,
+            FPEstimationVM = cbPrefixItem.FPEstimationVM
+        };
 
         if (financePrefixSetting != null)
         {
@@ -182,7 +184,7 @@ public class FinanceController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = fStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
         if (!fStatus!.IsSuccess)
@@ -225,7 +227,7 @@ public class FinanceController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = fStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
         if (!fStatus!.IsSuccess)
@@ -267,7 +269,7 @@ public class FinanceController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = fStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
         if (!fStatus!.IsSuccess)
@@ -351,7 +353,7 @@ public class FinanceController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateFinanceUnitSetting()
+    public IActionResult CreateFinanceUnitSetting()
     {
         FinanceUnitSettingVM financeUnitSetting = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
@@ -391,7 +393,7 @@ public class FinanceController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = pStatus!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 

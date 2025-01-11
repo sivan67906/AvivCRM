@@ -1,14 +1,23 @@
 ﻿@section Scripts {
-	
 	<script>
 		$(document).ready(function () {
-				  $('#ulTicketContainer a[href="#tbTicketGroups"]').ready(function() {
+		  let hash = document.location.hash;
+			var activeTabId = "";
+
+			if(hash)
+		  {
+			  activeTabId = hash;
+		  }
+		  else{
+			  activeTabId = $(".nav-link.active").attr('href');
+		  }
+				  $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').ready(function() {
 		  // Clear the content of all tab panes
 				$('.tab-pane').empty();
 
 				// Load content for the selected tab
-				var tabId = $('#ulTicketContainer a[href="#tbTicketGroups"]').attr('href');
-				var url = $('#ulTicketContainer a[href="#tbTicketGroups"]').data('url');
+				var tabId = $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').attr('href');
+				var url = $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').data('url');
 				$(tabId).load(url);
 		});
 

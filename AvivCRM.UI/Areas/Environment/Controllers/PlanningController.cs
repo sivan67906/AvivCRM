@@ -50,7 +50,7 @@ public class PlanningController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         PlanningVM planning = new();
         return PartialView("_Create", planning);

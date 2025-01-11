@@ -1,7 +1,7 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
 public class RecruitGeneralSettingVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? GeneralCompanyName { get; set; }
     public string? GeneralCompanyWebsite { get; set; }
     public string? GeneralCompanyLogo { get; set; }

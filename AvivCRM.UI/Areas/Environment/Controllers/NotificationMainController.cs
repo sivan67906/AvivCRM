@@ -12,7 +12,7 @@ public class NotificationMainController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -38,41 +38,41 @@ public class NotificationMainController : Controller
         List<CommonNotificationMainVM>? CommonNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<CommonNotificationMainVM>>(
                 NotificationMain.CommonNotificationMainJson!)
-            : new List<CommonNotificationMainVM>();
+            : [];
         List<LeaveNotificationMainVM>? LeaveNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<LeaveNotificationMainVM>>(NotificationMain.LeaveNotificationMainJson!)
-            : new List<LeaveNotificationMainVM>();
+            : [];
         List<ProposalNotificationMainVM>? ProposalNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<ProposalNotificationMainVM>>(NotificationMain
                 .ProposalNotificationMainJson!)
-            : new List<ProposalNotificationMainVM>();
+            : [];
         List<InvoiceNotificationMainVM>? InvoiceNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<InvoiceNotificationMainVM>>(NotificationMain
                 .InvoiceNotificationMainJson!)
-            : new List<InvoiceNotificationMainVM>();
+            : [];
         List<PaymentNotificationMainVM>? PaymentNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<PaymentNotificationMainVM>>(NotificationMain
                 .PaymentNotificationMainJson!)
-            : new List<PaymentNotificationMainVM>();
+            : [];
         List<TaskNotificationMainVM>? TaskNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<TaskNotificationMainVM>>(NotificationMain.TaskNotificationMainJson!)
-            : new List<TaskNotificationMainVM>();
+            : [];
         List<TicketNotificationMainVM>? TicketNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<TicketNotificationMainVM>>(
                 NotificationMain.TicketNotificationMainJson!)
-            : new List<TicketNotificationMainVM>();
+            : [];
         List<ProjectNotificationMainVM>? ProjectNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<ProjectNotificationMainVM>>(NotificationMain
                 .ProjectNotificationMainJson!)
-            : new List<ProjectNotificationMainVM>();
+            : [];
         List<ReminderNotificationMainVM>? ReminderNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<ReminderNotificationMainVM>>(NotificationMain
                 .ReminderNotificationMainJson!)
-            : new List<ReminderNotificationMainVM>();
+            : [];
         List<RequestNotificationMainVM>? RequestNotificationMainItems = NotificationMain != null
             ? JsonConvert.DeserializeObject<List<RequestNotificationMainVM>>(NotificationMain
                 .RequestNotificationMainJson!)
-            : new List<RequestNotificationMainVM>();
+            : [];
 
         NotificationMain!.CommonNotificationMains = CommonNotificationMainItems;
         NotificationMain!.LeaveNotificationMains = LeaveNotificationMainItems;
@@ -98,19 +98,20 @@ public class NotificationMainController : Controller
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        NotificationMainVM notificationMain = new();
-
-        notificationMain.Id = cbValueId;
-        notificationMain.CommonNotificationMainJson = cbValue1;
-        notificationMain.LeaveNotificationMainJson = cbValue2;
-        notificationMain.ProposalNotificationMainJson = cbValue3;
-        notificationMain.InvoiceNotificationMainJson = cbValue4;
-        notificationMain.PaymentNotificationMainJson = cbValue5;
-        notificationMain.TaskNotificationMainJson = cbValue6;
-        notificationMain.TicketNotificationMainJson = cbValue7;
-        notificationMain.ProjectNotificationMainJson = cbValue8;
-        notificationMain.ReminderNotificationMainJson = cbValue9;
-        notificationMain.RequestNotificationMainJson = cbValue10;
+        NotificationMainVM notificationMain = new()
+        {
+            Id = cbValueId,
+            CommonNotificationMainJson = cbValue1,
+            LeaveNotificationMainJson = cbValue2,
+            ProposalNotificationMainJson = cbValue3,
+            InvoiceNotificationMainJson = cbValue4,
+            PaymentNotificationMainJson = cbValue5,
+            TaskNotificationMainJson = cbValue6,
+            TicketNotificationMainJson = cbValue7,
+            ProjectNotificationMainJson = cbValue8,
+            ReminderNotificationMainJson = cbValue9,
+            RequestNotificationMainJson = cbValue10
+        };
 
         HttpResponseMessage? responseNotificationMain =
             await client.PutAsJsonAsync("NotificationMain/update-notificationmain/", notificationMain);
@@ -131,7 +132,7 @@ public class NotificationMainController : Controller
         }
 
         // Server side Validation
-        List<string> serverErrorMessageList = new();
+        List<string> serverErrorMessageList = [];
         string serverErrorMessage = result!.Message!;
         serverErrorMessageList.Add(serverErrorMessage);
 

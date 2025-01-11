@@ -1,8 +1,10 @@
+#region Namespaces
 using System.Text;
 using AvivCRM.UI.Areas.Environment.ViewModels;
 using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+#endregion
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
@@ -10,12 +12,27 @@ public class LeadSourceController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
+    #region Constructor
     public LeadSourceController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
+    #endregion
 
-    public async Task<IActionResult> LeadSource(string searchQuery = null!)
+    #region Retrieves a List of Lead Sources
+    /// <summary>
+    /// Retrieves a list of Lead Sources from the database.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>Modal popup will open to create New Lead Source</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/LeadSource/LeadSource
+    /// </example>
+    /// <remarks> 
+    /// Created: 05-Jan-2025 by Sivan T
+    /// </remarks>
+    public async Task<IActionResult> LeadSource()
     {
         ViewData["pTitle"] = "Lead Sources Profile";
 
@@ -27,45 +44,57 @@ public class LeadSourceController : Controller
 
         ApiResultResponse<List<LeadSourceVM>> leadSourceList = new();
 
-        if (string.IsNullOrEmpty(searchQuery))
-        {
-            // Fetch all products if no search query is provided
-            leadSourceList =
+        // fetch all the Lead Sources
+        leadSourceList =
                 await client.GetFromJsonAsync<ApiResultResponse<List<LeadSourceVM>>>("LeadSource/all-leadsource");
-        }
-        else
-        {
-            // Fetch products matching the search query
-            leadSourceList =
-                await client.GetFromJsonAsync<ApiResultResponse<List<LeadSourceVM>>>(
-                    $"LeadSource/SearchByName?name={searchQuery}");
-        }
 
-        ViewData["searchQuery"] = searchQuery; // Retain search query
-
-        //ViewBag.ApiResult = leadSourceList!.Data;
-        //ViewBag.ApiMessage = leadSourceList!.Message;
-        //ViewBag.ApiStatus = leadSourceList.IsSuccess;
         return View(leadSourceList!.Data);
     }
+    #endregion
 
+    #region Create Lead Source functionionality
+    /// <summary>
+    /// Show the popup to create a new Lead Source.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>New Lead Source</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/LeadSource/LeadSource
+    /// </example>
+    /// <remarks> 
+    /// Created: 05-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         LeadSourceVM leadSource = new();
         return PartialView("_Create", leadSource);
     }
 
+    /// <summary>
+    /// New Lead Source will be create.
+    /// </summary>
+    /// <param name="leadSource">Lead Source entity that needs to be create</param>
+    /// <returns>New Lead Source will be create.</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/LeadSource/LeadSource
+    /// </example>
+    /// <remarks> 
+    /// Created: 05-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
     public async Task<IActionResult> Create(LeadSourceVM leadSource)
     {
-        ApiResultResponse<LeadSourceVM> source = new();
+        ApiResultResponse<LeadSourceVM> resultLeadSource = new();
 
         if (!ModelState.IsValid)
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -76,45 +105,53 @@ public class LeadSourceController : Controller
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        string? jsonleadSource = JsonConvert.SerializeObject(leadSource);
-        StringContent? leadSourcecontent = new(jsonleadSource, Encoding.UTF8, "application/json");
+        string? jsonLeadSource = JsonConvert.SerializeObject(leadSource);
+        StringContent? leadSourceContent = new(jsonLeadSource, Encoding.UTF8, "application/json");
         HttpResponseMessage? responseLeadSource =
-            await client.PostAsync("LeadSource/create-leadsource", leadSourcecontent);
+            await client.PostAsync("LeadSource/create-leadsource", leadSourceContent);
 
         if (responseLeadSource.IsSuccessStatusCode)
         {
             string? jsonResponseLeadSource = await responseLeadSource.Content.ReadAsStringAsync();
-            source = JsonConvert.DeserializeObject<ApiResultResponse<LeadSourceVM>>(jsonResponseLeadSource);
+            resultLeadSource = JsonConvert.DeserializeObject<ApiResultResponse<LeadSourceVM>>(jsonResponseLeadSource);
         }
         else
         {
             string? errorContent = await responseLeadSource.Content.ReadAsStringAsync();
-            source = new ApiResultResponse<LeadSourceVM>
+            resultLeadSource = new ApiResultResponse<LeadSourceVM>
             {
-                IsSuccess = false, Message = responseLeadSource.StatusCode + "ErrorContent: " + errorContent
+                IsSuccess = false,
+                Message = responseLeadSource.StatusCode + "ErrorContent: " + errorContent
             };
         }
 
-        //ViewBag.ApiResult = source!.Data;
-        //ViewBag.ApiMessage = source!.Message;
-        //ViewBag.ApiStatus = source.IsSuccess;
-
-        //Server side Validation
-        //List<string> serverErrorMessageList = new List<string>();
-        //string serverErrorMessage = source!.Message!;
-        //serverErrorMessageList.Add(serverErrorMessage);
-
-        if (!source!.IsSuccess)
+        if (!resultLeadSource!.IsSuccess)
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
         return Json(new { success = true });
     }
 
+    #endregion
+
+    #region Edit Lead Source functionionality
+    /// <summary>
+    /// Edit the existing Lead Source.
+    /// </summary>
+    /// <param name="Id">Lead Source Guid that needs to be edit</param>
+    /// <returns>Popup will be open to edit the lead source details</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/LeadSource/LeadSource
+    /// </example>
+    /// <remarks> 
+    /// Created: 05-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpGet]
     public async Task<IActionResult> Edit(Guid Id)
     {
@@ -129,10 +166,6 @@ public class LeadSourceController : Controller
         leadSource =
             await client.GetFromJsonAsync<ApiResultResponse<LeadSourceVM>>("LeadSource/byid-leadsource/?Id=" + Id);
 
-        //ViewBag.ApiResult = leadSource!.Data;
-        //ViewBag.ApiMessage = leadSource!.Message;
-        //ViewBag.ApiStatus = leadSource.IsSuccess;
-
         if (!leadSource!.IsSuccess)
         {
             return View();
@@ -141,6 +174,18 @@ public class LeadSourceController : Controller
         return PartialView("_Edit", leadSource.Data);
     }
 
+    /// <summary>
+    /// Update the existing Lead Source.
+    /// </summary>
+    /// <param name="leadSource">LeadSource entity to update the existing lead source</param>
+    /// <returns>Changes will be updated for the existing lead source</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/LeadSource/LeadSource
+    /// </example>
+    /// <remarks> 
+    /// Created: 05-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
     public async Task<IActionResult> Edit(LeadSourceVM leadSource)
     {
@@ -148,7 +193,8 @@ public class LeadSourceController : Controller
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
@@ -157,7 +203,7 @@ public class LeadSourceController : Controller
             leadSource.Name = "";
         }
 
-        ApiResultResponse<LeadSourceVM> source = new();
+        ApiResultResponse<LeadSourceVM> resultLeadSource = new();
 
         if (GuidExtensions.IsNullOrEmpty(leadSource.Id))
         {
@@ -165,91 +211,91 @@ public class LeadSourceController : Controller
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        string? jsonleadSource = JsonConvert.SerializeObject(leadSource);
-        StringContent? leadSourcecontent = new(jsonleadSource, Encoding.UTF8, "application/json");
+        string? jsonLeadSource = JsonConvert.SerializeObject(leadSource);
+        StringContent? leadSourceContent = new(jsonLeadSource, Encoding.UTF8, "application/json");
         HttpResponseMessage? responseLeadSource =
-            await client.PutAsync("LeadSource/update-leadsource/", leadSourcecontent);
+            await client.PutAsync("LeadSource/update-leadsource/", leadSourceContent);
         if (responseLeadSource.IsSuccessStatusCode)
         {
             string? jsonResponseLeadSource = await responseLeadSource.Content.ReadAsStringAsync();
-            source = JsonConvert.DeserializeObject<ApiResultResponse<LeadSourceVM>>(jsonResponseLeadSource);
+            resultLeadSource = JsonConvert.DeserializeObject<ApiResultResponse<LeadSourceVM>>(jsonResponseLeadSource);
         }
         else
         {
             string? errorContent = await responseLeadSource.Content.ReadAsStringAsync();
-            source = new ApiResultResponse<LeadSourceVM>
+            resultLeadSource = new ApiResultResponse<LeadSourceVM>
             {
                 IsSuccess = false,
                 Message = responseLeadSource.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
             };
         }
 
-        //ViewBag.ApiResult = source!.Data;
-        //ViewBag.ApiMessage = source!.Message;
-        //ViewBag.ApiStatus = source.IsSuccess;
-
-        //Server side Validation
-        //List<string> serverErrorMessageList = new List<string>();
-        //string serverErrorMessage = source!.Message!;
-        //serverErrorMessageList.Add(serverErrorMessage);
-
-        if (!source!.IsSuccess)
+        if (!resultLeadSource!.IsSuccess)
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
         return Json(new { success = true });
     }
+    #endregion
 
+    #region Delete Lead Source functionionality
+    /// <summary>
+    /// Delete the existing Lead Source.
+    /// </summary>
+    /// <param name="Id">Lead Source Guid that needs to be delete</param>
+    /// <returns>Lead source will be deleted</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/LeadSource/LeadSource
+    /// </example>
+    /// <remarks> 
+    /// Created: 05-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
     public async Task<IActionResult> Delete(Guid Id)
     {
-        //if (GuidExtensions.IsNullOrEmpty(Id)) return View();
         if (!ModelState.IsValid)
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
-        ApiResultResponse<LeadSourceVM> source = new();
+        ApiResultResponse<LeadSourceVM> resultLeadSource = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         HttpResponseMessage? responseLeadSource = await client.DeleteAsync("LeadSource/delete-leadsource?Id=" + Id);
         if (responseLeadSource.IsSuccessStatusCode)
         {
             string? jsonResponseLeadSource = await responseLeadSource.Content.ReadAsStringAsync();
-            source = JsonConvert.DeserializeObject<ApiResultResponse<LeadSourceVM>>(jsonResponseLeadSource);
+            resultLeadSource = JsonConvert.DeserializeObject<ApiResultResponse<LeadSourceVM>>(jsonResponseLeadSource);
         }
         else
         {
             string? errorContent = await responseLeadSource.Content.ReadAsStringAsync();
-            source = new ApiResultResponse<LeadSourceVM>
+            resultLeadSource = new ApiResultResponse<LeadSourceVM>
             {
-                IsSuccess = false, Message = responseLeadSource.StatusCode.ToString()
+                IsSuccess = false,
+                Message = responseLeadSource.StatusCode.ToString()
             };
         }
 
-        //ViewBag.ApiResult = source!.Data;
-        //ViewBag.ApiMessage = source!.Message;
-        //ViewBag.ApiStatus = source.IsSuccess;
-
-        //Server side Validation
-        //List<string> serverErrorMessageList = new List<string>();
-        //string serverErrorMessage = source!.Message!;
-        //serverErrorMessageList.Add(serverErrorMessage);
-
-        if (!source!.IsSuccess)
+        if (!resultLeadSource!.IsSuccess)
         {
             return Json(new
             {
-                success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
 
         return Json(new { success = true });
     }
+    #endregion
 }

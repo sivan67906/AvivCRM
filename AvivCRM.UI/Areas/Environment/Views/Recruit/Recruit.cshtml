@@ -1,33 +1,68 @@
-@model AvivCRM.UI.Areas.Environment.ViewModels.RecruitVM
-
 @section Styles {
-	<link href="~/matrica/assets/libs/huebee/huebee.min.css" rel="stylesheet" type="text/css"/>
-	<link href="~/matrica/assets/css/app-custom.css" rel="stylesheet" type="text/css"/>
+	@* <link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css" /> *@
+	@* <link href="~/matrica/assets/libs/huebee/huebee.min.css" rel="stylesheet" type="text/css" /> *@
 }
+@section Scripts {
+	@* <script src="~/matrica/assets/libs/huebee/huebee.pkgd.min.js"></script> *@
+	<script>
+		$(document).ready(function () {
+		  let hash = document.location.hash;
+			var activeTabId = "";
 
+			if(hash)
+		  {
+			  activeTabId = hash;
+		  }
+		  else{
+			  activeTabId = $(".nav-link.active").attr('href');
+		  }
+				  $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').ready(function() {
+		  // Clear the content of all tab panes
+				$('.tab-pane').empty();
+
+				// Load content for the selected tab
+				var tabId = $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').attr('href');
+				var url = $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').data('url');
+				$(tabId).load(url);
+		});
+
+		$('#ulTicketContainer a').on('click', function (e) {
+				e.preventDefault();
+
+				// Clear the content of all tab panes
+				$('.tab-pane').empty();
+
+				// Load content for the selected tab
+				var tabId = $(this).attr('href');
+				var url = $(this).data('url');
+				$(tabId).load(url);
+			});
+		});
+	</script>
+}
 <div class="row">
 	<div class="col-12 col-lg-10 mx-auto">
 		<div class="card">
 			<div class="card-body">
 				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist">
+				<ul class="nav nav-tabs" role="tablist" id="ulTicketContainer">
 					<li class="nav-item">
-						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitGeneralSetting" role="tab">General Settings</a>
+						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitGeneralSetting" data-url="@Url.Action("RecruitGeneralSetting", "RecruitGeneralSetting")" role="tab">General Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitFooterSetting" role="tab">Footer Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitFooterSetting" data-url="@Url.Action("RecruitFooterSetting", "RecruitFooterSetting")" role="tab">Footer Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruiterSetting" role="tab">Recruiter Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruiterSetting" data-url="@Url.Action("RecruiterSetting", "RecruiterSetting")" role="tab">Recruiter Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitNotificationSetting" role="tab">Notification Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitNotificationSetting" data-url="@Url.Action("RecruitNotificationSetting", "RecruitNotificationSetting")" role="tab">Notification Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitJobApplicationStatusSetting" role="tab">Job Application Status Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitJobApplicationStatusSetting" data-url="@Url.Action("RecruitJobApplicationStatusSetting", "RecruitJobApplicationStatusSetting")" role="tab">Job Application Status Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitCustomQuestionSetting" role="tab">Custom Question Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitCustomQuestionSetting" data-url="@Url.Action("RecruitCustomQuestionSetting", "RecruitCustomQuestionSetting")" role="tab">Custom Question Settings</a>
 					</li>
 				</ul>
 			</div><!--end card-body-->
@@ -35,51 +70,19 @@
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div class="tab-pane active show" id="tbRecruitGeneralSetting" role="tabpanel">
-						@await Component.InvokeAsync("RecruitGeneralSetting", new { recruitGeneralSetting = Model.RecruitGeneralSettingVMList })
 					</div>
 					<div class="tab-pane" id="tbRecruitFooterSetting" role="tabpanel">
-						@await Component.InvokeAsync("RecruitFooterSetting", new { recruitFooterSettings = Model.RecruitFooterSettingVMList })
 					</div>
 					<div class="tab-pane" id="tbRecruiterSetting" role="tabpanel">
-						@await Component.InvokeAsync("RecruiterSetting", new { recruiterSettings = Model.RecruiterSettingVMList })
 					</div>
 					<div class="tab-pane show" id="tbRecruitNotificationSetting" role="tabpanel">
-						@await Component.InvokeAsync("RecruitNotificationSetting", new { recruitNotificationSetting = Model.RecruitNotificationSettingVMList })
 					</div>
 					<div class="tab-pane" id="tbRecruitJobApplicationStatusSetting" role="tabpanel">
-						@await Component.InvokeAsync("RecruitJobApplicationStatusSetting", new { recruitJobApplicationStatusSettings = Model.RecruitJobApplicationStatusSettingVMList })
 					</div>
 					<div class="tab-pane" id="tbRecruitCustomQuestionSetting" role="tabpanel">
-						@await Component.InvokeAsync("RecruitCustomQuestionSetting", new { recruitCustomQuestionSettings = Model.RecruitCustomQuestionSettingVMList })
 					</div>
 				</div>
 			</div><!--end card-body-->
 		</div><!--end card-->
 	</div>
 </div>
-
-@section Scripts {
-	<script src="~/lib/jquery/dist/jquery.js"></script>
-	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
-	<script src="~/matrica/assets/libs/huebee/huebee.pkgd.min.js"></script>
-	<script type="text/javascript">
-		 $(window).on('load', function() {
-		 $('.modal').modal({backdrop: 'static', keyboard: false});
-		});
-	</script>
-	<script type="text/javascript">
-		
-
-		 $(window).on('load', function() {
-		 // $('#mdlFooterLink').modal({backdrop: 'static', keyboard: false});
-		 // $('#mdlAddNewRecruiter').modal({backdrop: 'static', keyboard: false});
-		 // $('#mdlAddStatusColumn').modal({backdrop: 'static', keyboard: false});
-		 // $('#mdlAddQuestion').modal({backdrop: 'static', keyboard: false});
-
-		 // $('#mdlEditFooterLink').modal({backdrop: 'static', keyboard: false});
-		 // $('#mdlAddEditStatusColumn').modal({backdrop: 'static', keyboard: false});
-		 // $('#mdlAddEditQuestion').modal({backdrop: 'static', keyboard: false});
-
-		});
-	</script>
-}

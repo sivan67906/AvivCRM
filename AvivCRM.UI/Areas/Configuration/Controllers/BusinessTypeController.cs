@@ -12,7 +12,7 @@ public class BusinessTypeController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -35,7 +35,7 @@ public class BusinessTypeController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         BusinessTypeVM businessType = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");

@@ -48,7 +48,7 @@ public class LeadCategoryController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         LeadCategoryVM leadcategory = new();
         return PartialView("_Create", leadcategory);

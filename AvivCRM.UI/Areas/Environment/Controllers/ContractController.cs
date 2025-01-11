@@ -50,7 +50,7 @@ public class ContractController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         ContractVM contract = new();
         return PartialView("_Create", contract);

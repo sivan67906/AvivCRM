@@ -12,7 +12,7 @@ public class ApplicationController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
@@ -71,7 +71,8 @@ public class ApplicationController : Controller
         List<CurrencyVM>? currencies = await client.GetFromJsonAsync<List<CurrencyVM>>("Currency/GetAll");
         ViewBag.DefaultCurrency = currencies?.Select(c => new
         {
-            c.Id, DisplayValue = $"{c.CurrencySymbol} - {c.CurrencyCode}"
+            c.Id,
+            DisplayValue = $"{c.CurrencySymbol} - {c.CurrencyCode}"
         }).ToList();
 
         // Fetch the application data by ID

@@ -1,0 +1,66 @@
+@model AvivCRM.UI.Areas.Environment.ViewModels.RecruitFooterSettingVM;
+<style type="text/css">
+	
+</style>
+<div class="modal-content">
+	<div class="modal-header">
+		<h5 class="modal-title mt-0" id="myNFSModalLabel">Footer Link Setup</h5>
+		@* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+	</div>
+	<div class="modal-body">
+		<form id="createFormRecruitFooterSetting" data-url="Create" asp-action="Create" method="post">
+			<div class="row mt-3 mb-2">
+				<div class="col-lg-4">Title <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Slug <span class="text-danger">*</span></div>
+				<div class="col-lg-4">Status</div>
+			</div>
+			<div class="row mt-3 mb-2">
+				<div class="col-lg-4">
+					<input asp-for="FooterTitle" class="form-control" />
+					@* <input id="txtRecruitFooterTitle" type="text" class="form-control" name="FooterTitle" placeholder="enter Footer Title" value=""> *@
+					@* <span asp-validation-for="FooterTitle" class="text-danger"></span> *@
+					@* <input class="form-control" type="text" value="" id="reminderAftrMns"> *@
+				</div>
+				<div class="col-lg-4">
+					<input asp-for="FooterSlug" class="form-control" />
+					@* <input id="txtRecruitFooterSlug" type="text" class="form-control" name="FooterSlug" placeholder="enter Footer Slug" value=""> *@
+					@* <span asp-validation-for="FooterSlug" class="text-danger"></span> *@
+					@* <input class="form-control" type="text" value="" id="reminderAftrMns"> *@
+				</div>
+				<div class="col-lg-4">
+					<select class="form-select" name="FooterStatusId" asp-items="@(new SelectList(Model.ToggleDDSettings!.toggleValues, "Id", "Name"))">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-lg-12">Description</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-lg-12">
+					<div class="row">
+						<div class="col-lg-12">
+							<textarea asp-for="FooterDescription" class="form-control" placeholder="enter Footer Description" rows="5" cols="" id=""></textarea>
+
+							@* <textarea id="txtFooterDescription" class="form-control" name="FooterDescription" placeholder="enter Footer Description"></textarea> *@
+							@* <span asp-validation-for="FooterDescription" class="text-danger"></span> *@
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-4 text-end ">
+				<div class="col-lg-12 ">
+					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div><!-- /.modal-content -->
+
+
+@* 	<script type="text/javascript">
+		$(window).on('load', function() {
+		 $('#mdlRecruitFooterSettingShow').modal({backdrop: 'static', keyboard: false});
+		});
+	</script> *@

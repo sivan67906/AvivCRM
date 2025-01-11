@@ -51,7 +51,7 @@ public class LeadAgentController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         LeadAgentVM leadAgent = new();
         return PartialView("_Create", leadAgent);
