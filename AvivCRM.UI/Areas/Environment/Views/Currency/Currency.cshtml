@@ -59,14 +59,14 @@
                                     <i class="las la-trash-alt text-secondary font-16"></i>
                                 </button> *@
 
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-										        data-target="#mdlProductShow" data-url="@Url.Action($"Edit/{item.Id}")">
+										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+										        data-target="#mdlCurrenceyShow" data-url="@Url.Action($"Edit/{item.Id}")">
 											<i class="las la-pen text-secondary font-16"></i>
 										</button>
-										<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-										        data-target="#mdlProductShow" data-url="@Url.Action($"Delete/{item.Id}")">
+										<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+										   data-url="@Url.Action($"Delete/{item.Id}")">
 											<i class="las la-trash-alt text-secondary font-16"></i>
-										</button>
+										</a>
 									</td>
 								</tr>
 							}
@@ -83,9 +83,31 @@
 	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
 	<script type="text/javascript">
-        $(window).on('load', function() {
-         $('#mdlCurrenceyShow').modal({backdrop: 'static', keyboard: false});
-        });
-    </script>
+		// 	document.addEventListener("DOMContentLoaded", function () {
+		// 	const yesRadio = document.getElementById("icc1");
+		// 	const noRadio = document.getElementById("icc2");
+		// 	const yesTextboxContainer = document.getElementById("yestextbox");
+		// 	const noTextboxContainer = document.getElementById("notextbox");
 
+		// 	// Function to toggle textboxes based on radio selection
+		// 	function toggleTextboxes() {
+		// 		if (yesRadio.checked) {
+		// 			yesTextboxContainer.style.display = "block"; // Show Yes textbox
+		// 			noTextboxContainer.style.display = "none";  // Hide No textbox
+		// 		} else if (noRadio.checked) {
+		// 			noTextboxContainer.style.display = "block"; // Show No textbox
+		// 			yesTextboxContainer.style.display = "none"; // Hide Yes textbox
+		// 		}
+		// 	}
+
+		// 	// Initialize toggle state on page load
+		// 	toggleTextboxes();
+
+		// 	// Add event listeners for the radio buttons
+		// 	yesRadio.addEventListener("change", toggleTextboxes);
+		// 	noRadio.addEventListener("change", toggleTextboxes);
+		// });
+		
+
+	</script>
 }
