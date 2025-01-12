@@ -1,7 +1,7 @@
 ﻿@model List<AvivCRM.UI.Areas.Environment.ViewModels.RecruitJobApplicationStatusSettingVM>
 
-<div class="modal fade" id="mdlProjectStatusShow" style="">
-	<div class="modal-dialog" id="PlaceHolderHere">
+<div class="modal fade" id="mdlRecruitJobApplicationStatusSettingShow" style="">
+	<div class="modal-dialog modal-lg" id="PlaceHolderHere">
 	</div>
 </div>
 
@@ -12,9 +12,9 @@
 				<h4 class="card-title">Job Application Status Index</h4>
 			</div><!--end col-->
 			<div class="col-auto">
-				<button type="button" class="btn btn-de-primary" data-bs-toggle="modal"
-						data-animation="bounce" data-bs-target=".bs-addJobApplnStatus-modal-lg">
-					<i class="fas fa-plus me-2"></i>Add Status
+				<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+						data-target="#mdlRecruitJobApplicationStatusSettingShow" data-url="@Url.Action("Create")">
+					<i class="fas fa-plus me-2"></i>Add Job Application Status
 				</button>
 			</div><!--end col-->
 		</div> <!--end row-->
@@ -43,16 +43,24 @@
 							<td>@Model[i].JobApplicationCategoryName</td>
 							<td>@Model[i].JASColor</td>
 							<td>@Model[i].JobApplicationPositionName</td>
-							<td>@Model[i].JASIsModelChecked</td>
+							<td>@(Model[i].JASIsModelChecked ? "Yes" : "No")</td>
 							<td>
-								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
+								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+										data-target="#mdlRecruitJobApplicationStatusSettingShow" data-url="@Url.Action($"Edit/{Model[i].Id}")">
+									<i class="las la-pen text-secondary font-16"></i>
+								</button>
+								<a id="deleteRJASS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+								   data-url="@Url.Action($"Delete/{Model[i].Id}")">
+									<i class="las la-trash-alt text-secondary font-16"></i>
+								</a>
+								@* <button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
 										data-bs-target="#mdlRecruitJobApplicationStatusSettingShow" data-url="@Url.Action($"EditRecruitJobApplicationStatusSetting/{Model[i].Id}")">
 									<i class="las la-pen text-secondary font-16"></i>
 								</button>
 								<a id="deleteRJASS" name="Id" href="#" class="ms-2"
 								   data-target="" data-url="@Url.Action($"DeleteRecruitJobApplicationStatusSetting/{Model[i].Id}")">
 									<i class="las la-trash-alt text-secondary font-16"></i>
-								</a>
+								</a> *@
 							</td>
 						</tr>
 						<!--end tr-->
@@ -62,6 +70,29 @@
 		</div>
 	</div><!--end card-body-->
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/matrica/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+
+		  let hash = document.location.hash;
+		  let prefix = "";
+
+		  //change hash url on page reload
+		  if (hash) {
+			$('.nav-tabs a[href=\"'+hash.replace(prefix,"")+'\"]').tab('show');
+		  }
+
+		  // change hash url on switch tab
+		  $('.nav-tabs a').on('shown.bs.tab', function (e) {
+			 window.location.hash = e.target.hash.replace("#", "#" + prefix);
+		  });
+
+		  // Popup Close on Outside Click disable
+		 $('.modal').modal({backdrop: 'static', keyboard: false});
+	});
+</script>
 <script type="text/javascript">
 	$(document).on("click", "#deleteRJASS", function (e) {
 		   e.preventDefault();

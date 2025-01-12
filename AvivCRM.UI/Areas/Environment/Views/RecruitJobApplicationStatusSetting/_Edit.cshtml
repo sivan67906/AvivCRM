@@ -8,25 +8,20 @@
 		@* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
 	</div>
 	<div class="modal-body">
-		<form>
+		<form id="editFormRecruitJobApplicationStatusSetting" data-url="Edit" asp-action="Edit" method="post">
+			<input type="hidden" asp-for="@Model.Id" />
 			<div class="row mt-2">
 				<div class="col-lg-6">Category <span class="text-danger">*</span></div>
 				<div class="col-lg-6">Status <span class="text-danger">*</span></div>
 			</div>
 			<div class="row mt-2">
 				<div class="col-lg-6">
-					<select id="sltCategory" class="form-select" aria-label="">
+					<select class="form-select" name="JobApplicationCategoryId" asp-for="@Model.JobApplicationCategoryId" asp-items="@(new SelectList(Model.JobApplicationCategoryDDSetting!.JobApplicationCategoryList, "Id", "JACategoryName"))">
 						<option value="">--</option>
-						<option value="1" selected="selected"> Applied </option>
-						<option value="2"> Shortlist </option>
-						<option value="3"> Interview </option>
-						<option value="4"> Hired </option>
-						<option value="5"> Rejected </option>
-						<option value="6"> Others </option>
 					</select>
 				</div>
 				<div class="col-lg-6">
-					<input type="text" placeholder="" class="form-control" id="">
+					<input asp-for="@Model.JASStatus" class="form-control" />
 				</div>
 			</div>
 			<div class="row mt-4">
@@ -35,30 +30,24 @@
 			</div>
 			<div class="row mt-2">
 				<div class="col-lg-6">
-					<input id="" class="form-control" value="#f7f8f9" data-huebee="{ &quot;setBGColor&quot;: true, &quot;saturations&quot;: 2 }" style="background-color: rgb(247, 248, 249); color: rgb(34, 34, 34);">
+					<input asp-for="@Model.JASColor" type="color" class="form-control" />
 				</div>
 				<div class="col-lg-6">
-					<select id="sltCategory" class="form-select" aria-label="">
+					<select class="form-select" name="JobApplicationPositionId" asp-for="@Model.JobApplicationPositionId" asp-items="@(new SelectList(Model.JobApplicationPositionDDSetting!.JobApplicationPositionList, "Id", "JAPositionName"))">
 						<option value="">--</option>
-						<option value="1" selected="selected"> Before Applied </option>
-						<option value="2"> After Applied </option>
-						<option value="3"> After Phone Screen </option>
-						<option value="4"> After Interview </option>
-						<option value="5"> After Hired </option>
-						<option value="6"> After Rejected </option>
 					</select>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-lg-12 custom-control custom-checkbox mt-2 mb-2">
-					<input type="checkbox" checked="checked" class="form-check-input form-check-input-custom" id="firstSignLoc" data-parsley-multiple="" data-parsley-mincheck="2">
-					<label class="custom-control-label labelcustom" for="firstSignLoc">Apply model actions</label>
+					<input asp-for="@Model.JASIsModelChecked" type="checkbox" class="form-check-input form-check-input-custom" />
+					<label asp-for="@Model.JASIsModelChecked" class="custom-control-label labelcustom">Apply model actions</label>
 				</div>
 			</div>
 			<div class="row mt-4 text-end ">
 				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="button" class="btn btn-sm btn-de-primary"><i class="mdi mdi-check-all me-2"></i>Update</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
 				</div>
 			</div>
 		</form>
