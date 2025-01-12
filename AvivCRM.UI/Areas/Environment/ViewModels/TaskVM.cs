@@ -1,32 +1,37 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
 public class TaskVM
 {
-    public int Id { get; set; }
-    public int BeforeXDate { get; set; }
-    public bool SendReminderDueDate { get; set; }
-    public int AfterXDate { get; set; }
-    public string? Statuss { get; set; }
-    public int TaskboardLength { get; set; }
-
-    public bool TaskCategory { get; set; }
-    public bool Project { get; set; }
-    public bool StartDate { get; set; }
-    public bool DueDate { get; set; }
-    public bool AssignedTo { get; set; }
-    public bool Description { get; set; }
-    public bool Label { get; set; }
-    public bool AssignedBy { get; set; }
-    public bool Status { get; set; }
-    public bool Priority { get; set; }
-    public bool MakePrivate { get; set; }
-    public bool TimeEstimate { get; set; }
-    public bool Comment { get; set; }
-    public bool AddFile { get; set; }
-    public bool SubTask { get; set; }
-    public bool Timesheet { get; set; }
-    public bool Notes { get; set; }
-    public bool History { get; set; }
-    public bool HoursLogged { get; set; }
-    public bool CustomFields { get; set; }
-    public bool CopyTaskLink { get; set; }
+    public Guid Id { get; set; }
+	[Required(ErrorMessage = "Task Name should not be empty")]
+    [MaxLength(10, ErrorMessage = "Task Name must not exceed 10 characters")]
+    [MinLength(3, ErrorMessage = "Task Name should not be less than 3 characters")]
+	public string? Code { get; set; }
+    [Required(ErrorMessage = "Task Name should not be empty")]
+    [MaxLength(25, ErrorMessage = "Task Name must not exceed 25 characters")]
+    [MinLength(3, ErrorMessage = "Task Name should not be less than 3 characters")]
+    public string Name { get; set; } = default!;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

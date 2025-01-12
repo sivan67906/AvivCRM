@@ -1,152 +1,324 @@
+#region Namespaces
+using System.Text;
 using AvivCRM.UI.Areas.Configuration.ViewModels;
+using AvivCRM.UI.Areas.Configuraton.ViewModels;
+using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+#endregion
 
-namespace AvivCRM.UI.Areas.Configuration.Controllers;
-[Area("Configuration")]
+namespace AvivCRM.UI.Areas.Configuraton.Controllers;
+[Area("Environment")]
 public class DesignationController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
+    #region Constructor
     public DesignationController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
+    #endregion
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-
+    #region Retrieves a List of Designations
+    /// <summary>
+    /// Retrieves a list of Designations from the database.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>Modal popup will open to create New Designation</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Designation/Designation
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     public async Task<IActionResult> Designation()
     {
-        // Page Title
         ViewData["pTitle"] = "Designations Profile";
 
         // Breadcrumb
-        ViewData["bGParent"] = "Configuration";
+        ViewData["bGParent"] = "Environment";
         ViewData["bParent"] = "Designation";
-        ViewData["bChild"] = "Designation";
-
+        ViewData["bChild"] = "Designation View";
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<DesignationVM>? designationList = await client.GetFromJsonAsync<List<DesignationVM>>("Designation/GetAll");
-        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-        ViewBag.CompanyList = companies;
-        ViewBag.DepartmentList = departments;
-        return View(designationList);
-    }
 
+        ApiResultResponseConfigVM<List<DesignationVM>> designationList = new();
+
+        // fetch all the Designations
+        designationList =
+                await client.GetFromJsonAsync<ApiResultResponseConfigVM<List<DesignationVM>>>("Designation/all-designation");
+
+        return View(designationList!.Data);
+    }
+    #endregion
+
+    #region Create Designation functionionality
+    /// <summary>
+    /// Show the popup to create a new Designation.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>New Designation</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Designation/Designation
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         DesignationVM designation = new();
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-        ViewBag.CompanyList = companies;
-        ViewBag.DepartmentList = departments;
         return PartialView("_Create", designation);
     }
 
+    /// <summary>
+    /// New Designation will be create.
+    /// </summary>
+    /// <param name="designation">Designation entity that needs to be create</param>
+    /// <returns>New Designation will be create.</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Designation/Designation
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
     public async Task<IActionResult> Create(DesignationVM designation)
     {
+        ApiResultResponseConfigVM<DesignationVM> resultDesignation = new();
+
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (designation.Name == null)
+        {
+            designation.Name = "";
+        }
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PostAsJsonAsync<DesignationVM>("Designation/Create", designation);
-        return RedirectToAction("Designation");
+
+        string? jsonDesignation = JsonConvert.SerializeObject(designation);
+        StringContent? designationContent = new(jsonDesignation, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseDesignation =
+            await client.PostAsync("Designation/create-designation", designationContent);
+
+        if (responseDesignation.IsSuccessStatusCode)
+        {
+            string? jsonResponseDesignation = await responseDesignation.Content.ReadAsStringAsync();
+            resultDesignation = JsonConvert.DeserializeObject<ApiResultResponseConfigVM<DesignationVM>>(jsonResponseDesignation);
+        }
+        else
+        {
+            string? errorContent = await responseDesignation.Content.ReadAsStringAsync();
+            resultDesignation = new ApiResultResponseConfigVM<DesignationVM>
+            {
+                IsSuccess = false,
+                Message = responseDesignation.StatusCode + "ErrorContent: " + errorContent
+            };
+        }
+
+        if (!resultDesignation!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
+    #endregion
+
+    #region Edit Designation functionionality
+    /// <summary>
+    /// Edit the existing Designation.
+    /// </summary>
+    /// <param name="Id">Designation Guid that needs to be edit</param>
+    /// <returns>Popup will be open to edit the designation details</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Designation/Designation
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Edit(int Id)
+    public async Task<IActionResult> Edit(Guid Id)
     {
-        if (Id == 0)
+        if (GuidExtensions.IsNullOrEmpty(Id))
         {
             return View();
         }
 
+        ApiResultResponseConfigVM<DesignationVM> designation = new();
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        DesignationVM? designation = await client.GetFromJsonAsync<DesignationVM>("Designation/GetById/?Id=" + Id);
-        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-        ViewBag.CompanyList = companies;
-        ViewBag.DepartmentList = departments;
-        return PartialView("_Edit", designation);
+        designation =
+            await client.GetFromJsonAsync<ApiResultResponseConfigVM<DesignationVM>>("Designation/byid-designation/?Id=" + Id);
+
+        if (!designation!.IsSuccess)
+        {
+            return View();
+        }
+
+        return PartialView("_Edit", designation.Data);
     }
 
+    /// <summary>
+    /// Update the existing Designation.
+    /// </summary>
+    /// <param name="designation">Designation entity to update the existing designation</param>
+    /// <returns>Changes will be updated for the existing designation</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Designation/Designation
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Update(DesignationVM designation)
+    public async Task<IActionResult> Edit(DesignationVM designation)
     {
-        if (designation.Id == 0)
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (designation.Name == null)
+        {
+            designation.Name = "";
+        }
+
+        ApiResultResponseConfigVM<DesignationVM> resultDesignation = new();
+
+        if (GuidExtensions.IsNullOrEmpty(designation.Id))
         {
             return View();
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PutAsJsonAsync<DesignationVM>("Designation/Update/", designation);
-        return RedirectToAction("Designation");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Delete(int Id)
-    {
-        if (Id == 0)
+        string? jsonDesignation = JsonConvert.SerializeObject(designation);
+        StringContent? designationContent = new(jsonDesignation, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseDesignation =
+            await client.PutAsync("Designation/update-designation/", designationContent);
+        if (responseDesignation.IsSuccessStatusCode)
         {
-            return View();
+            string? jsonResponseDesignation = await responseDesignation.Content.ReadAsStringAsync();
+            resultDesignation = JsonConvert.DeserializeObject<ApiResultResponseConfigVM<DesignationVM>>(jsonResponseDesignation);
+        }
+        else
+        {
+            string? errorContent = await responseDesignation.Content.ReadAsStringAsync();
+            resultDesignation = new ApiResultResponseConfigVM<DesignationVM>
+            {
+                IsSuccess = false,
+                Message = responseDesignation.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
         }
 
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        DesignationVM? designation = await client.GetFromJsonAsync<DesignationVM>("Designation/GetById/?Id=" + Id);
-        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-        ViewBag.CompanyList = companies;
-        ViewBag.DepartmentList = departments;
-        return PartialView("_Delete", designation);
+        if (!resultDesignation!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
+    #endregion
 
-
+    #region Delete Designation functionionality
+    /// <summary>
+    /// Delete the existing Designation.
+    /// </summary>
+    /// <param name="Id">Designation Guid that needs to be delete</param>
+    /// <returns>Designation will be deleted</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Designation/Designation
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Delete(DesignationVM designation)
+    public async Task<IActionResult> Delete(Guid Id)
     {
-        if (designation.Id == 0)
+        if (!ModelState.IsValid)
         {
-            return View();
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
 
+        ApiResultResponseConfigVM<DesignationVM> resultDesignation = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.DeleteAsync("Designation/Delete?Id=" + designation.Id);
-        return RedirectToAction("Designation");
+        HttpResponseMessage? responseDesignation = await client.DeleteAsync("Designation/delete-designation?Id=" + Id);
+        if (responseDesignation.IsSuccessStatusCode)
+        {
+            string? jsonResponseDesignation = await responseDesignation.Content.ReadAsStringAsync();
+            resultDesignation = JsonConvert.DeserializeObject<ApiResultResponseConfigVM<DesignationVM>>(jsonResponseDesignation);
+        }
+        else
+        {
+            string? errorContent = await responseDesignation.Content.ReadAsStringAsync();
+            resultDesignation = new ApiResultResponseConfigVM<DesignationVM>
+            {
+                IsSuccess = false,
+                Message = responseDesignation.StatusCode.ToString()
+            };
+        }
+
+        if (!resultDesignation!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
-
-
-    //[HttpPost]
-    //public async Task<IActionResult> Delete(DesignationVM designation)
-    //{
-    //    JsonSerializerOptions options = new(JsonSerializerDefaults.Web)
-    //    {
-    //        WriteIndented = true
-    //    };
-    //    string forecastJson = JsonSerializer.Serialize<DesignationVM>(designation, options);
-
-    //    if (designation.Id == 0) return View();
-    //    var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //    var designationList = Deletewithresponse(client.BaseAddress.AbsoluteUri + "Designation/Delete", designation);
-    //    return RedirectToAction("Designation");
-    //}
-
-    //public async Task<HttpResponseMessage> Deletewithresponse(string url, object entity)
-    //{
-    //    using (var client = new HttpClient())
-    //    {
-    //        var json = JsonSerializer.Serialize(entity);
-    //        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-    //        var request = new HttpRequestMessage
-    //        {
-    //            Method = HttpMethod.Delete,
-    //            RequestUri = new Uri(url),
-    //            Content = content
-    //        };
-    //        return await client.SendAsync(request);
-    //    }
-    //}
+    #endregion
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

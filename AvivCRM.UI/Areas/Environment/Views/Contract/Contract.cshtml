@@ -1,127 +1,99 @@
-@model AvivCRM.UI.Areas.Environment.ViewModels.ContractVM;
+@model IEnumerable<AvivCRM.UI.Areas.Environment.ViewModels.ContractVM>
 
-<div class="modal fade" id="mdlContractShow">
-	<div class="modal-dialog modal-xl" id="PlaceHolderHere">
+<div class="modal fade" Id="mdlContractShow">
+	<div class="modal-dialog" Id="PlaceHolderHere">
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-12 col-lg-12">
-		<div class="card">
+
+		<div class="card" style="">
+
 			<div class="card-header">
 				<div class="row align-items-center">
 					<div class="col">
 						<h4 class="card-title">Contract Index</h4>
 					</div><!--end col-->
+					<div class="col-auto">
+						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+						        data-target="#mdlContractShow" data-url="@Url.Action("Create")">
+							<i class="fas fa-plus me-2"></i>Add Contract
+						</button>
+					</div><!--end col-->
 				</div> <!--end row-->
 			</div><!--end card-header-->
+
 			<div class="card-body">
-				<div class="row col-lg-12 mt-2 ms-1">
-					<div class="col-lg-3">
-						<div class="text-center">
-							<h4 class="text-muted">Contract </h4>
-						</div>
-						<div class="card" style="box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;">
-							<div class="card-body">
-								<form id="editFormContract" data-url="Edit" asp-action="Edit" method="post">
-									<input id="txtId" type="hidden" name="Id" value="@Model.Id"/>
-									<div class="row mt-2">
-										<span>Contract Prefix<span class="f-14 ms-1 text-danger">*</span></span>
-									</div>
-									<div class="row mt-2">
-										<input value="@Model.ContractPrefix" type="text" placeholder="Enter  Prefix" name="ContractPrefix" class="form-control" id="txtContractPrefix"/>
-										<span asp-validation-for="ContractPrefix" class="text-danger"></span>
+				<div class="row mb-3">
+					<div class="table-responsive">
+						<table class="table mb-0">
+							<thead class="thead-light">
+							<tr>
+								<th class="d-none">@Html.DisplayNameFor(m => m.Id)</th>
+									<th>Code</th>
+									<th>Name</th>
+								<th>Action</th>
+							</tr>
+							</thead>
+							<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
 
-									</div>
-									<div class="row mt-4">
-										Contract Number Seprator
-									</div>
-									<div class="row mt-2">
-										<input value="@Model.ContractNumberSeprator" type="text" placeholder=" Number Seperator" class="form-control" name="ContractNumberSeprator" id="txtContractNoSeperator"/>
-										<span asp-validation-for="ContractNumberSeprator" class="text-danger"></span>
-
-									</div>
-									<div class="row mt-4">
-										Contract Number Digits
-									</div>
-									<div class="row mt-2">
-										<input value="@Model.ContractNumberDigits" type="number" placeholder=" Number Digits" class="form-control" name="ContractNumberDigits" id="txtContractNoDigits"/>
-										<span asp-validation-for="ContractNumberDigits" class="text-danger"></span>
-
-									</div>
-									<div class="row mt-4">
-										Contract Number Example
-									</div>
-									<div class="row mt-2">
-										<input value="@Model.ContractNumberExample"asp-for="@Model.ContractNumberExample" type="text" placeholder=" Number Example" class="form-control font-spacing-bold" name="ContractNumberExample" id="txtContractNoExample">
-										<span asp-validation-for="ContractNumberExample" class="text-danger"></span>
-
-									</div>
-									<div class="row mt-4">
-										<button type="submit" class="btn btn-de-primary float-end">
-											<b><i class="mdi mdi-check-all me-2"></i>Update</b>
+									<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
+										<td>@item.Code</td>
+										<td>@item.Name</td>
+									<td>
+										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+										        data-target="#mdlContractShow" data-url="@Url.Action($"Edit/{item.Id}")">
+											<i class="las la-pen text-secondary font-16"></i>
 										</button>
-									</div>
-								</form>
-							</div>
-						</div>
+										<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+										   data-url="@Url.Action($"Delete/{item.Id}")">
+											<i class="las la-trash-alt text-secondary font-16"></i>
+										</a>
+									</td>
+								</tr>
+							}
+							</tbody>
+						</table>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
 </div>
-<!--end row-->
 
 @section Scripts {
 	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
-	<script type="text/javascript">
-            $.event.special.inputchange = {
-            setup: function() {
-                var self = this, val;
-                $.data(this, 'timer', window.setInterval(function() {
-                    val = self.value;
-                    if ( $.data( self, 'cache') != val ) {
-                        $.data( self, 'cache', val );
-                        $( self ).trigger( 'inputchange' );
-                    }
-                }, 20));
-            },
-            teardown: function() {
-                window.clearInterval( $.data(this, 'timer') );
-            },
-            add: function() {
-                $.data(this, 'cache', this.value);
-            }
-        };
-
-        $('#txtContractPrefix').on('inputchange', function() {
-                   var prefix = $("#txtContractPrefix").val();
-                    var seperator = $("#txtContractNoSeperator").val();
-                    var digits = $("#txtContractNoDigits").val();
-                    var n = "1"; if(digits == "" || digits == "0"){n = "";}
-                    digits = n.padStart(digits, '0');
-                    var result = prefix + seperator + digits;
-                    $("#txtContractNoExample").val(result);
-        });
-        $('#txtContractNoSeperator').on('inputchange', function() {
-                   var prefix = $("#txtContractPrefix").val();
-                    var seperator = $("#txtContractNoSeperator").val();
-                    var digits = $("#txtContractNoDigits").val();
-                    var n = "1"; if(digits == "" || digits == "0"){n = "";}
-                    digits = n.padStart(digits, '0');
-                    var result = prefix + seperator + digits;
-                    $("#txtContractNoExample").val(result);
-        });
-        $('#txtContractNoDigits').on('inputchange', function() {
-                   var prefix = $("#txtContractPrefix").val();
-                    var seperator = $("#txtContractNoSeperator").val();
-                    var digits = $("#txtContractNoDigits").val();
-                    var n = "1"; if(digits == "" || digits == "0"){n = "";}
-                    digits = n.padStart(digits, '0');
-                    var result = prefix + seperator + digits;
-                    $("#txtContractNoExample").val(result);
-        });
-    </script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+		// Popup Close on Outside Click disable
+		 $('.modal').modal({backdrop: 'static', keyboard: false});
+	});
+	</script>
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

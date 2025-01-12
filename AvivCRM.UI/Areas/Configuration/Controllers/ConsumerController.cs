@@ -1,223 +1,324 @@
+#region Namespaces
+using System.Text;
 using AvivCRM.UI.Areas.Configuration.ViewModels;
+using AvivCRM.UI.Areas.Configuraton.ViewModels;
+using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+#endregion
 
-namespace AvivCRM.UI.Areas.Consumer.Controllers;
-[Area("Configuration")]
+namespace AvivCRM.UI.Areas.Configuraton.Controllers;
+[Area("Environment")]
 public class ConsumerController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
+    #region Constructor
     public ConsumerController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
+    #endregion
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-
+    #region Retrieves a List of Consumers
+    /// <summary>
+    /// Retrieves a list of Consumers from the database.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>Modal popup will open to create New Consumer</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Consumer/Consumer
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     public async Task<IActionResult> Consumer()
     {
-        // Page Title
         ViewData["pTitle"] = "Consumers Profile";
 
         // Breadcrumb
-        ViewData["bGParent"] = "Configuration";
+        ViewData["bGParent"] = "Environment";
         ViewData["bParent"] = "Consumer";
-        ViewData["bChild"] = "Consumer";
+        ViewData["bChild"] = "Consumer View";
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<ConsumerVM> consumerList = [];
 
+        ApiResultResponseConfigVM<List<ConsumerVM>> consumerList = new();
 
-        if (TempData["SearchData"] == null)
-        {
-            consumerList = await client.GetFromJsonAsync<List<ConsumerVM>>("Consumer/GetAll");
-            ViewBag.SearchData = consumerList;
-        }
-        else
-        {
-            consumerList = JsonConvert.DeserializeObject<List<ConsumerVM>>(TempData["SearchData"].ToString());
-            ViewBag.SearchData = consumerList;
-        }
+        // fetch all the Consumers
+        consumerList =
+                await client.GetFromJsonAsync<ApiResultResponseConfigVM<List<ConsumerVM>>>("Consumer/all-consumer");
 
-        List<PlanTypeVM>? planTypes = await client.GetFromJsonAsync<List<PlanTypeVM>>("PlanType/GetAll");
-        ViewBag.PlanType = planTypes;
-        return View();
+        return View(consumerList!.Data);
     }
+    #endregion
 
-    public async Task<IActionResult> Consumer1(List<ConsumerVM> consumer)
-    {
-        // Page Title
-        ViewData["pTitle"] = "Consumers Profile";
-
-        // Breadcrumb
-        ViewData["bGParent"] = "Configuration";
-        ViewData["bParent"] = "Consumer";
-        ViewData["bChild"] = "Consumer";
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        //var consumerList = await client.GetFromJsonAsync<List<ConsumerVM>>("Consumer/GetAll");
-        List<PlanTypeVM>? planTypes = await client.GetFromJsonAsync<List<PlanTypeVM>>("PlanType/GetAll");
-        ViewBag.PlanType = planTypes;
-        return View(consumer);
-    }
-
-
+    #region Create Consumer functionionality
+    /// <summary>
+    /// Show the popup to create a new Consumer.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>New Consumer</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Consumer/Consumer
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         ConsumerVM consumer = new();
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<PlanTypeVM>? planTypes = await client.GetFromJsonAsync<List<PlanTypeVM>>("PlanType/GetAll");
-        ViewBag.PlanType = planTypes;
         return PartialView("_Create", consumer);
     }
 
+    /// <summary>
+    /// New Consumer will be create.
+    /// </summary>
+    /// <param name="consumer">Consumer entity that needs to be create</param>
+    /// <returns>New Consumer will be create.</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Consumer/Consumer
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
     public async Task<IActionResult> Create(ConsumerVM consumer)
     {
+        ApiResultResponseConfigVM<ConsumerVM> resultConsumer = new();
+
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (consumer.Name == null)
+        {
+            consumer.Name = "";
+        }
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<PlanTypeVM>? planTypes = await client.GetFromJsonAsync<List<PlanTypeVM>>("PlanType/GetAll");
-        ViewBag.PlanType = planTypes;
-        await client.PostAsJsonAsync<ConsumerVM>("Consumer/Create", consumer);
-        return RedirectToAction("Consumer");
+
+        string? jsonConsumer = JsonConvert.SerializeObject(consumer);
+        StringContent? consumerContent = new(jsonConsumer, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseConsumer =
+            await client.PostAsync("Consumer/create-consumer", consumerContent);
+
+        if (responseConsumer.IsSuccessStatusCode)
+        {
+            string? jsonResponseConsumer = await responseConsumer.Content.ReadAsStringAsync();
+            resultConsumer = JsonConvert.DeserializeObject<ApiResultResponseConfigVM<ConsumerVM>>(jsonResponseConsumer);
+        }
+        else
+        {
+            string? errorContent = await responseConsumer.Content.ReadAsStringAsync();
+            resultConsumer = new ApiResultResponseConfigVM<ConsumerVM>
+            {
+                IsSuccess = false,
+                Message = responseConsumer.StatusCode + "ErrorContent: " + errorContent
+            };
+        }
+
+        if (!resultConsumer!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
+    #endregion
+
+    #region Edit Consumer functionionality
+    /// <summary>
+    /// Edit the existing Consumer.
+    /// </summary>
+    /// <param name="Id">Consumer Guid that needs to be edit</param>
+    /// <returns>Popup will be open to edit the consumer details</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Consumer/Consumer
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Edit(int Id)
+    public async Task<IActionResult> Edit(Guid Id)
     {
-        if (Id == 0)
+        if (GuidExtensions.IsNullOrEmpty(Id))
         {
             return View();
         }
 
+        ApiResultResponseConfigVM<ConsumerVM> consumer = new();
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<PlanTypeVM>? planTypes = await client.GetFromJsonAsync<List<PlanTypeVM>>("PlanType/GetAll");
-        ViewBag.PlanType = planTypes;
-        ConsumerVM? consumer = await client.GetFromJsonAsync<ConsumerVM>("Consumer/GetById/?Id=" + Id);
-        return PartialView("_Edit", consumer);
+        consumer =
+            await client.GetFromJsonAsync<ApiResultResponseConfigVM<ConsumerVM>>("Consumer/byid-consumer/?Id=" + Id);
+
+        if (!consumer!.IsSuccess)
+        {
+            return View();
+        }
+
+        return PartialView("_Edit", consumer.Data);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> SearchByName(string searchByName)
-    {
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<ConsumerVM>? consumers =
-            await client.GetFromJsonAsync<List<ConsumerVM>>("Consumer/search?consumerName=" + searchByName);
-        TempData["SearchData"] = JsonConvert.SerializeObject(consumers);
-        return RedirectToAction("Consumer");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> SearchByPhoneNumber(string searchByPhoneNumber)
-    {
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<ConsumerVM>? consumers =
-            await client.GetFromJsonAsync<List<ConsumerVM>>("Consumer/GetSearchByPhoneNumber/?consumerPhoneNumber=" +
-                                                            searchByPhoneNumber);
-        TempData["SearchData"] = JsonConvert.SerializeObject(consumers);
-        return View(consumers);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> SearchByDate(string searchDate)
-    {
-        ConsumerVM consumerVM = new();
-        string? queryString = $"?searchDate={searchDate}";
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        //var consumers = await client.GetFromJsonAsync<List<ConsumerVM>>("Consumer/searchDate1/?searchDate=" + searchDate);
-        List<ConsumerVM>? consumers =
-            await client.GetFromJsonAsync<List<ConsumerVM>>("Consumer/searchDate1/{queryString}");
-        TempData["SearchData"] = JsonConvert.SerializeObject(consumers);
-        return View(consumers);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> SearchByDateBetween(string startDate, string endDate)
-    {
-        ConsumerVM consumerVM = new();
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<ConsumerVM>? consumers =
-            await client.GetFromJsonAsync<List<ConsumerVM>>("Consumer/GetSearchByDateBetween/?startDate=" + startDate +
-                                                            "&endDate=" + endDate);
-        TempData["SearchData"] = JsonConvert.SerializeObject(consumers);
-        return View(consumers);
-    }
-
+    /// <summary>
+    /// Update the existing Consumer.
+    /// </summary>
+    /// <param name="consumer">Consumer entity to update the existing consumer</param>
+    /// <returns>Changes will be updated for the existing consumer</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Consumer/Consumer
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Update(ConsumerVM consumer)
+    public async Task<IActionResult> Edit(ConsumerVM consumer)
     {
-        if (consumer.Id == 0)
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (consumer.Name == null)
+        {
+            consumer.Name = "";
+        }
+
+        ApiResultResponseConfigVM<ConsumerVM> resultConsumer = new();
+
+        if (GuidExtensions.IsNullOrEmpty(consumer.Id))
         {
             return View();
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PutAsJsonAsync<ConsumerVM>("Consumer/Update/", consumer);
-        return RedirectToAction("Consumer");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Delete(int Id)
-    {
-        if (Id == 0)
+        string? jsonConsumer = JsonConvert.SerializeObject(consumer);
+        StringContent? consumerContent = new(jsonConsumer, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseConsumer =
+            await client.PutAsync("Consumer/update-consumer/", consumerContent);
+        if (responseConsumer.IsSuccessStatusCode)
         {
-            return View();
+            string? jsonResponseConsumer = await responseConsumer.Content.ReadAsStringAsync();
+            resultConsumer = JsonConvert.DeserializeObject<ApiResultResponseConfigVM<ConsumerVM>>(jsonResponseConsumer);
+        }
+        else
+        {
+            string? errorContent = await responseConsumer.Content.ReadAsStringAsync();
+            resultConsumer = new ApiResultResponseConfigVM<ConsumerVM>
+            {
+                IsSuccess = false,
+                Message = responseConsumer.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
         }
 
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        ConsumerVM? consumer = await client.GetFromJsonAsync<ConsumerVM>("Consumer/GetById/?Id=" + Id);
-        List<PlanTypeVM>? planTypes = await client.GetFromJsonAsync<List<PlanTypeVM>>("PlanType/GetAll");
-        ViewBag.PlanType = planTypes;
-        return PartialView("_Delete", consumer);
+        if (!resultConsumer!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
+    #endregion
 
-
+    #region Delete Consumer functionionality
+    /// <summary>
+    /// Delete the existing Consumer.
+    /// </summary>
+    /// <param name="Id">Consumer Guid that needs to be delete</param>
+    /// <returns>Consumer will be deleted</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Consumer/Consumer
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Delete(ConsumerVM consumer)
+    public async Task<IActionResult> Delete(Guid Id)
     {
-        if (consumer.Id == 0)
+        if (!ModelState.IsValid)
         {
-            return View();
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
 
+        ApiResultResponseConfigVM<ConsumerVM> resultConsumer = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.DeleteAsync("Consumer/Delete?Id=" + consumer.Id);
-        return RedirectToAction("Consumer");
+        HttpResponseMessage? responseConsumer = await client.DeleteAsync("Consumer/delete-consumer?Id=" + Id);
+        if (responseConsumer.IsSuccessStatusCode)
+        {
+            string? jsonResponseConsumer = await responseConsumer.Content.ReadAsStringAsync();
+            resultConsumer = JsonConvert.DeserializeObject<ApiResultResponseConfigVM<ConsumerVM>>(jsonResponseConsumer);
+        }
+        else
+        {
+            string? errorContent = await responseConsumer.Content.ReadAsStringAsync();
+            resultConsumer = new ApiResultResponseConfigVM<ConsumerVM>
+            {
+                IsSuccess = false,
+                Message = responseConsumer.StatusCode.ToString()
+            };
+        }
+
+        if (!resultConsumer!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
-
-
-    //[HttpPost]
-    //public async Task<IActionResult> Delete(ConsumerVM consumer)
-    //{
-    //    JsonSerializerOptions options = new(JsonSerializerDefaults.Web)
-    //    {
-    //        WriteIndented = true
-    //    };
-    //    string forecastJson = JsonSerializer.Serialize<ConsumerVM>(consumer, options);
-
-    //    if (consumer.Id == 0) return View();
-    //    var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //    //client.DeleteAsync("Consumer/Delete" + )
-    //    var consumerList = Deletewithresponse(client.BaseAddress.AbsoluteUri + "Consumer/Delete", consumer);
-    //    return RedirectToAction("Consumer");
-    //}
-
-    //public async Task<HttpResponseMessage> Deletewithresponse(string url, object entity)
-    //{
-    //    using (var client = new HttpClient())
-    //    {
-    //        var json = JsonSerializer.Serialize(entity);
-    //        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-    //        var request = new HttpRequestMessage
-    //        {
-    //            Method = HttpMethod.Delete,
-    //            RequestUri = new Uri(url),
-    //            Content = content
-    //        };
-    //        return await client.SendAsync(request);
-    //    }
-    //}
+    #endregion
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

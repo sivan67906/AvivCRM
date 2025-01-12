@@ -1,6 +1,6 @@
-@model IEnumerable<AvivCRM.UI.Areas.Configuraton.ViewModels.ConsumerVM>
+@model IEnumerable<AvivCRM.UI.Areas.Environment.ViewModels.LanguageVM>
 
-<div class="modal fade" Id="mdlConsumerShow">
+<div class="modal fade" Id="mdlLanguageShow">
 	<div class="modal-dialog" Id="PlaceHolderHere">
 	</div>
 </div>
@@ -13,12 +13,12 @@
 			<div class="card-header">
 				<div class="row align-items-center">
 					<div class="col">
-						<h4 class="card-title">Consumer Index</h4>
+						<h4 class="card-title">Language Index</h4>
 					</div><!--end col-->
 					<div class="col-auto">
 						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-						        data-target="#mdlConsumerShow" data-url="@Url.Action("Create")">
-							<i class="fas fa-plus me-2"></i>Add Consumer
+						        data-target="#mdlLanguageShow" data-url="@Url.Action("Create")">
+							<i class="fas fa-plus me-2"></i>Add Language
 						</button>
 					</div><!--end col-->
 				</div> <!--end row-->
@@ -42,11 +42,11 @@
 								<tr>
 
 									<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
-										<td>@item.Code</td>
-										<td>@item.Name</td>
+										<td>@item.LanguageCode</td>
+										<td>@item.LanguageName</td>
 									<td>
 										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
-										        data-target="#mdlConsumerShow" data-url="@Url.Action($"Edit/{item.Id}")">
+										        data-target="#mdlLanguageShow" data-url="@Url.Action($"Edit/{item.Id}")">
 											<i class="las la-pen text-secondary font-16"></i>
 										</button>
 										<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"

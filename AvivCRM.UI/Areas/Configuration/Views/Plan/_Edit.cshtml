@@ -1,28 +1,28 @@
-@model AvivCRM.UI.Areas.Configuraton.ViewModels.DepartmentVM
+@model AvivCRM.UI.Areas.Configuraton.ViewModels.PlanVM
 
 <div class="modal-content">
 	<div class="modal-header">
-		<h5 class="modal-title mt-0" Id="">Department Setup</h5>
+		<h5 class="modal-title mt-0" Id="">Edit Plan Details</h5>
 	</div>
 	<div class="modal-body">
-		<form id="createFormDepartment" data-url="Create" asp-action="Create" method="post">
-			@* <div asp-validation-summary="All" class="text-danger"></div> *@
+		<form id="editFormPlan" data-url="Edit" asp-action="Edit" method="post">
+			<input type="hidden" asp-for="@Model.Id"/>
 			<div class="row mt-2">
 				<div class="col-lg-6">Code <span class="text-danger">*</span></div>
 				<div class="col-lg-6">Name <span class="text-danger">*</span></div>
 			</div>
 			<div class="row mt-2">
 				<div class="col-lg-6">
-					<input asp-for="Code" class="form-control" />
+					<input asp-for="@Model.Code" class="form-control" />
 				</div>
 				<div class="col-lg-6">
-					<input asp-for="Name" class="form-control" />
+					<input asp-for="@Model.Name" class="form-control" />
 				</div>
 			</div>
 			<div class="row mt-4 text-end ">
 				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
 				</div>
 			</div>
 		</form>
