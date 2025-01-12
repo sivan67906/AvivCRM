@@ -21,8 +21,8 @@ public class CurrencyController : Controller
 
         // Breadcrumb
         ViewData["bGParent"] = "Environment";
-        ViewData["bParent"] = "Lead Source";
-        ViewData["bChild"] = "Lead Source View";
+        ViewData["bParent"] = "Currency";
+        ViewData["bChild"] = "Currency View";
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
         ApiResultResponse<List<CurrencyVM>> currencyList = new();
