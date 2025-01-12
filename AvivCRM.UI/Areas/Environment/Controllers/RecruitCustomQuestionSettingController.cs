@@ -135,16 +135,30 @@ public class RecruitCustomQuestionSettingController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(RecruitCustomQuestionSettingVM recruitCustomQuestionSetting)
     {
+        if (GuidExtensions.IsNullOrEmpty(recruitCustomQuestionSetting.CustomQuestionTypeId))
+        {
+            ModelState.Remove(nameof(recruitCustomQuestionSetting.CustomQuestionTypeId));
+            ModelState.AddModelError("CustomQuestionTypeId", "Please select a Question Type");
+        }
+        if (GuidExtensions.IsNullOrEmpty(recruitCustomQuestionSetting.CustomQuestionCategoryId))
+        {
+            ModelState.Remove(nameof(recruitCustomQuestionSetting.CustomQuestionCategoryId));
+            ModelState.AddModelError("CustomQuestionCategoryId", "Please select a Question Category");
+        }
+        if (GuidExtensions.IsNullOrEmpty(recruitCustomQuestionSetting.CQStatusId))
+        {
+            ModelState.Remove(nameof(recruitCustomQuestionSetting.CQStatusId));
+            ModelState.AddModelError("CQStatusId", "Please select a Status");
+        }
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
         ApiResultResponse<RecruitCustomQuestionSettingVM>? resultRecruitCustomQuestionSetting = new();
-
-        //if (!ModelState.IsValid)
-        //{
-        //    return Json(new
-        //    {
-        //        success = false,
-        //        errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
-        //    });
-        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
@@ -266,6 +280,21 @@ public class RecruitCustomQuestionSettingController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(RecruitCustomQuestionSettingVM recruitCustomQuestionSetting)
     {
+        if (GuidExtensions.IsNullOrEmpty(recruitCustomQuestionSetting.CustomQuestionTypeId))
+        {
+            ModelState.Remove(nameof(recruitCustomQuestionSetting.CustomQuestionTypeId));
+            ModelState.AddModelError("CustomQuestionTypeId", "Please select a Question Type");
+        }
+        if (GuidExtensions.IsNullOrEmpty(recruitCustomQuestionSetting.CustomQuestionCategoryId))
+        {
+            ModelState.Remove(nameof(recruitCustomQuestionSetting.CustomQuestionCategoryId));
+            ModelState.AddModelError("CustomQuestionCategoryId", "Please select a Question Category");
+        }
+        if (GuidExtensions.IsNullOrEmpty(recruitCustomQuestionSetting.CQStatusId))
+        {
+            ModelState.Remove(nameof(recruitCustomQuestionSetting.CQStatusId));
+            ModelState.AddModelError("CQStatusId", "Please select a Status");
+        }
         if (!ModelState.IsValid)
         {
             return Json(new
