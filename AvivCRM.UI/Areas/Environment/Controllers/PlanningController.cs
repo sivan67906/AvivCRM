@@ -70,10 +70,10 @@ public class PlanningController : Controller
             });
         }
 
-        if (planning.Name == null)
-        {
-            planning.Name = "";
-        }
+        //if (planning.Name == null)
+        //{
+        //    planning.Name = "";
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
