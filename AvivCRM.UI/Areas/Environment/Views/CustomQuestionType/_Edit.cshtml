@@ -1,0 +1,52 @@
+@model AvivCRM.UI.Areas.Environment.ViewModels.CustomQuestionTypeVM
+
+<div class="modal-content">
+	<div class="modal-header">
+		<h5 class="modal-title mt-0" Id="">Edit Custom Question Type Details</h5>
+	</div>
+	<div class="modal-body">
+		<form id="editFormCustomQuestionType" data-url="Edit" asp-action="Edit" method="post">
+			<input type="hidden" asp-for="@Model.Id"/>
+			<div class="row mt-2">
+				<div class="col-lg-6">Code <span class="text-danger">*</span></div>
+				<div class="col-lg-6">Name <span class="text-danger">*</span></div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-lg-6">
+					<input asp-for="@Model.CQTypeCode" class="form-control" />
+				</div>
+				<div class="col-lg-6">
+					<input asp-for="@Model.CQTypeName" class="form-control" />
+				</div>
+			</div>
+			<div class="row mt-4 text-end ">
+				<div class="col-lg-12 ">
+					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
