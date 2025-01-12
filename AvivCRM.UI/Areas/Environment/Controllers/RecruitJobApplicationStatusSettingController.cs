@@ -27,10 +27,32 @@ public class RecruitJobApplicationStatusSettingController : Controller
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        ApiResultResponse<List<RecruitJobApplicationStatusSettingVM>>? RecruitJobApplicationStatusSettings =
+        ApiResultResponse<List<RecruitJobApplicationStatusSettingVM>>? recruitJobApplicationStatusSettings =
             await client.GetFromJsonAsync<ApiResultResponse<List<RecruitJobApplicationStatusSettingVM>>>("RecruitJobApplicationStatusSetting/all-recruitjobapplicationstatussetting");
+        List<RecruitJobApplicationStatusSettingVM> recruitJobApplicationStatusSetting = recruitJobApplicationStatusSettings!.Data!;
 
-        return PartialView("_RecruitJobApplicationStatusSetting", RecruitJobApplicationStatusSettings!.Data!);
+        ApiResultResponse<List<JobApplicationCategoryVM>>? jobApplicationCategoryList = await client.GetFromJsonAsync<ApiResultResponse<List<JobApplicationCategoryVM>>>("JobApplicationCategory/all-jobapplicationcategory");
+        List<JobApplicationCategoryVM> jobApplicationCategories = jobApplicationCategoryList!.Data!;
+
+        ApiResultResponse<List<JobApplicationPositionVM>>? jobApplicationPositionList = await client.GetFromJsonAsync<ApiResultResponse<List<JobApplicationPositionVM>>>("JobApplicationPosition/all-jobapplicationposition");
+        List<JobApplicationPositionVM> jobApplicationPositions = jobApplicationPositionList!.Data!;
+
+        foreach (JobApplicationCategoryVM parent in jobApplicationCategories)
+        {
+            foreach (RecruitJobApplicationStatusSettingVM? child in recruitJobApplicationStatusSetting.Where(c => c.JobApplicationCategoryId == parent.Id))
+            {
+                child.JobApplicationCategoryName = parent.JACategoryName;
+            }
+        }
+        foreach (JobApplicationPositionVM parent in jobApplicationPositions)
+        {
+            foreach (RecruitJobApplicationStatusSettingVM? child in recruitJobApplicationStatusSetting.Where(c => c.JobApplicationPositionId == parent.Id))
+            {
+                child.JobApplicationPositionName = parent.JAPositionName;
+            }
+        }
+
+        return PartialView("_RecruitJobApplicationStatusSetting", recruitJobApplicationStatusSetting);
     }
 
     #region Create Recruit JobApplicationStatus Setting functionionality
@@ -47,9 +69,25 @@ public class RecruitJobApplicationStatusSettingController : Controller
     /// Created: 05-Jan-2025 by Sivan T
     /// </remarks>
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+
         RecruitJobApplicationStatusSettingVM recruitJobApplicationStatusSetting = new();
+        ApiResultResponse<List<JobApplicationCategoryVM>>? jobApplicationCategoryList = await client.GetFromJsonAsync<ApiResultResponse<List<JobApplicationCategoryVM>>>("JobApplicationCategory/all-jobapplicationcategory");
+        List<JobApplicationCategoryVM> jobApplicationCategories = jobApplicationCategoryList!.Data!;
+
+        ApiResultResponse<List<JobApplicationPositionVM>>? jobApplicationPositionList = await client.GetFromJsonAsync<ApiResultResponse<List<JobApplicationPositionVM>>>("JobApplicationPosition/all-jobapplicationposition");
+        List<JobApplicationPositionVM> jobApplicationPositions = jobApplicationPositionList!.Data!;
+
+        recruitJobApplicationStatusSetting.JobApplicationCategoryDDSetting = new JobApplicationCategoryDDSettingVM
+        {
+            JobApplicationCategoryList = jobApplicationCategories
+        };
+        recruitJobApplicationStatusSetting.JobApplicationPositionDDSetting = new JobApplicationPositionDDSettingVM
+        {
+            JobApplicationPositionList = jobApplicationPositions
+        };
         return PartialView("_Create", recruitJobApplicationStatusSetting);
     }
 
@@ -68,8 +106,16 @@ public class RecruitJobApplicationStatusSettingController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(RecruitJobApplicationStatusSettingVM recruitJobApplicationStatusSetting)
     {
-        ApiResultResponse<RecruitJobApplicationStatusSettingVM> resultRecruitJobApplicationStatusSetting = new();
-
+        if (GuidExtensions.IsNullOrEmpty(recruitJobApplicationStatusSetting.JobApplicationPositionId))
+        {
+            ModelState.Remove(nameof(recruitJobApplicationStatusSetting.JobApplicationPositionId));
+            ModelState.AddModelError("FooterStatusId", "Please select a position");
+        }
+        if (GuidExtensions.IsNullOrEmpty(recruitJobApplicationStatusSetting.JobApplicationCategoryId))
+        {
+            ModelState.Remove(nameof(recruitJobApplicationStatusSetting.JobApplicationCategoryId));
+            ModelState.AddModelError("FooterStatusId", "Please select a category");
+        }
         if (!ModelState.IsValid)
         {
             return Json(new
@@ -78,7 +124,7 @@ public class RecruitJobApplicationStatusSettingController : Controller
                 errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
-
+        ApiResultResponse<RecruitJobApplicationStatusSettingVM> resultRecruitJobApplicationStatusSetting = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
         string? jsonRecruitJobApplicationStatusSetting = JsonConvert.SerializeObject(recruitJobApplicationStatusSetting);
@@ -136,18 +182,35 @@ public class RecruitJobApplicationStatusSettingController : Controller
             return View();
         }
 
-        ApiResultResponse<RecruitJobApplicationStatusSettingVM> recruitJobApplicationStatusSetting = new();
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        recruitJobApplicationStatusSetting =
+        ApiResultResponse<RecruitJobApplicationStatusSettingVM>? recruitJobApplicationStatusSettingResponse =
             await client.GetFromJsonAsync<ApiResultResponse<RecruitJobApplicationStatusSettingVM>>("RecruitJobApplicationStatusSetting/byid-recruitjobApplicationStatussetting/?Id=" + Id);
+        RecruitJobApplicationStatusSettingVM recruitJobApplicationStatusSetting = recruitJobApplicationStatusSettingResponse!.Data!;
 
-        if (!recruitJobApplicationStatusSetting!.IsSuccess)
+        ApiResultResponse<List<JobApplicationCategoryVM>>? jobApplicationCategoryList = await client.GetFromJsonAsync<ApiResultResponse<List<JobApplicationCategoryVM>>>("JobApplicationCategory/all-jobapplicationcategory");
+        List<JobApplicationCategoryVM> jobApplicationCategories = jobApplicationCategoryList!.Data!;
+
+        ApiResultResponse<List<JobApplicationPositionVM>>? jobApplicationPositionList = await client.GetFromJsonAsync<ApiResultResponse<List<JobApplicationPositionVM>>>("JobApplicationPosition/all-jobapplicationposition");
+        List<JobApplicationPositionVM> jobApplicationPositions = jobApplicationPositionList!.Data!;
+
+        JobApplicationCategoryDDSettingVM applicationCategoryDDSettingVM = new()
         {
-            return View();
-        }
+            JobApplicationCategory = null,
+            SelectedId = recruitJobApplicationStatusSetting.JobApplicationCategoryId,
+            JobApplicationCategoryList = jobApplicationCategories
+        };
 
-        return PartialView("_Edit", recruitJobApplicationStatusSetting.Data);
+        JobApplicationPositionDDSettingVM applicationPositionDDSettingVM = new()
+        {
+            JobApplicationPosition = null,
+            SelectedId = recruitJobApplicationStatusSetting.JobApplicationPositionId,
+            JobApplicationPositionList = jobApplicationPositions
+        };
+        recruitJobApplicationStatusSetting.JobApplicationCategoryDDSetting = applicationCategoryDDSettingVM;
+        recruitJobApplicationStatusSetting.JobApplicationPositionDDSetting = applicationPositionDDSettingVM;
+
+        return PartialView("_Edit", recruitJobApplicationStatusSetting);
     }
 
     /// <summary>
@@ -165,6 +228,16 @@ public class RecruitJobApplicationStatusSettingController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(RecruitJobApplicationStatusSettingVM recruitJobApplicationStatusSetting)
     {
+        if (GuidExtensions.IsNullOrEmpty(recruitJobApplicationStatusSetting.JobApplicationPositionId))
+        {
+            ModelState.Remove(nameof(recruitJobApplicationStatusSetting.JobApplicationPositionId));
+            ModelState.AddModelError("FooterStatusId", "Please select a position");
+        }
+        if (GuidExtensions.IsNullOrEmpty(recruitJobApplicationStatusSetting.JobApplicationCategoryId))
+        {
+            ModelState.Remove(nameof(recruitJobApplicationStatusSetting.JobApplicationCategoryId));
+            ModelState.AddModelError("FooterStatusId", "Please select a category");
+        }
         if (!ModelState.IsValid)
         {
             return Json(new
@@ -173,7 +246,6 @@ public class RecruitJobApplicationStatusSettingController : Controller
                 errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
         }
-
 
         ApiResultResponse<RecruitJobApplicationStatusSettingVM> resultRecruitJobApplicationStatusSetting = new();
 

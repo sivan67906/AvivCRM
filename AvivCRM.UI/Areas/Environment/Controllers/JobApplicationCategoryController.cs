@@ -47,7 +47,6 @@ public class JobApplicationCategoryController : Controller
         // fetch all the Job Application Categories
         jobApplicationCategoryList =
                 await client.GetFromJsonAsync<ApiResultResponse<List<JobApplicationCategoryVM>>>("JobApplicationCategory/all-jobapplicationcategory");
-
         return View(jobApplicationCategoryList!.Data);
     }
     #endregion

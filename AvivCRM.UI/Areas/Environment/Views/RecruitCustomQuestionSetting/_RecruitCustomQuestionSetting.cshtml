@@ -1,7 +1,7 @@
 ﻿@model List<AvivCRM.UI.Areas.Environment.ViewModels.RecruitCustomQuestionSettingVM>
 
-<div class="modal fade" id="mdlProjectStatusShow" style="">
-	<div class="modal-dialog" id="PlaceHolderHere">
+<div class="modal fade" id="mdlRecruitCustomQuestionSettingShow" style="">
+	<div class="modal-dialog modal-xl" id="PlaceHolderHere">
 	</div>
 </div>
 
@@ -12,8 +12,8 @@
 				<h4 class="card-title">Custom Question Index</h4>
 			</div><!--end col-->
 			<div class="col-auto">
-				<button type="button" class="btn btn-de-primary" data-bs-toggle="modal"
-						data-animation="bounce" data-bs-target=".bs-addNewCustomQn-modal-lg">
+				<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
+						data-target="#mdlRecruitCustomQuestionSettingShow" data-url="@Url.Action("Create")">
 					<i class="fas fa-plus me-2"></i>Add Question
 				</button>
 			</div><!--end col-->
@@ -42,17 +42,25 @@
 							<td>@Model[i].CQQuestion</td>
 							<td>@Model[i].CustomQuestionCategoryName</td>
 							<td>@Model[i].CustomQuestionTypeName</td>
-							<td>@Model[i].CQIsRequiredId</td>
-							<td>@Model[i].CQStatusId</td>
+							<td>@(Model[i].CQIsRequiredId ? "Yes" : "No")</td>
+							<td>@Model[i].CQStatusName</td>
 							<td>
-								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
+								<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+										data-target="#mdlRecruitCustomQuestionSettingShow" data-url="@Url.Action($"Edit/{Model[i].Id}")">
+									<i class="las la-pen text-secondary font-16"></i>
+								</button>
+								<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+								   data-url="@Url.Action($"Delete/{Model[i].Id}")">
+									<i class="las la-trash-alt text-secondary font-16"></i>
+								</a>
+								@* <button type="button" class="custombuttonaslink" data-toggle="ajax-modal1"
 										data-bs-target="#mdlRecruitCustomQuestionSettingShow" data-url="@Url.Action($"EditRecruitCustomQuestionSetting/{Model[i].Id}")">
 									<i class="las la-pen text-secondary font-16"></i>
 								</button>
 								<a id="deleteRCQS" name="Id" href="#" class="ms-2"
 								   data-target="" data-url="@Url.Action($"DeleteRecruitCustomQuestionSetting/{Model[i].Id}")">
 									<i class="las la-trash-alt text-secondary font-16"></i>
-								</a>
+								</a> *@
 							</td>
 						</tr>
 						<!--end tr-->
@@ -62,7 +70,29 @@
 		</div>
 	</div><!--end card-body-->
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/matrica/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
 
+		  let hash = document.location.hash;
+		  let prefix = "";
+
+		  //change hash url on page reload
+		  if (hash) {
+			$('.nav-tabs a[href=\"'+hash.replace(prefix,"")+'\"]').tab('show');
+		  }
+
+		  // change hash url on switch tab
+		  $('.nav-tabs a').on('shown.bs.tab', function (e) {
+			 window.location.hash = e.target.hash.replace("#", "#" + prefix);
+		  });
+
+		  // Popup Close on Outside Click disable
+		 $('.modal').modal({backdrop: 'static', keyboard: false});
+	});
+</script>
 <script type="text/javascript">
 	$(document).on("click", "#deleteRCQS", function (e) {
 		   e.preventDefault();
