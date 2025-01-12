@@ -1,198 +1,28 @@
 @model AvivCRM.UI.Areas.Environment.ViewModels.EmployeeVM
 
-
 <div class="modal-content">
 	<div class="modal-header">
-		<h5 class="modal-title mt-0" id="">Employee Setup</h5>
+		<h5 class="modal-title mt-0" Id="">Employee Setup</h5>
 	</div>
 	<div class="modal-body">
-		<form action="Create">
-
-			<div class="row">
-				<div class="col-lg-4 g-2">
-					<div class="mb-3 text-start">
-						<label for="example-text-input">
-							Employee Code <span class="f-14 mr-1 text-danger">*</span>
-						</label>
-						<input class="form-control mt-2" type="text" value="" name="EmployeeCode" id="example-text-input">
-						<span asp-validation-for="EmployeeCode" class="text-danger"></span>
-					</div>
+		<form id="createFormEmployee" data-url="Create" asp-action="Create" method="post">
+			@* <div asp-validation-summary="All" class="text-danger"></div> *@
+			<div class="row mt-2">
+				<div class="col-lg-6">Code <span class="text-danger">*</span></div>
+				<div class="col-lg-6">Name <span class="text-danger">*</span></div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-lg-6">
+					<input asp-for="Code" class="form-control" />
 				</div>
-				<div class="col-lg-4 g-2">
-					<div class="mb-3 text-start">
-						<label for="example-text-input">
-							Employee Name
-							<span class="f-14 mr-1 text-danger">*</span>
-						</label>
-						<input class="form-control mt-2" type="text" value="" name="EmployeeName" id="example-text-input">
-						<span asp-validation-for="EmployeeName" class="text-danger"></span>
-					</div>
-				</div>
-				<div class="col-lg-4 g-2">
-					<div class="mb-3 text-start">
-						<label for="example-text-input">
-							Date Of Birth <span class="f-14 mr-1 text-danger">*</span>
-						</label>
-						<input class="form-control mt-2" type="date" value="" name="DateOfBirth" id="example-text-input">
-						<span asp-validation-for="DateOfBirth" class="text-danger"></span>
-					</div>
+				<div class="col-lg-6">
+					<input asp-for="Name" class="form-control" />
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-lg-4 g-2">
-					<div class="mb-3 text-start">
-						<label for="example-text-input">
-							Phone Number<span class="f-14 mr-1 text-danger">*</span>
-						</label>
-						<input class="form-control mt-2" type="tel" value="" name="PhoneNumber" id="example-text-input">
-						<span asp-validation-for="PhoneNumber" class="text-danger"></span>
-					</div>
-				</div>
-				<div class="col-lg-4 g-2">
-					<div class="mb-3 text-start">
-						<label for="example-text-input">
-							Company Name <span class="f-14 mr-1 text-danger">*</span>
-						</label>
-						@Html.DropDownListFor(c => c.CompanyId, new SelectList(ViewBag.CompanyList, "Id", "Name"), "--", new { @class = "form-control mt-2" })
-						@*  <select class="form-select mt-2" aria-label="Default select example" name="CompanyName">
-                                    <option value="" selected>--</option>
-                                    <option value="1">Meta</option>
-                                    <option value="2">Apple</option>
-                                    <option value="3">Microsoft</option>
-                                </select> *@
-						<span asp-validation-for="CompanyName" class="text-danger"></span>
-					</div>
-				</div>
-				<div class="col-lg-4 g-2">
-					<div class="mb-3 text-start">
-						<label for="example-text-input">
-							Department Name <span class="f-14 mr-1 text-danger">*</span>
-						</label>
-						@Html.DropDownListFor(c => c.DepartmentId, new SelectList(ViewBag.DepartmentList, "Id", "Name"), "--", new { @class = "form-control mt-2" })
-						@*  <select class="form-select mt-2" aria-label="Default select example" name="CompanyName">
-                                    <option value="" selected>--</option>
-                                    <option value="1">Meta</option>
-                                    <option value="2">Apple</option>
-                                    <option value="3">Microsoft</option>
-                                </select> *@
-						<span asp-validation-for="DepartmentId" class="text-danger"></span>
-					</div>
-				</div>
-
-			</div>
-			<div class="row">
-
-				<div class="col-lg-6 g-2">
-					<div class="mb-3 text-start">
-						<label for="address">
-							Address 1
-							<span class="f-14 mr-1 text-danger">*</span>
-						</label>
-
-						<textarea class="form-control mt-2" name="Address1" type="text" rows="1" placeholder="e.g.  132, My Street, Kingston, New York 12401" id="address"></textarea>
-						<span asp-validation-for="Address1" class="text-danger"></span>
-
-					</div>
-				</div>
-				<div class="col-lg-6 g-2">
-					<div class="mb-3 text-start">
-						<label for="address">
-							Address 2
-							<span class="f-14 mr-1 text-danger">*</span>
-						</label>
-
-						<textarea class="form-control mt-2" name="Address2" type="text" rows="1" placeholder="e.g. Street, Floor, Block" id="address"></textarea>
-						<span asp-validation-for="Address2" class="text-danger"></span>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-3 g-2">
-					<div class="mb-3 text-start">
-						<label for="example-text-input">
-							Country
-						</label>
-						@Html.DropDownListFor(c => c.CountryId,
-							new SelectList(ViewBag.CountryList, "Id", "Name"),
-							"--", new
-							{
-								@class = "form-control mt-2",
-								onchange = "loadState(this)"
-							})
-						@* <select id="countryDropdown" class="form-select mt-2" name="Country">
-                                    <option selected>--</option>
-                                    <option>USA</option>
-                                    <option>Canada</option>
-                                    <option>UK</option>
-                                    <option>Australia</option>
-                                </select>
-                                <span asp-validation-for="Country"  class="text-danger"></span> *@
-					</div>
-				</div>
-				<div class="col-lg-3 g-2">
-					<div class="mb-3 text-start">
-						<label for="tax">
-							State
-						</label>
-						<select class="form-control mt-2" name="StateId" id="StateId" onchange="loadCity(this)">
-							<option value="">--</option>
-						</select>
-						@* <select id="countryDropdown" class="form-select mt-2" name="State">
-                                    <option selected>--</option>
-                                    <option>California</option>
-                                    <option>Texas</option>
-                                    <option>Ontario</option>
-                                    <option>Grater Landon</option>
-                                </select>
-                                <span asp-validation-for="State" class="text-danger"></span> *@
-					</div>
-				</div>
-				<div class="col-lg-3 g-2">
-					<div class="mb-3 text-start">
-						<label for="tax">
-							City
-						</label>
-						<select class="form-control mt-2" name="CityId" id="CityId">
-							<option value="">--</option>
-						</select>
-						@* <select id="countryDropdown"name="City" class="form-select mt-2">
-                                    <option selected>--</option>
-                                    <option>Los Angeles</option>
-                                    <option>Austin</option>
-                                    <option>Toranto</option>
-                                    <option>London</option>
-                                    <option>Sydney</option>
-                                </select>
-                                <span asp-validation-for="City" class="text-danger"></span> *@
-					</div>
-				</div>
-				<div class="col-lg-3 g-2">
-					<div class="mb-3 text-start">
-						<label for="tax">
-							Zip Code
-						</label>
-						<input class="form-control mt-2" type="number" name="ZipCode" placeholder="" id="tax">
-						<span asp-validation-for="ZipCode" class="text-danger"></span>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-12 g-2">
-					<div class="mb-3 text-start">
-						<label for="example-text-input">
-							Description
-						</label>
-						<textarea class="form-control mt-2" name="Description" id="" rows="5" placeholder=""></textarea>
-						<span asp-validation-for="Description" class="text-danger"></span>
-					</div>
-				</div>
-			</div>
-
-
 			<div class="row mt-4 text-end ">
 				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="button" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
 				</div>
 			</div>
 		</form>
@@ -200,40 +30,23 @@
 </div>
 
 
-<script type="text/javascript">
-    $(window).on('load', function() {
-     $('#mdlProductShow').modal({backdrop: 'static', keyboard: false});
-    });
-</script>
-<script type="text/javascript">
-       function loadState(obj) {
-           var value = obj.value;
-        var actionName = "GetStatesByCountryId";
-        var currentUrl = window.location.href;
-        currentUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/") + 1);
-        var url = currentUrl + actionName;
 
-       $.post(url, { countryId: value }, function (data) {
-            PopulateDropDown("#StateId", data);
-           });
-       }
-       function loadCity(obj) {
-           var value = obj.value;
-        var actionName = "GetCitiesByStateId";
-        var currentUrl = window.location.href;
-        currentUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/") + 1);
-        var url = currentUrl + actionName;
 
-    $.post(url, { stateId: value }, function (data) {
-            PopulateDropDown("#CityId", data);
-           });
-       }
 
-       function PopulateDropDown(dropDownId, list) {
-           $(dropDownId).empty();
-           $(dropDownId).append("<option>--</option>")
-           $.each(list, function (index, row) {
-               $(dropDownId).append("<option value='" + row.id + "'>" + row.name + "</option>")
-           });
-       }
-</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

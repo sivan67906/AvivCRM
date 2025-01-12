@@ -1,15 +1,37 @@
-namespace AvivCRM.UI.Areas.Configuration.ViewModels;
+using System.ComponentModel.DataAnnotations;
+
+namespace AvivCRM.UI.Areas.Configuraton.ViewModels;
 public class DesignationVM
 {
-    public int Id { get; set; }
-    public string? Code { get; set; }
-    public string? Name { get; set; }
-    public int CompanyId { get; set; }
-    public int DepartmentId { get; set; }
-    public string? CompanyName { get; set; }
-    public string? DepartmentName { get; set; }
-    public string? Description { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public DateTime? UpdatedDate { get; set; }
-    public bool IsActive { get; set; } = true;
+    public Guid Id { get; set; }
+	[Required(ErrorMessage = "Designation Name should not be empty")]
+    [MaxLength(10, ErrorMessage = "Designation Name must not exceed 10 characters")]
+    [MinLength(3, ErrorMessage = "Designation Name should not be less than 3 characters")]
+	public string? Code { get; set; }
+    [Required(ErrorMessage = "Designation Name should not be empty")]
+    [MaxLength(25, ErrorMessage = "Designation Name must not exceed 25 characters")]
+    [MinLength(3, ErrorMessage = "Designation Name should not be less than 3 characters")]
+    public string Name { get; set; } = default!;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

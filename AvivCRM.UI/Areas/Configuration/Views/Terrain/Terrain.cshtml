@@ -1,6 +1,6 @@
-@model IEnumerable<AvivCRM.UI.Areas.Configuraton.ViewModels.ConsumerVM>
+@model IEnumerable<AvivCRM.UI.Areas.Configuraton.ViewModels.TerrainVM>
 
-<div class="modal fade" Id="mdlConsumerShow">
+<div class="modal fade" Id="mdlTerrainShow">
 	<div class="modal-dialog" Id="PlaceHolderHere">
 	</div>
 </div>
@@ -13,12 +13,12 @@
 			<div class="card-header">
 				<div class="row align-items-center">
 					<div class="col">
-						<h4 class="card-title">Consumer Index</h4>
+						<h4 class="card-title">Terrain Index</h4>
 					</div><!--end col-->
 					<div class="col-auto">
 						<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-						        data-target="#mdlConsumerShow" data-url="@Url.Action("Create")">
-							<i class="fas fa-plus me-2"></i>Add Consumer
+						        data-target="#mdlTerrainShow" data-url="@Url.Action("Create")">
+							<i class="fas fa-plus me-2"></i>Add Terrain
 						</button>
 					</div><!--end col-->
 				</div> <!--end row-->
@@ -46,7 +46,7 @@
 										<td>@item.Name</td>
 									<td>
 										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
-										        data-target="#mdlConsumerShow" data-url="@Url.Action($"Edit/{item.Id}")">
+										        data-target="#mdlTerrainShow" data-url="@Url.Action($"Edit/{item.Id}")">
 											<i class="las la-pen text-secondary font-16"></i>
 										</button>
 										<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"

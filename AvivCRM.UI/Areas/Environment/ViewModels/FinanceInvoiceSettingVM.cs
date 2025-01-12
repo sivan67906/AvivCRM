@@ -44,9 +44,9 @@ public class LanguageDDSettingVM
     public List<LanguageVM>? languageItems { get; set; }
 }
 
-public class LanguageVM
-{
-    public Guid Id { get; set; }
-    public string? LanguageCode { get; set; }
-    public string? LanguageName { get; set; }
-}
+//public class LanguageVM
+//{
+//    public Guid Id { get; set; }
+//    public string? LanguageCode { get; set; }
+//    public string? LanguageName { get; set; }
+//}

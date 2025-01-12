@@ -1,170 +1,323 @@
-using System.Net;
-using System.Text.Json;
+#region Namespaces
+using System.Text;
 using AvivCRM.UI.Areas.Environment.ViewModels;
 using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+#endregion
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
 public class EmployeeController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly JsonSerializerOptions _options;
 
+    #region Constructor
     public EmployeeController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-        _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     }
+    #endregion
 
-
+    #region Retrieves a List of Employees
+    /// <summary>
+    /// Retrieves a list of Employees from the database.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>Modal popup will open to create New Employee</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Employee/Employee
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     public async Task<IActionResult> Employee()
     {
-        // Page Title
-        ViewData["pTitle"] = "Employee Profile";
+        ViewData["pTitle"] = "Employees Profile";
 
         // Breadcrumb
         ViewData["bGParent"] = "Environment";
         ViewData["bParent"] = "Employee";
         ViewData["bChild"] = "Employee View";
-
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        ViewBag.CountryList = countries;
-        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-        ViewBag.DepartmentList = departments;
-        List<EmployeeVM>? businessLocationList = await client.GetFromJsonAsync<List<EmployeeVM>>("Company/GetAll");
-        return View(businessLocationList);
-    }
 
+        ApiResultResponse<List<EmployeeVM>> employeeList = new();
+
+        // fetch all the Employees
+        employeeList =
+                await client.GetFromJsonAsync<ApiResultResponse<List<EmployeeVM>>>("Employee/all-employee");
+
+        return View(employeeList!.Data);
+    }
+    #endregion
+
+    #region Create Employee functionionality
+    /// <summary>
+    /// Show the popup to create a new Employee.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>New Employee</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Employee/Employee
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        EmployeeVM Employee = new();
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-
-        ViewBag.CompanyList = companies;
-        ViewBag.CountryList = countries;
-        ViewBag.DepartmentList = departments;
-        return PartialView("_Create", Employee);
+        EmployeeVM employee = new();
+        return PartialView("_Create", employee);
     }
 
-    private void WriteExtractedError(Stream stream)
-    {
-        Dictionary<string, List<string>>? errorsFromWebAPI = Utility.ExtractErrorsFromWebAPIResponse(stream.ToString());
-
-        foreach (KeyValuePair<string, List<string>> fieldWithErrors in errorsFromWebAPI)
-        {
-            Console.WriteLine($"-{fieldWithErrors.Key}");
-            foreach (string? error in fieldWithErrors.Value)
-            {
-                Console.WriteLine($"  {error}");
-            }
-        }
-    }
-
+    /// <summary>
+    /// New Employee will be create.
+    /// </summary>
+    /// <param name="employee">Employee entity that needs to be create</param>
+    /// <returns>New Employee will be create.</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Employee/Employee
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
-    [ActionName("GetStatesByCountryId")]
-    public async Task<IActionResult> GetStatesByCountryId(string countryId)
+    public async Task<IActionResult> Create(EmployeeVM employee)
     {
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<StateVM>? states = [];
+        ApiResultResponse<EmployeeVM> resultEmployee = new();
 
-        using (HttpResponseMessage? response = await client.GetAsync("State/GetByParentId/?parentId=" + countryId
-                   , HttpCompletionOption.ResponseHeadersRead))
+        if (!ModelState.IsValid)
         {
-            Stream? stream = await response.Content.ReadAsStreamAsync();
-
-            if (response.StatusCode == HttpStatusCode.BadRequest)
+            return Json(new
             {
-                WriteExtractedError(stream);
-            }
-            else
-            {
-                states = await JsonSerializer.DeserializeAsync<List<StateVM>>(stream, _options);
-            }
-
-            return Json(states);
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
-    }
 
-    [HttpPost]
-    [ActionName("GetCitiesByStateId")]
-    public async Task<IActionResult> GetCitiesByStateId(string stateId)
-    {
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CityVM>? cities = [];
-        using (HttpResponseMessage? response = await client.GetAsync("City/GetByParentId/?parentId=" + stateId
-                   , HttpCompletionOption.ResponseHeadersRead))
+        if (employee.Name == null)
         {
-            if (response.IsSuccessStatusCode)
-            {
-                Stream? stream = await response.Content.ReadAsStreamAsync();
-                cities = await JsonSerializer.DeserializeAsync<List<CityVM>>(stream, _options);
-            }
-
-            return Json(cities);
+            employee.Name = "";
         }
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(EmployeeVM Employee)
-    {
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PostAsJsonAsync("Employee/Create", Employee);
-        return RedirectToAction("Employee");
+
+        string? jsonEmployee = JsonConvert.SerializeObject(employee);
+        StringContent? employeeContent = new(jsonEmployee, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseEmployee =
+            await client.PostAsync("Employee/create-employee", employeeContent);
+
+        if (responseEmployee.IsSuccessStatusCode)
+        {
+            string? jsonResponseEmployee = await responseEmployee.Content.ReadAsStringAsync();
+            resultEmployee = JsonConvert.DeserializeObject<ApiResultResponse<EmployeeVM>>(jsonResponseEmployee);
+        }
+        else
+        {
+            string? errorContent = await responseEmployee.Content.ReadAsStringAsync();
+            resultEmployee = new ApiResultResponse<EmployeeVM>
+            {
+                IsSuccess = false,
+                Message = responseEmployee.StatusCode + "ErrorContent: " + errorContent
+            };
+        }
+
+        if (!resultEmployee!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
+    #endregion
+
+    #region Edit Employee functionionality
+    /// <summary>
+    /// Edit the existing Employee.
+    /// </summary>
+    /// <param name="Id">Employee Guid that needs to be edit</param>
+    /// <returns>Popup will be open to edit the employee details</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Employee/Employee
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Edit(int Id)
+    public async Task<IActionResult> Edit(Guid Id)
     {
-        if (Id == 0)
+        if (GuidExtensions.IsNullOrEmpty(Id))
         {
             return View();
         }
 
+        ApiResultResponse<EmployeeVM> employee = new();
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        List<DepartmentVM>? departments = await client.GetFromJsonAsync<List<DepartmentVM>>("Department/GetAll");
-        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        List<StateVM>? states = await client.GetFromJsonAsync<List<StateVM>>("State/GetAll");
-        List<CityVM>? cities = await client.GetFromJsonAsync<List<CityVM>>("City/GetAll");
-        ViewBag.CompanyList = companies;
-        ViewBag.DepartmentList = departments;
-        ViewBag.CountryList = countries;
-        ViewBag.StateList = states;
-        ViewBag.CityList = cities;
-        EmployeeVM? Employee = await client.GetFromJsonAsync<EmployeeVM>("Employee/GetById/?Id=" + Id);
-        return PartialView("_Edit", Employee);
+        employee =
+            await client.GetFromJsonAsync<ApiResultResponse<EmployeeVM>>("Employee/byid-employee/?Id=" + Id);
+
+        if (!employee!.IsSuccess)
+        {
+            return View();
+        }
+
+        return PartialView("_Edit", employee.Data);
     }
 
+    /// <summary>
+    /// Update the existing Employee.
+    /// </summary>
+    /// <param name="employee">Employee entity to update the existing employee</param>
+    /// <returns>Changes will be updated for the existing employee</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Employee/Employee
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Update(EmployeeVM Employee)
+    public async Task<IActionResult> Edit(EmployeeVM employee)
     {
-        if (Employee.Id == 0)
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (employee.Name == null)
+        {
+            employee.Name = "";
+        }
+
+        ApiResultResponse<EmployeeVM> resultEmployee = new();
+
+        if (GuidExtensions.IsNullOrEmpty(employee.Id))
         {
             return View();
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PutAsJsonAsync<EmployeeVM>("Employee/Update/", Employee);
-        return RedirectToAction("Employee");
+        string? jsonEmployee = JsonConvert.SerializeObject(employee);
+        StringContent? employeeContent = new(jsonEmployee, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseEmployee =
+            await client.PutAsync("Employee/update-employee/", employeeContent);
+        if (responseEmployee.IsSuccessStatusCode)
+        {
+            string? jsonResponseEmployee = await responseEmployee.Content.ReadAsStringAsync();
+            resultEmployee = JsonConvert.DeserializeObject<ApiResultResponse<EmployeeVM>>(jsonResponseEmployee);
+        }
+        else
+        {
+            string? errorContent = await responseEmployee.Content.ReadAsStringAsync();
+            resultEmployee = new ApiResultResponse<EmployeeVM>
+            {
+                IsSuccess = false,
+                Message = responseEmployee.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
+        }
+
+        if (!resultEmployee!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
+    #endregion
 
-
+    #region Delete Employee functionionality
+    /// <summary>
+    /// Delete the existing Employee.
+    /// </summary>
+    /// <param name="Id">Employee Guid that needs to be delete</param>
+    /// <returns>Employee will be deleted</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Employee/Employee
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Sivan T
+    /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Delete(int Id)
+    public async Task<IActionResult> Delete(Guid Id)
     {
-        if (Id == 0)
+        if (!ModelState.IsValid)
         {
-            return View();
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
 
+        ApiResultResponse<EmployeeVM> resultEmployee = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.DeleteAsync("Employee/Delete?Id=" + Id);
-        return RedirectToAction("Employee");
+        HttpResponseMessage? responseEmployee = await client.DeleteAsync("Employee/delete-employee?Id=" + Id);
+        if (responseEmployee.IsSuccessStatusCode)
+        {
+            string? jsonResponseEmployee = await responseEmployee.Content.ReadAsStringAsync();
+            resultEmployee = JsonConvert.DeserializeObject<ApiResultResponse<EmployeeVM>>(jsonResponseEmployee);
+        }
+        else
+        {
+            string? errorContent = await responseEmployee.Content.ReadAsStringAsync();
+            resultEmployee = new ApiResultResponse<EmployeeVM>
+            {
+                IsSuccess = false,
+                Message = responseEmployee.StatusCode.ToString()
+            };
+        }
+
+        if (!resultEmployee!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
+    #endregion
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

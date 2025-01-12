@@ -1,16 +1,37 @@
-namespace AvivCRM.UI.Areas.Configuration.ViewModels;
+using System.ComponentModel.DataAnnotations;
+
+namespace AvivCRM.UI.Areas.Configuraton.ViewModels;
 public class ConsumerVM
 {
-    public int Id { get; set; }
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public string? Email { get; set; }
-    public string? Password { get; set; }
-    public int PlanTypeId { get; set; }
-    public string? PlanTypeName { get; set; }
-    public string? PhoneNumber { get; set; }
-    public string? Website { get; set; }
-    public string? Description { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public bool IsActive { get; set; } = true;
+    public Guid Id { get; set; }
+	[Required(ErrorMessage = "Consumer Name should not be empty")]
+    [MaxLength(10, ErrorMessage = "Consumer Name must not exceed 10 characters")]
+    [MinLength(3, ErrorMessage = "Consumer Name should not be less than 3 characters")]
+	public string? Code { get; set; }
+    [Required(ErrorMessage = "Consumer Name should not be empty")]
+    [MaxLength(25, ErrorMessage = "Consumer Name must not exceed 25 characters")]
+    [MinLength(3, ErrorMessage = "Consumer Name should not be less than 3 characters")]
+    public string Name { get; set; } = default!;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
