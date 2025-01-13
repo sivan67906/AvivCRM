@@ -46,9 +46,32 @@ public class TicketAgentVM
     public string? AgentGroup { get; set; }
     public Guid AgentTypeId { get; set; }
     public string? AgentType { get; set; }
-    public bool Status { get; set; }
+    public Guid AgentStatusId { get; set; }
+    public string? AgentStatusName { get; set; }
+
+    public TicketGroupDDSettingVM? TicketGroupDDSetting { get; set; }
+    public TicketTypeDDSettingVM? TicketTypeDDSetting { get; set; }
+    public TicketToggleStatusVM? TicketToggleStatus { get; set; }
 }
 
+public class TicketGroupDDSettingVM
+{
+    public TicketGroupVM? TicketGroup { get; set; }
+    public Guid SelectedId { get; set; }
+    public List<TicketGroupVM>? TicketGroupList { get; set; }
+}
+public class TicketTypeDDSettingVM
+{
+    public TicketTypeVM? TicketType { get; set; }
+    public Guid SelectedId { get; set; }
+    public List<TicketTypeVM>? TicketTypeList { get; set; }
+}
+public class TicketToggleStatusVM
+{
+    public ToggleValueVM? ToggleValue { get; set; }
+    public Guid SelectedId { get; set; }
+    public List<ToggleValueVM>? ToggleValueList { get; set; }
+}
 public class TicketChannelVM
 {
     public Guid Id { get; set; }
