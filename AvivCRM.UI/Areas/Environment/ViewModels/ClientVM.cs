@@ -1,7 +1,7 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
 public class ClientVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? ClientCode { get; set; }
     public string? ClientName { get; set; }
     public string? Email { get; set; }

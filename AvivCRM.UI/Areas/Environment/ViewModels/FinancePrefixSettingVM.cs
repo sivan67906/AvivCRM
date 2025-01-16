@@ -22,7 +22,7 @@ public class FICBPrefixSettingVM
 
 public class FPInvoiceVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Prefix { get; set; }
     public string? Seperator { get; set; }
     public int Digits { get; set; }
@@ -31,7 +31,7 @@ public class FPInvoiceVM
 
 public class FPCreditNoteVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Prefix { get; set; }
     public string? Seperator { get; set; }
     public int Digits { get; set; }
@@ -40,7 +40,7 @@ public class FPCreditNoteVM
 
 public class FPEstimationVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Prefix { get; set; }
     public string? Seperator { get; set; }
     public int Digits { get; set; }
@@ -49,7 +49,7 @@ public class FPEstimationVM
 
 public class FPOrderVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Prefix { get; set; }
     public string? Seperator { get; set; }
     public int Digits { get; set; }

@@ -1,7 +1,7 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
 public class TimesheetSettingVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public int ProjectId { get; set; }
     public string? ProjectName { get; set; }
     public int TaskId { get; set; }

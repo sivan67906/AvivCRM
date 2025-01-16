@@ -65,10 +65,10 @@ public class PlanTypeController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(PlanTypeVM planType)
     {
-        if (planType.Id == 0)
-        {
-            return View();
-        }
+        //if (planType.Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<PlanTypeVM>("PlanType/Update/", planType);

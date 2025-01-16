@@ -48,7 +48,9 @@ public class ContractController : Controller
         contractList =
                 await client.GetFromJsonAsync<ApiResultResponse<List<ContractVM>>>("Contract/all-contract");
 
-        return View(contractList!.Data);
+        //return View(contractList!.Data);
+        ContractVM? PrefixSetting = contractList!.Data!.FirstOrDefault();
+        return View(PrefixSetting);
     }
     #endregion
 
@@ -98,10 +100,10 @@ public class ContractController : Controller
             });
         }
 
-        if (contract.Name == null)
-        {
-            contract.Name = "";
-        }
+        //if (contract.Name == null)
+        //{
+        //    contract.Name = "";
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
@@ -198,10 +200,10 @@ public class ContractController : Controller
             });
         }
 
-        if (contract.Name == null)
-        {
-            contract.Name = "";
-        }
+        //if (contract.Name == null)
+        //{
+        //    contract.Name = "";
+        //}
 
         ApiResultResponse<ContractVM> resultContract = new();
 

@@ -1,7 +1,7 @@
 namespace AvivCRM.UI.Areas.Configuration.ViewModels;
 public class BusinessLocationVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Code { get; set; }
     public string? Name { get; set; }
     public int CompanyId { get; set; }

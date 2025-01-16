@@ -1,239 +1,299 @@
-using System.Net;
-using System.Text.Json;
+using System.Text;
 using AvivCRM.UI.Areas.Environment.ViewModels;
 using AvivCRM.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
-using CityVM = AvivCRM.UI.Areas.Environment.ViewModels.CityVM;
-using CountryVM = AvivCRM.UI.Areas.Environment.ViewModels.CountryVM;
-using StateVM = AvivCRM.UI.Areas.Environment.ViewModels.StateVM;
+using Newtonsoft.Json;
 
 namespace AvivCRM.UI.Areas.Environment.Controllers;
 [Area("Environment")]
 public class ClientController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly JsonSerializerOptions _options;
 
+    #region Constructor
     public ClientController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-        _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     }
+    #endregion
 
-
+    #region Retrieves a List of Clients
+    /// <summary>
+    /// Retrieves a list of Clients from the database.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>Modal popup will open to create New Client</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Client/Client
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Kansheyam
+    /// </remarks>
     public async Task<IActionResult> Client()
     {
-        // Page Title
         ViewData["pTitle"] = "Clients Profile";
 
         // Breadcrumb
         ViewData["bGParent"] = "Environment";
         ViewData["bParent"] = "Client";
         ViewData["bChild"] = "Client View";
-
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        ViewBag.CountryList = countries;
-        List<ClientVM>? businessLocationList = await client.GetFromJsonAsync<List<ClientVM>>("Client/GetAll");
-        return View(businessLocationList);
-    }
 
+        ApiResultResponse<List<ClientVM>> clientList = new();
+
+        // fetch all the Clients
+        clientList =
+                await client.GetFromJsonAsync<ApiResultResponse<List<ClientVM>>>("Client/all-client");
+
+        return View(clientList!.Data);
+    }
+    #endregion
+
+    #region Create Client functionionality
+    /// <summary>
+    /// Show the popup to create a new Client.
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns>New Client</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Client/Client
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Kansheyam
+    /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
-        ClientVM clients = new();
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        ViewBag.CompanyList = companies;
-        ViewBag.CountryList = countries;
-        return PartialView("_Create", clients);
+        ClientVM client = new();
+        return PartialView("_Create", client);
     }
 
-    private void WriteExtractedError(Stream stream)
-    {
-        Dictionary<string, List<string>>? errorsFromWebAPI = Utility.ExtractErrorsFromWebAPIResponse(stream.ToString());
-
-        foreach (KeyValuePair<string, List<string>> fieldWithErrors in errorsFromWebAPI)
-        {
-            Console.WriteLine($"-{fieldWithErrors.Key}");
-            foreach (string? error in fieldWithErrors.Value)
-            {
-                Console.WriteLine($"  {error}");
-            }
-        }
-    }
-
-    [HttpPost]
-    [ActionName("GetStatesByCountryId")]
-    public async Task<IActionResult> GetStatesByCountryId(string countryId)
-    {
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<StateVM>? states = [];
-
-        using (HttpResponseMessage? response = await client.GetAsync("State/GetByParentId/?parentId=" + countryId
-                   , HttpCompletionOption.ResponseHeadersRead))
-        {
-            Stream? stream = await response.Content.ReadAsStreamAsync();
-
-            if (response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                WriteExtractedError(stream);
-            }
-            else
-            {
-                states = await JsonSerializer.DeserializeAsync<List<StateVM>>(stream, _options);
-            }
-
-            return Json(states);
-        }
-    }
-
-    [HttpPost]
-    [ActionName("GetCitiesByStateId")]
-    public async Task<IActionResult> GetCitiesByStateId(string stateId)
-    {
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CityVM>? cities = [];
-        using (HttpResponseMessage? response = await client.GetAsync("City/GetByParentId/?parentId=" + stateId
-                   , HttpCompletionOption.ResponseHeadersRead))
-        {
-            if (response.IsSuccessStatusCode)
-            {
-                Stream? stream = await response.Content.ReadAsStreamAsync();
-                cities = await JsonSerializer.DeserializeAsync<List<CityVM>>(stream, _options);
-            }
-
-            return Json(cities);
-        }
-    }
-
+    /// <summary>
+    /// New Client will be create.
+    /// </summary>
+    /// <param name="client">Client entity that needs to be create</param>
+    /// <returns>New Client will be create.</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Client/Client
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Kansheyam
+    /// </remarks>
     [HttpPost]
     public async Task<IActionResult> Create(ClientVM clients)
     {
+        ApiResultResponse<ClientVM> resultClient = new();
+
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (clients.ClientName == null)
+        {
+            clients.ClientName = "";
+        }
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PostAsJsonAsync("Client/Create", clients);
-        return RedirectToAction("Client");
+
+        string? jsonClient = JsonConvert.SerializeObject(client);
+        StringContent? clientContent = new(jsonClient, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseClient =
+            await client.PostAsync("Client/create-client", clientContent);
+
+        if (responseClient.IsSuccessStatusCode)
+        {
+            string? jsonResponseClient = await responseClient.Content.ReadAsStringAsync();
+            resultClient = JsonConvert.DeserializeObject<ApiResultResponse<ClientVM>>(jsonResponseClient);
+        }
+        else
+        {
+            string? errorContent = await responseClient.Content.ReadAsStringAsync();
+            resultClient = new ApiResultResponse<ClientVM>
+            {
+                IsSuccess = false,
+                Message = responseClient.StatusCode + "ErrorContent: " + errorContent
+            };
+        }
+
+        if (!resultClient!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
 
+    #endregion
+
+    #region Edit Client functionionality
+    /// <summary>
+    /// Edit the existing Client.
+    /// </summary>
+    /// <param name="Id">Client Guid that needs to be edit</param>
+    /// <returns>Popup will be open to edit the client details</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// GET /Environment/Client/Client
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Kansheyam
+    /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Edit(int Id)
+    public async Task<IActionResult> Edit(Guid Id)
     {
-        if (Id == 0)
+        if (GuidExtensions.IsNullOrEmpty(Id))
         {
             return View();
         }
 
+        ApiResultResponse<ClientVM> clients = new();
+
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        List<CompanyVM>? companies = await client.GetFromJsonAsync<List<CompanyVM>>("Company/GetAll");
-        List<CountryVM>? countries = await client.GetFromJsonAsync<List<CountryVM>>("Country/GetAll");
-        List<StateVM>? states = await client.GetFromJsonAsync<List<StateVM>>("State/GetAll");
-        List<CityVM>? cities = await client.GetFromJsonAsync<List<CityVM>>("City/GetAll");
-        ViewBag.CompanyList = companies;
-        ViewBag.CountryList = countries;
-        ViewBag.StateList = states;
-        ViewBag.CityList = cities;
-        ClientVM? clients = await client.GetFromJsonAsync<ClientVM>("Client/GetById/?Id=" + Id);
-        return PartialView("_Edit", clients);
+        clients =
+            await client.GetFromJsonAsync<ApiResultResponse<ClientVM>>("Client/byid-client/?Id=" + Id);
+
+        if (!clients!.IsSuccess)
+        {
+            return View();
+        }
+
+        return PartialView("_Edit", clients.Data);
     }
 
+    /// <summary>
+    /// Update the existing Client.
+    /// </summary>
+    /// <param name="client">Client entity to update the existing client</param>
+    /// <returns>Changes will be updated for the existing client</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Client/Client
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Kansheyam
+    /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Update(ClientVM clients)
+    public async Task<IActionResult> Edit(ClientVM clients)
     {
-        if (clients.Id == 0)
+        if (!ModelState.IsValid)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        if (clients.ClientName == null)
+        {
+            clients.ClientName = "";
+        }
+
+        ApiResultResponse<ClientVM> resultClient = new();
+
+        if (GuidExtensions.IsNullOrEmpty(clients.Id))
         {
             return View();
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.PutAsJsonAsync<ClientVM>("Client/Update/", clients);
-        return RedirectToAction("Client");
+        string? jsonClient = JsonConvert.SerializeObject(client);
+        StringContent? clientContent = new(jsonClient, Encoding.UTF8, "application/json");
+        HttpResponseMessage? responseClient =
+            await client.PutAsync("Client/update-client/", clientContent);
+        if (responseClient.IsSuccessStatusCode)
+        {
+            string? jsonResponseClient = await responseClient.Content.ReadAsStringAsync();
+            resultClient = JsonConvert.DeserializeObject<ApiResultResponse<ClientVM>>(jsonResponseClient);
+        }
+        else
+        {
+            string? errorContent = await responseClient.Content.ReadAsStringAsync();
+            resultClient = new ApiResultResponse<ClientVM>
+            {
+                IsSuccess = false,
+                Message = responseClient.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
+            };
+        }
+
+        if (!resultClient!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
+    #endregion
 
-
+    #region Delete Client functionionality
+    /// <summary>
+    /// Delete the existing Client.
+    /// </summary>
+    /// <param name="Id">Client Guid that needs to be delete</param>
+    /// <returns>Lead source will be deleted</returns>
+    /// <exception cref=""></exception>
+    /// <example>
+    /// POST /Environment/Client/Client
+    /// </example>
+    /// <remarks> 
+    /// Created: 12-Jan-2025 by Kansheyam
+    /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Delete(int Id)
+    public async Task<IActionResult> Delete(Guid Id)
     {
-        if (Id == 0)
+        if (!ModelState.IsValid)
         {
-            return View();
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
         }
 
+        ApiResultResponse<ClientVM> resultClient = new();
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        await client.DeleteAsync("Client/Delete?Id=" + Id);
-        return RedirectToAction("Client");
+        HttpResponseMessage? responseClient = await client.DeleteAsync("Client/delete-client?Id=" + Id);
+        if (responseClient.IsSuccessStatusCode)
+        {
+            string? jsonResponseClient = await responseClient.Content.ReadAsStringAsync();
+            resultClient = JsonConvert.DeserializeObject<ApiResultResponse<ClientVM>>(jsonResponseClient);
+        }
+        else
+        {
+            string? errorContent = await responseClient.Content.ReadAsStringAsync();
+            resultClient = new ApiResultResponse<ClientVM>
+            {
+                IsSuccess = false,
+                Message = responseClient.StatusCode.ToString()
+            };
+        }
+
+        if (!resultClient!.IsSuccess)
+        {
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+        return Json(new { success = true });
     }
-
-
-    //    public async Task<IActionResult> Client(string searchQuery = null)
-    //    {
-    //        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //        //var productList = await client.GetFromJsonAsync<List<ProductVM>>("Product/GetAll");
-
-    //        List<ClientVM> productList;
-
-    //        if (string.IsNullOrEmpty(searchQuery))
-    //        {
-    //            // Fetch all products if no search query is provided
-    //            productList = await client.GetFromJsonAsync<List<ClientVM>>("Client/GetAll");
-    //        }
-    //        else
-    //        {
-    //            // Fetch products matching the search query
-    //            productList = await client.GetFromJsonAsync<List<ClientVM>>($"Client/SearchByName?name={searchQuery}");
-    //        }
-    //        ViewData["searchQuery"] = searchQuery; // Retain search query
-    //        return View(productList);
-    //    }
-
-    //    [HttpGet]
-    //    public async Task<IActionResult> Create()
-    //    {
-    //        ClientVM product = new();
-    //        return PartialView("_Create", product);
-    //    }
-
-    //    [HttpPost]
-    //    public async Task<IActionResult> Create(ClientVM product)
-    //    {
-    //        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //        await client.PostAsJsonAsync<ClientVM>("Client/Create", product);
-    //        return RedirectToAction("Client");
-    //    }
-
-    //    [HttpGet]
-    //    public async Task<IActionResult> Edit(int Id)
-    //    {
-    //        if (Id == 0) return View();
-    //        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //        var product = await client.GetFromJsonAsync<ClientVM>("Client/GetById/?Id=" + Id);
-    //        return PartialView("_Edit", product);
-    //    }
-
-    //    [HttpPost]
-    //    public async Task<IActionResult> Update(ClientVM product)
-    //    {
-    //        if (product.Id == 0) return View();
-    //        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //        await client.PutAsJsonAsync<ClientVM>("Client/Update/", product);
-    //        return RedirectToAction("Client");
-    //    }
-
-    //    [HttpGet]
-    //    public async Task<IActionResult> Delete(int Id)
-    //    {
-    //        if (Id == 0) return View();
-    //        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //        var product = await client.GetFromJsonAsync<ClientVM>("Client/GetById/?Id=" + Id);
-    //        return PartialView("_Delete", product);
-    //    }
-
-    //    [HttpPost]
-    //    public async Task<IActionResult> Delete(ClientVM product)
-    //    {
-    //        if (product.Id == 0) return View();
-    //        var client = _httpClientFactory.CreateClient("ApiGatewayCall");
-    //        var productList = await client.DeleteAsync("Client/Delete?Id=" + product.Id);
-    //        return RedirectToAction("Client");
-    //    }
+    #endregion
 }

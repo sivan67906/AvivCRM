@@ -8,7 +8,7 @@ public class FinanceInvoiceTemplateSettingVM
 
 public class FIRBTemplateSettingVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? ImageURL { get; set; }
     public bool isSelected { get; set; }
 }

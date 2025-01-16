@@ -1,17 +1,16 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
 public class ApplicationVM
 {
     public Guid Id { get; set; }
-	[Required(ErrorMessage = "Application Name should not be empty")]
-    [MaxLength(10, ErrorMessage = "Application Name must not exceed 10 characters")]
-    [MinLength(3, ErrorMessage = "Application Name should not be less than 3 characters")]
-	public string? Code { get; set; }
-    [Required(ErrorMessage = "Application Name should not be empty")]
-    [MaxLength(25, ErrorMessage = "Application Name must not exceed 25 characters")]
-    [MinLength(3, ErrorMessage = "Application Name should not be less than 3 characters")]
-    public string Name { get; set; } = default!;
+    public string? DateFormat { get; set; }
+    public string? TimeFormat { get; set; }
+    public string? DefaultTimezone { get; set; }
+    public Guid CurrencyId { get; set; }
+    public string? CurrencySymbol { get; set; }
+    public string? CurrencyCode { get; set; }
+    public string? Language { get; set; }
+    public string? DatatableRowLimit { get; set; }
+    public bool EmployeeCanExportData { get; set; }
 }
 
 

@@ -15,7 +15,7 @@ public class CBPurchasePrefixVM
 
 public class PPurchaseVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Prefix { get; set; }
     public string? Seperator { get; set; }
     public int Digits { get; set; }
@@ -24,7 +24,7 @@ public class PPurchaseVM
 
 public class PBillOrderVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Prefix { get; set; }
     public string? Seperator { get; set; }
     public int Digits { get; set; }
@@ -33,7 +33,7 @@ public class PBillOrderVM
 
 public class PVendorCreditVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Prefix { get; set; }
     public string? Seperator { get; set; }
     public int Digits { get; set; }

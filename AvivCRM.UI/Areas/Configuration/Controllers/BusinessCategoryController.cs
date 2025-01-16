@@ -57,12 +57,12 @@ public class BusinessCategoryController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(int Id)
+    public async Task<IActionResult> Edit(Guid Id)
     {
-        if (Id == 0)
-        {
-            return View();
-        }
+        //if (Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         List<BusinessTypeVM>? businessTypeList =
@@ -76,10 +76,10 @@ public class BusinessCategoryController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(BusinessCategoryVM businessCategory)
     {
-        if (businessCategory.Id == 0)
-        {
-            return View();
-        }
+        //if (businessCategory.Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<BusinessCategoryVM>("BusinessCategory/Update/", businessCategory);
