@@ -6,20 +6,41 @@
 	</div>
 	<div class="modal-body">
 		<form id="editFormTicketAgent" data-url="Edit" asp-action="Edit" method="post">
-			<input type="hidden" asp-for="@Model.Id"/>
-			<div class="row mt-3">
-				<div class="col-lg-12">Source <span class="text-danger">*</span></div>
+			<input type="hidden" asp-for="@Model.Id" />
+			<div class="row mt-3 mb-2">
+				<div class="col-lg-6">Name</div>
+				<div class="col-lg-6">Group <span class="text-danger">*</span></div>
 			</div>
-			<div class="row">
-				<div class="col-lg-12">
-					<input asp-for="@Model.Name" class="form-control"/>
-					@* <span asp-validation-for="Name" class="text-danger"></span> *@
+			<div class="row mb-2">
+				<div class="col-lg-6">
+					<input asp-for="@Model.Name" class="form-control" />
+				</div>
+				<div class="col-lg-6">
+					<select class="form-select" name="AgentGroupId" asp-for="@Model.AgentGroupId" asp-items="@(new SelectList(Model.TicketGroupDDSetting!.TicketGroupList, "Id", "Name"))">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+			<div class="row mt-3 mb-2">
+				<div class="col-lg-6">Type</div>
+				<div class="col-lg-6">Status</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-lg-6">
+					<select class="form-select" name="AgentTypeId" asp-for="@Model.AgentTypeId" asp-items="@(new SelectList(Model.TicketTypeDDSetting!.TicketTypeList, "Id", "Name"))">
+						<option value="">--</option>
+					</select>
+				</div>
+				<div class="col-lg-6">
+					<select class="form-select" name="AgentStatusId" asp-for="@Model.AgentStatusId" asp-items="@(new SelectList(Model.TicketToggleStatus!.ToggleValueList, "Id", "Name"))">
+						<option value="">--</option>
+					</select>
 				</div>
 			</div>
 			<div class="row mt-4 text-end ">
 				<div class="col-lg-12 ">
 					<button type="button" class="btn btn-sm btn-de-danger me-2" data-bs-dismiss="modal"><i class="mdi mdi-window-close me-2"></i>Close</button>
-					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Update</button>
+					<button type="submit" class="btn btn-sm btn-de-primary" data-save="modal"><i class="mdi mdi-check-all me-2"></i>Create</button>
 				</div>
 			</div>
 		</form>

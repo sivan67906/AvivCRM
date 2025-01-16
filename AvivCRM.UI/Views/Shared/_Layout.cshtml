@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Office Management System</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Office Management System by Aviv Solutions Inc" name="description" />
+    <meta content="Firstlin s Joseph" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App css -->
+    <link href="~/matrica/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/matrica/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/matrica/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+	<link href="~/matrica/assets/css/app-custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/matrica/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+    
+    @if (IsSectionDefined("Styles"))
+    {
+        @await RenderSectionAsync("Styles", required: true)
+    }
+    else
+    {
+        @await RenderSectionAsync("Styles", required: false)
+    }
+</head>
+
+<body id="body" class="auth-page" style="background-image: url('~/matrica/assets/images/p-1.png'); background-size: cover; background-position: center center;">
+    <!-- Log In page -->
+    <div class="container-md">
+        <div class="row vh-100 d-flex justify-content-center">
+            <div class="col-12 align-self-center">
+                <div class="card-body">
+                    <div class="row">
+                                @RenderBody()
+                    </div><!--end row-->
+                </div><!--end card-body-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+    <!-- vendor js -->
+    @* <footer class="footer text-center text-sm-start">
+        Office Management System &copy;
+        <script>
+            document.write(new Date().getFullYear())
+        </script>
+        Urben Techies <span class="d-none d-sm-inline-block float-end"> Crafted with <i class="mdi mdi-heart text-danger"></i> by Aviv Solutions Inc </span>
+    </footer><!-- End Footer --> *@
+    <!-- Javascript  -->
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <script src="~/matrica/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/matrica/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/matrica/assets/libs/feather-icons/feather.min.js"></script>
+    <!-- App js -->
+    <script src="~/matrica/assets/js/app.js"></script>
+    <script src="~/matrica/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/matrica/assets/js/pages/sweet-alert.init.js"></script>
+    @if (IsSectionDefined("Scripts"))
+    {
+        @await RenderSectionAsync("Scripts", required: true)
+    }
+    else
+    {
+        @await RenderSectionAsync("Scripts", required: false)
+    }
+</body>
+
+</html>

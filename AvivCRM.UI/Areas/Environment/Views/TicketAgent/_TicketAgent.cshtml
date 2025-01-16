@@ -1,4 +1,4 @@
-@model IEnumerable<AvivCRM.UI.Areas.Environment.ViewModels.TicketAgentVM>
+@model List<AvivCRM.UI.Areas.Environment.ViewModels.TicketAgentVM>
 
 <div class="modal fade" Id="mdlTicketAgentShow">
 	<div class="modal-dialog" Id="PlaceHolderHere">
@@ -30,8 +30,11 @@
 						<table class="table mb-0">
 							<thead class="thead-light">
 							<tr>
-								<th class="d-none">@Html.DisplayNameFor(m => m.Id)</th>
-								<th>Name</th>
+									<th>#</th>
+									<th>Name</th>
+									<th>Group</th>
+									<th>Type</th>
+									<th>Status</th>
 								<th>Action</th>
 							</tr>
 							</thead>
@@ -42,18 +45,21 @@
 								}
 								else
 								{
-								@foreach (var item in Model)
+									@for (var i = 0; i < Model.Count(); i++)
 								{
 									<tr>
-										<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
-										<td>@item.Name</td>
+											<td>@(i + 1)</td>
+											<td>@Model[i].Name</td>
+											<td>@Model[i].AgentGroup</td>
+											<td>@Model[i].AgentType</td>
+											<td>@Model[i].AgentStatusName</td>
 										<td>
 											<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
-											        data-target="#mdlTicketAgentShow" data-url="@Url.Action($"Edit/{item.Id}")">
+														data-target="#mdlTicketAgentShow" data-url="@Url.Action($"Edit/{@Model[i].Id}")">
 												<i class="las la-pen text-secondary font-16"></i>
 											</button>
 											<a id="deleteLS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
-											   data-url="@Url.Action($"Delete/{item.Id}")">
+												   data-url="@Url.Action($"Delete/{@Model[i].Id}")">
 												<i class="las la-trash-alt text-secondary font-16"></i>
 											</a>
 										</td>

@@ -32,24 +32,105 @@ public class TicketAgentController : Controller
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        ApiResultResponse<List<TicketAgentVM>>? ticketAgents =
+        ApiResultResponse<List<TicketAgentVM>>? ticketAgentList =
             await client.GetFromJsonAsync<ApiResultResponse<List<TicketAgentVM>>>("TicketAgent/all-ticketagent");
+        List<TicketAgentVM> ticketAgents = ticketAgentList!.Data!;
 
-        return PartialView("_TicketAgent", ticketAgents!.Data!);
+        ApiResultResponse<List<TicketGroupVM>>? ticketGroupList = await client.GetFromJsonAsync<ApiResultResponse<List<TicketGroupVM>>>("TicketGroup/all-ticketgroup");
+        List<TicketGroupVM> ticketGroups = ticketGroupList!.Data!;
+
+        ApiResultResponse<List<TicketTypeVM>>? ticketTypeList = await client.GetFromJsonAsync<ApiResultResponse<List<TicketTypeVM>>>("TicketType/all-tickettype");
+        List<TicketTypeVM> ticketTypes = ticketTypeList!.Data!;
+
+        ApiResultResponse<List<ToggleValueVM>>? toggleList = await client.GetFromJsonAsync<ApiResultResponse<List<ToggleValueVM>>>("ToggleValue/all-togglevalue");
+        List<ToggleValueVM> toggles = toggleList!.Data!;
+
+        foreach (TicketGroupVM parent in ticketGroups)
+        {
+            foreach (TicketAgentVM? child in ticketAgents.Where(c => c.AgentGroupId == parent.Id))
+            {
+                child.AgentGroup = parent.Name;
+            }
+        }
+        foreach (TicketTypeVM parent in ticketTypes)
+        {
+            foreach (TicketAgentVM? child in ticketAgents.Where(c => c.AgentTypeId == parent.Id))
+            {
+                child.AgentType = parent.Name;
+            }
+        }
+        foreach (ToggleValueVM parent in toggles)
+        {
+            foreach (TicketAgentVM? child in ticketAgents.Where(c => c.AgentStatusId == parent.Id))
+            {
+                if (parent.Name == "Yes")
+                {
+                    child.AgentStatusName = "Enabled";
+                }
+                else
+                {
+                    child.AgentStatusName = "Disabled";
+                }
+            }
+        }
+
+        return PartialView("_TicketAgent", ticketAgents);
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+
         TicketAgentVM ticketAgent = new();
+
+        ApiResultResponse<List<TicketGroupVM>>? ticketGroupList = await client.GetFromJsonAsync<ApiResultResponse<List<TicketGroupVM>>>("TicketGroup/all-ticketgroup");
+        List<TicketGroupVM> ticketGroups = ticketGroupList!.Data!;
+
+        ApiResultResponse<List<TicketTypeVM>>? ticketTypeList = await client.GetFromJsonAsync<ApiResultResponse<List<TicketTypeVM>>>("TicketType/all-tickettype");
+        List<TicketTypeVM> ticketTypes = ticketTypeList!.Data!;
+
+        ApiResultResponse<List<ToggleValueVM>>? toggleList = await client.GetFromJsonAsync<ApiResultResponse<List<ToggleValueVM>>>("ToggleValue/all-togglevalue");
+        List<ToggleValueVM> toggles = toggleList!.Data!;
+
+        foreach (ToggleValueVM parent in toggles)
+        {
+            if (parent.Name == "Yes") { parent.Name = "Enable"; }
+            else
+            {
+                parent.Name = "Disable";
+            }
+        }
+
+        ticketAgent.TicketGroupDDSetting = new();
+        ticketAgent.TicketTypeDDSetting = new();
+        ticketAgent.TicketToggleStatus = new();
+
+        ticketAgent.TicketGroupDDSetting!.TicketGroupList = new List<TicketGroupVM>(ticketGroups);
+        ticketAgent.TicketTypeDDSetting!.TicketTypeList = new List<TicketTypeVM>(ticketTypes);
+        ticketAgent.TicketToggleStatus!.ToggleValueList = new List<ToggleValueVM>(toggles);
+
         return PartialView("_Create", ticketAgent);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(TicketAgentVM ticketAgent)
     {
-        ApiResultResponse<TicketAgentVM> source = new();
-
+        if (GuidExtensions.IsNullOrEmpty(ticketAgent.AgentGroupId))
+        {
+            ModelState.Remove(nameof(ticketAgent.AgentGroupId));
+            ModelState.AddModelError("AgentGroupId", "Please select a Group");
+        }
+        if (GuidExtensions.IsNullOrEmpty(ticketAgent.AgentTypeId))
+        {
+            ModelState.Remove(nameof(ticketAgent.AgentTypeId));
+            ModelState.AddModelError("AgentTypeId", "Please select a Type");
+        }
+        if (GuidExtensions.IsNullOrEmpty(ticketAgent.AgentStatusId))
+        {
+            ModelState.Remove(nameof(ticketAgent.AgentStatusId));
+            ModelState.AddModelError("AgentStatusId", "Please select a Status");
+        }
         if (!ModelState.IsValid)
         {
             return Json(new
@@ -59,10 +140,7 @@ public class TicketAgentController : Controller
             });
         }
 
-        if (ticketAgent.Name == null)
-        {
-            ticketAgent.Name = "";
-        }
+        ApiResultResponse<TicketAgentVM> source = new();
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
@@ -86,15 +164,6 @@ public class TicketAgentController : Controller
             };
         }
 
-        //ViewBag.ApiResult = source!.Data;
-        //ViewBag.ApiMessage = source!.Message;
-        //ViewBag.ApiStatus = source.IsSuccess;
-
-        //Server side Validation
-        //List<string> serverErrorMessageList = new List<string>();
-        //string serverErrorMessage = source!.Message!;
-        //serverErrorMessageList.Add(serverErrorMessage);
-
         if (!source!.IsSuccess)
         {
             return Json(new
@@ -115,27 +184,73 @@ public class TicketAgentController : Controller
             return View();
         }
 
-        ApiResultResponse<TicketAgentVM> ticketAgent = new();
+        ApiResultResponse<TicketAgentVM>? ticketAgentResponse = new();
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        ticketAgent =
-            await client.GetFromJsonAsync<ApiResultResponse<TicketAgentVM>>("TicketAgent/byid-ticketagent/?Id=" + Id);
+        ticketAgentResponse = await client.GetFromJsonAsync<ApiResultResponse<TicketAgentVM>>("TicketAgent/byid-ticketagent/?Id=" + Id);
+        TicketAgentVM ticketAgent = ticketAgentResponse!.Data!;
 
-        //ViewBag.ApiResult = ticketAgent!.Data;
-        //ViewBag.ApiMessage = ticketAgent!.Message;
-        //ViewBag.ApiStatus = ticketAgent.IsSuccess;
+        ApiResultResponse<List<TicketGroupVM>>? ticketGroupList = await client.GetFromJsonAsync<ApiResultResponse<List<TicketGroupVM>>>("TicketGroup/all-ticketgroup");
+        List<TicketGroupVM> ticketGroups = ticketGroupList!.Data!;
 
-        if (!ticketAgent!.IsSuccess)
+        ApiResultResponse<List<TicketTypeVM>>? ticketTypeList = await client.GetFromJsonAsync<ApiResultResponse<List<TicketTypeVM>>>("TicketType/all-tickettype");
+        List<TicketTypeVM> ticketTypes = ticketTypeList!.Data!;
+
+        ApiResultResponse<List<ToggleValueVM>>? toggleList = await client.GetFromJsonAsync<ApiResultResponse<List<ToggleValueVM>>>("ToggleValue/all-togglevalue");
+        List<ToggleValueVM> toggles = toggleList!.Data!;
+        foreach (ToggleValueVM parent in toggles)
         {
-            return View();
+            if (parent.Name == "Yes") { parent.Name = "Enable"; }
+            else
+            {
+                parent.Name = "Disable";
+            }
         }
 
-        return PartialView("_Edit", ticketAgent.Data);
+        TicketGroupDDSettingVM ticketGroupDDSetting = new()
+        {
+            TicketGroup = null,
+            SelectedId = ticketAgent.AgentGroupId,
+            TicketGroupList = ticketGroups
+        };
+
+        TicketTypeDDSettingVM ticketTypeDDSetting = new()
+        {
+            TicketType = null,
+            SelectedId = ticketAgent.AgentTypeId,
+            TicketTypeList = ticketTypes
+        };
+        TicketToggleStatusVM ticketToggleStatus = new()
+        {
+            ToggleValue = null,
+            SelectedId = ticketAgent.Id,
+            ToggleValueList = toggles
+        };
+        ticketAgent.TicketGroupDDSetting = ticketGroupDDSetting;
+        ticketAgent.TicketTypeDDSetting = ticketTypeDDSetting;
+        ticketAgent.TicketToggleStatus = ticketToggleStatus;
+
+        return PartialView("_Edit", ticketAgent);
     }
 
     [HttpPost]
     public async Task<IActionResult> Edit(TicketAgentVM ticketAgent)
     {
+        if (GuidExtensions.IsNullOrEmpty(ticketAgent.AgentGroupId))
+        {
+            ModelState.Remove(nameof(ticketAgent.AgentGroupId));
+            ModelState.AddModelError("AgentGroupId", "Please select a Group");
+        }
+        if (GuidExtensions.IsNullOrEmpty(ticketAgent.AgentTypeId))
+        {
+            ModelState.Remove(nameof(ticketAgent.AgentTypeId));
+            ModelState.AddModelError("AgentTypeId", "Please select a Type");
+        }
+        if (GuidExtensions.IsNullOrEmpty(ticketAgent.AgentStatusId))
+        {
+            ModelState.Remove(nameof(ticketAgent.AgentStatusId));
+            ModelState.AddModelError("AgentStatusId", "Please select a Status");
+        }
         if (!ModelState.IsValid)
         {
             return Json(new
@@ -143,11 +258,6 @@ public class TicketAgentController : Controller
                 success = false,
                 errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
-        }
-
-        if (ticketAgent.Name == null)
-        {
-            ticketAgent.Name = "";
         }
 
         ApiResultResponse<TicketAgentVM> source = new();
@@ -177,15 +287,6 @@ public class TicketAgentController : Controller
                     responseTicketAgent.StatusCode.ToString() //$"Error: {response.StatusCode}. {errorContent}" }; 
             };
         }
-
-        //ViewBag.ApiResult = source!.Data;
-        //ViewBag.ApiMessage = source!.Message;
-        //ViewBag.ApiStatus = source.IsSuccess;
-
-        //Server side Validation
-        //List<string> serverErrorMessageList = new List<string>();
-        //string serverErrorMessage = source!.Message!;
-        //serverErrorMessageList.Add(serverErrorMessage);
 
         if (!source!.IsSuccess)
         {
@@ -229,15 +330,6 @@ public class TicketAgentController : Controller
                 Message = responseTicketAgent.StatusCode.ToString()
             };
         }
-
-        //ViewBag.ApiResult = source!.Data;
-        //ViewBag.ApiMessage = source!.Message;
-        //ViewBag.ApiStatus = source.IsSuccess;
-
-        //Server side Validation
-        //List<string> serverErrorMessageList = new List<string>();
-        //string serverErrorMessage = source!.Message!;
-        //serverErrorMessageList.Add(serverErrorMessage);
 
         if (!source!.IsSuccess)
         {
