@@ -1,33 +1,33 @@
 @model AvivCRM.UI.Areas.Environment.ViewModels.ProjectVM
-<div class="row">
+@* <div class="row">
 	<div class="col-12 col-lg-10 mx-auto">
-		<div class="card">
+		<div class="card" id="tapPanehider">
 			<div class="card-body">
 				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist">
+				<ul class="nav nav-tabs" role="tablist" id="ulTicketContainer">
 					<li class="nav-item">
-						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" href="#tbProjectSettings" role="tab">Project Settings</a>
+						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" name="ProjectSettings" href="#tbProjectSettings" role="tab">Project Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbProjSettingsStatus" role="tab">Project Status Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" name="ProjSettingsStatus" href="#tbProjSettingsStatus" role="tab">Project Status Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbProjCategory" role="tab">Category</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" name="ProjCategory" href="#tbProjCategory" role="tab">Category</a>
 					</li>
 				</ul>
 			</div><!--end card-body-->
 			<div class="card-body pt-0">
 				<!-- Tab panes -->
 				<div class="tab-content">
-					<div class="tab-pane active show" id="tbProjectSettings" role="tabpanel">
+					<div class="tab-pane active show" id="ProjectSettings" role="tabpanel">
 						@await Component.InvokeAsync("ProjectSetting", new { projectSetting = Model.ProjectSetting })
 					</div>
 
-					<div class="tab-pane" id="tbProjSettingsStatus" role="tabpanel">
+					<div class="tab-pane" id="ProjSettingsStatus" role="tabpanel">
 						@await Component.InvokeAsync("ProjectStatuses", new { projectStatuses = Model.ProjectStatuses })
 					</div>
 
-					<div class="tab-pane" id="tbProjCategory" role="tabpanel">
+					<div class="tab-pane" id="ProjCategory" role="tabpanel">
 						@await Component.InvokeAsync("ProjectCategories", new { projectCategories = Model.ProjectCategories })
 					</div>
 				</div>
@@ -63,4 +63,69 @@
 		});
 	</script>
 
+} *@
+
+
+@section Styles {
+	@* <link href="~/matrica/assets/libs/dropify/css/dropify.css" rel="stylesheet" type="text/css" /> *@
+	@* <link href="~/matrica/assets/libs/huebee/huebee.min.css" rel="stylesheet" type="text/css" /> *@
 }
+@section Scripts {
+	@* <script src="~/matrica/assets/libs/huebee/huebee.pkgd.min.js"></script> *@
+	@* <script>
+		$(document).ready(function () {
+
+			var activeTabId = $("#ulTicketContainer").find(".nav-link.active").attr('name');
+			$('#' + activeTabId).tab('show'); // Ensure the default tab is shown
+			var tabId = "#" + activeTabId;
+			var url = $('#ulTicketContainer').find('a[name="' + activeTabId + '"]').data('url');
+			history.pushState(null, '', '?tab=' + activeTabId);
+			$(tabId).load(url);
+
+		$('#ulTicketContainer a').on('click', function (e) {
+				e.preventDefault();
+				// Clear the content of all tab panes
+				$(this).parents('#tapPanehider').find('.tab-pane').empty();
+				var anchorName = $(this).attr('name');
+				history.pushState(null, '', '?tab=' + anchorName);
+
+				// Load content for the selected tab
+				var tabId = $(this).attr('name');
+				var url = $(this).data('url');
+				$("#"+ tabId).load(url);
+			});
+
+		});
+	</script> *@
+}
+<div class="row">
+	<div class="col-12 col-lg-10 mx-auto">
+		<div class="card" id="tapPanehider">
+			<div class="card-body">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist" id="ulTicketContainer">
+					<li class="nav-item">
+						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" name="ProjectSetting" data-url="@Url.Action("ProjectSetting", "ProjectSetting")" role="tab">Project Settings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" name="ProjectStatus" data-url="@Url.Action("ProjectStatus", "ProjectStatus")" role="tab">Project Status Settings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" name="ProjectCategory" data-url="@Url.Action("ProjectCategory", "ProjectCategory")" role="tab">Category</a>
+					</li>
+				</ul>
+			</div><!--end card-body-->
+			<div class="card-body pt-0">
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active show" id="ProjectSetting" role="tabpanel">
+					</div>
+					<div class="tab-pane" id="ProjectStatus" role="tabpanel">
+					</div>
+					<div class="tab-pane" id="ProjectCategory" role="tabpanel">
+					</div>
+				</div>
+			</div><!--end card-body-->
+		</div><!--end card-->
+	</div>
+</div>

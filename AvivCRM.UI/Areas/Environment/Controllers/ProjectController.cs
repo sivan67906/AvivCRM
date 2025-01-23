@@ -30,53 +30,53 @@ public class ProjectController : Controller
         ViewData["bParent"] = "Project";
         ViewData["bChild"] = "Project";
 
-        HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
+        //HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
-        ProjectSettingVM projectSetting = new();
-        List<ProjectSettingVM> projectSettingList = [];
-        List<ProjectStatusVM> projectStatusSettingList = [];
-        List<ProjectCategoryVM> projectCategoriesList = [];
+        //ProjectSettingVM projectSetting = new();
+        //List<ProjectSettingVM> projectSettingList = [];
+        //List<ProjectStatusVM> projectStatusSettingList = [];
+        //List<ProjectCategoryVM> projectCategoriesList = [];
 
-        // Get Project Setting List
-        ApiResultResponse<List<ProjectReminderPersonVM>>? projectReminderPersonSettings =
-            await client.GetFromJsonAsync<ApiResultResponse<List<ProjectReminderPersonVM>>>(
-                "ProjectReminderPerson/all-projectreminderperson");
-        ApiResultResponse<List<ProjectSettingVM>>? projectSettings =
-            await client.GetFromJsonAsync<ApiResultResponse<List<ProjectSettingVM>>>(
-                "ProjectSetting/all-projectsetting");
-        if (projectSettings!.Data!.Count() > 0)
-        {
-            projectSettingList = projectSettings!.Data!;
-            projectSetting = projectSettingList.FirstOrDefault();
-        }
+        //// Get Project Setting List
+        //ApiResultResponse<List<ProjectReminderPersonVM>>? projectReminderPersonSettings =
+        //    await client.GetFromJsonAsync<ApiResultResponse<List<ProjectReminderPersonVM>>>(
+        //        "ProjectReminderPerson/all-projectreminderperson");
+        //ApiResultResponse<List<ProjectSettingVM>>? projectSettings =
+        //    await client.GetFromJsonAsync<ApiResultResponse<List<ProjectSettingVM>>>(
+        //        "ProjectSetting/all-projectsetting");
+        //if (projectSettings!.Data!.Count() > 0)
+        //{
+        //    projectSettingList = projectSettings!.Data!;
+        //    projectSetting = projectSettingList.FirstOrDefault();
+        //}
 
-        projectSetting!.projectReminderPersons = projectReminderPersonSettings!.Data;
+        //projectSetting!.projectReminderPersons = projectReminderPersonSettings!.Data;
 
-        // Get Project Status List
-        ApiResultResponse<List<ProjectStatusVM>>? projectStatusSettings =
-            await client.GetFromJsonAsync<ApiResultResponse<List<ProjectStatusVM>>>("ProjectStatus/all-projectstatus");
-        if (projectStatusSettings!.Data!.Count() > 0)
-        {
-            projectStatusSettingList = projectStatusSettings!.Data!;
-        }
+        //// Get Project Status List
+        //ApiResultResponse<List<ProjectStatusVM>>? projectStatusSettings =
+        //    await client.GetFromJsonAsync<ApiResultResponse<List<ProjectStatusVM>>>("ProjectStatus/all-projectstatus");
+        //if (projectStatusSettings!.Data!.Count() > 0)
+        //{
+        //    projectStatusSettingList = projectStatusSettings!.Data!;
+        //}
 
-        // Get Project Category List
-        ApiResultResponse<List<ProjectCategoryVM>>? projectCategories =
-            await client.GetFromJsonAsync<ApiResultResponse<List<ProjectCategoryVM>>>(
-                "ProjectCategory/all-projectcategory");
-        if (projectCategories!.Data!.Count() > 0)
-        {
-            projectCategoriesList = projectCategories!.Data!;
-        }
+        //// Get Project Category List
+        //ApiResultResponse<List<ProjectCategoryVM>>? projectCategories =
+        //    await client.GetFromJsonAsync<ApiResultResponse<List<ProjectCategoryVM>>>(
+        //        "ProjectCategory/all-projectcategory");
+        //if (projectCategories!.Data!.Count() > 0)
+        //{
+        //    projectCategoriesList = projectCategories!.Data!;
+        //}
 
-        // fill ProjectViewModel
-        ProjectVM? vmProject = new()
-        {
-            ProjectSetting = projectSetting,
-            ProjectStatuses = projectStatusSettingList,
-            ProjectCategories = projectCategoriesList
-        };
-        return View(vmProject);
+        //// fill ProjectViewModel
+        //ProjectVM? vmProject = new()
+        //{
+        //    ProjectSetting = projectSetting,
+        //    ProjectStatuses = projectStatusSettingList,
+        //    ProjectCategories = projectCategoriesList
+        //};
+        return View();
     }
 
     // Project Setting

@@ -117,3 +117,6 @@
     text-decoration: underline;
     cursor: pointer;
 }
+#tapPanehider a{
+    cursor: pointer !important;
+}

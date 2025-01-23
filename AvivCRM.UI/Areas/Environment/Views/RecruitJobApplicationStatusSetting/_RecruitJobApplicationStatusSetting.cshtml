@@ -76,7 +76,7 @@
 <script type="text/javascript">
 		$(document).ready(function() {
 
-		  let hash = document.location.hash;
+		  @* let hash = document.location.hash;
 		  let prefix = "";
 
 		  //change hash url on page reload
@@ -87,7 +87,7 @@
 		  // change hash url on switch tab
 		  $('.nav-tabs a').on('shown.bs.tab', function (e) {
 			 window.location.hash = e.target.hash.replace("#", "#" + prefix);
-		  });
+		  }); *@
 
 		  // Popup Close on Outside Click disable
 		 $('.modal').modal({backdrop: 'static', keyboard: false});

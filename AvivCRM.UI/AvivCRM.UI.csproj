@@ -8,15 +8,19 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Configuration\Views\Role\**" />
+    <Compile Remove="Areas\Environment\ViewComponents\Components\Project\**" />
     <Compile Remove="Areas\Environment\Views\LeadSource1\**" />
     <Compile Remove="Areas\Environment\Views\LeadSources\**" />
     <Content Remove="Areas\Configuration\Views\Role\**" />
+    <Content Remove="Areas\Environment\ViewComponents\Components\Project\**" />
     <Content Remove="Areas\Environment\Views\LeadSource1\**" />
     <Content Remove="Areas\Environment\Views\LeadSources\**" />
     <EmbeddedResource Remove="Areas\Configuration\Views\Role\**" />
+    <EmbeddedResource Remove="Areas\Environment\ViewComponents\Components\Project\**" />
     <EmbeddedResource Remove="Areas\Environment\Views\LeadSource1\**" />
     <EmbeddedResource Remove="Areas\Environment\Views\LeadSources\**" />
     <None Remove="Areas\Configuration\Views\Role\**" />
+    <None Remove="Areas\Environment\ViewComponents\Components\Project\**" />
     <None Remove="Areas\Environment\Views\LeadSource1\**" />
     <None Remove="Areas\Environment\Views\LeadSources\**" />
   </ItemGroup>
@@ -36,6 +40,7 @@
     <Folder Include="Areas\Configuration\Models\" />
     <Folder Include="Areas\Environment\Data\" />
     <Folder Include="Areas\Environment\Models\" />
+    <Folder Include="Areas\Environment\Views\ProjectSetting\" />
     <Folder Include="Areas\Environment\Views\Shared\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\matrica\assets\libs\chart.js\docs\" />

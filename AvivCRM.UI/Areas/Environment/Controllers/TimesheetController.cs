@@ -31,6 +31,39 @@ public class TimesheetController : Controller
 
         List<TimesheetSettingVM>? timesheetSettings =
             await client.GetFromJsonAsync<List<TimesheetSettingVM>>("TimesheetSetting/GetAll");
+
+        ApiResultResponse<List<ProjectVM>>? projectList = await client.GetFromJsonAsync<ApiResultResponse<List<ProjectVM>>>("Project/all-project");
+        List<ProjectVM> projects = projectList!.Data!;
+
+        ApiResultResponse<List<TaskingVM>>? taskingList = await client.GetFromJsonAsync<ApiResultResponse<List<Tasking>>>("Tasking/all-tasking");
+        List<TaskingVM> taskings = taskingList!.Data!;
+
+        ApiResultResponse<List<EmployeeVM>>? employeeList = await client.GetFromJsonAsync<ApiResultResponse<List<EmployeeVM>>>("Employee/all-employee");
+        List<EmployeeVM> employees = employeeList!.Data!;
+
+
+        foreach (ProjectVM parent in projects)
+        {
+            foreach (TimesheetSettingVM? child in timesheetSettings!.Where(c => c.ProjectId == parent.Id))
+            {
+                child.ProjectName = parent.ProjectName;
+            }
+        }
+        foreach (TaskingVM parent in taskings)
+        {
+            foreach (TimesheetSettingVM? child in timesheetSettings!.Where(c => c.TaskId == parent.Id))
+            {
+                child.TaskName = parent.TaskName;
+            }
+        }
+        foreach (EmployeeVM parent in employees)
+        {
+            foreach (TimesheetSettingVM? child in timesheetSettings!.Where(c => c.EmployeeId == parent.Id))
+            {
+                child.EmployeeName = parent.EmployeeName;
+            }
+        }
+
         return View(timesheetSettings);
     }
 

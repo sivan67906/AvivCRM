@@ -66,7 +66,7 @@ public class EmployeeController : Controller
     /// Created: 12-Jan-2025 by Sivan T
     /// </remarks>
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         EmployeeVM employee = new();
         return PartialView("_Create", employee);
@@ -98,10 +98,6 @@ public class EmployeeController : Controller
             });
         }
 
-        if (employee.Name == null)
-        {
-            employee.Name = "";
-        }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
@@ -196,11 +192,6 @@ public class EmployeeController : Controller
                 success = false,
                 errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
             });
-        }
-
-        if (employee.Name == null)
-        {
-            employee.Name = "";
         }
 
         ApiResultResponse<EmployeeVM> resultEmployee = new();

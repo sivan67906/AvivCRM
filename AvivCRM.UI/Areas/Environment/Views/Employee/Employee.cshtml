@@ -42,8 +42,8 @@
 								<tr>
 
 									<td class="d-none">@Html.DisplayFor(modelItem => item.Id)</td>
-										<td>@item.Code</td>
-										<td>@item.Name</td>
+										<td>@item.EmployeeCode</td>
+										<td>@item.EmployeeName</td>
 									<td>
 										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
 										        data-target="#mdlEmployeeShow" data-url="@Url.Action($"Edit/{item.Id}")">

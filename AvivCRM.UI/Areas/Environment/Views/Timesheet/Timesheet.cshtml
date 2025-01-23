@@ -1,7 +1,10 @@
 @model List<AvivCRM.UI.Areas.Environment.ViewModels.TimesheetSettingVM>
 
-<div id="PlaceHolderHere">
+<div class="modal fade" Id="mdlTimesheetShow">
+	<div class="modal-dialog" Id="PlaceHolderHere">
+	</div>
 </div>
+
 <div class="row">
 	<div class="col-12 col-lg-12">
 		<div class="card" style="">
@@ -45,14 +48,14 @@
 								<td>@Model[i].EndDateTime</td>
 								<td>@Model[i].TotalHours</td>
 								<td>
-									<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-									        data-target="#mdlTimesheetShow" data-url="@Url.Action($"Edit/{Model[i].Id}")">
-										<i class="las la-pen text-secondary font-16"></i>
-									</button>
-									<button type="button" class="btn btn-de-primary" data-toggle="ajax-modal"
-									        data-target="#mdlTimesheetShow" data-url="@Url.Action($"Delete/{Model[i].Id}")">
-										<i class="las la-trash-alt text-secondary font-16"></i>
-									</button>
+										<button type="button" class="custombuttonaslink" data-toggle="ajax-modal"
+												data-target="#mdlTimesheetShow" data-url="@Url.Action($"Edit/{Model[i].Id}")">
+											<i class="las la-pen text-secondary font-16"></i>
+										</button>
+										<a id="deleteTS" name="Id" href="#" class="ms-2" data-toggle="ajax-modal"
+										   data-url="@Url.Action($"Delete/{Model[i].Id}")">
+											<i class="las la-trash-alt text-secondary font-16"></i>
+										</a>
 								</td>
 							</tr>
 						}
@@ -67,10 +70,4 @@
 @section Scripts {
 	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="~/matrica/assets/js/pages/app-custom.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		$(window).on('load', function() {
-		 $('#mdlTimesheetShow').modal({backdrop: 'static', keyboard: false});
-		});
-	</script>
-
 }

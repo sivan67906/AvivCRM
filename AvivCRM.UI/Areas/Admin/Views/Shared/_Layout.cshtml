@@ -78,7 +78,7 @@
 			</div><!--end topbar-left-->
 			<!--end logo-->
 			<div class="menu-body navbar-vertical tab-content" data-simplebar>
-				
+
 				<div id="hrefCRM" class="main-icon-menu-pane tab-pane" role="tabpanel"
 					 aria-labelledby="crm-tab">
 					<div class="title-box">
@@ -634,7 +634,7 @@
 	<script src="~/matrica/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 	<script src="~/matrica/assets/js/pages/sweet-alert.init.js"></script>
 	<script type="text/javascript">
-		// $(document).ready(function() {
+		$(document).ready(function() {
 
 		//   let hash = document.location.hash;
 		//   let prefix = "";
@@ -656,8 +656,39 @@
 		// });
 
 		//  $(window).on('load', function() {
-		//  $('.modal').modal({backdrop: 'static', keyboard: false});
-		// });
+		 $('.modal').modal({backdrop: 'static', keyboard: false});
+		});
+	</script>
+	<script>
+		$(document).ready(function () {
+
+			var activeTabId = $("#ulTicketContainer").find(".nav-link.active").attr('name');
+			if(activeTabId != undefined)
+			{
+				$('#' + activeTabId).tab('show'); // Ensure the default tab is shown
+				var tabId = "#" + activeTabId;
+				var url = $('#ulTicketContainer').find('a[name="' + activeTabId + '"]').data('url');
+				history.pushState(null, '', '?tab=' + activeTabId);
+				if(url != undefined){
+					$(tabId).load(url);
+				}
+			}
+
+			$('#ulTicketContainer a').on('click', function (e) {
+				e.preventDefault();
+				
+				var tabId = $(this).attr('name');
+				history.pushState(null, '', '?tab=' + tabId);
+
+				var url = $(this).data('url');
+				if(url != undefined){
+					// Clear the content of all tab panes
+					$(this).parents('#tapPanehider').find('.tab-pane').empty();
+					$("#"+ tabId).load(url);
+				}
+				$("#" + tabId).show();
+			});
+		});
 	</script>
 	@if (IsSectionDefined("Scripts"))
 	{

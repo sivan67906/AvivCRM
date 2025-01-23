@@ -4,82 +4,72 @@
 }
 @section Scripts {
 	@* <script src="~/matrica/assets/libs/huebee/huebee.pkgd.min.js"></script> *@
-	<script>
+	@* <script>
 		$(document).ready(function () {
-		  let hash = document.location.hash;
-			var activeTabId = "";
 
-			if(hash)
-		  {
-			  activeTabId = hash;
-		  }
-		  else{
-			  activeTabId = $(".nav-link.active").attr('href');
-		  }
-				  $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').ready(function() {
-		  // Clear the content of all tab panes
-				$('.tab-pane').empty();
-
-				// Load content for the selected tab
-				var tabId = $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').attr('href');
-				var url = $('#ulTicketContainer a[href=' +"'"+ activeTabId +"'"+ ']').data('url');
-				$(tabId).load(url);
-		});
+			var activeTabId = $("#ulTicketContainer").find(".nav-link.active").attr('name');
+			$('#' + activeTabId).tab('show'); // Ensure the default tab is shown
+			var tabId = "#" + activeTabId;
+			var url = $('#ulTicketContainer').find('a[name="' + activeTabId + '"]').data('url');
+			history.pushState(null, '', '?tab=' + activeTabId);
+			$(tabId).load(url);
 
 		$('#ulTicketContainer a').on('click', function (e) {
 				e.preventDefault();
-
 				// Clear the content of all tab panes
-				$('.tab-pane').empty();
+				$(this).parents('#tapPanehider').find('.tab-pane').empty();
+				var anchorName = $(this).attr('name');
+				history.pushState(null, '', '?tab=' + anchorName);
 
 				// Load content for the selected tab
-				var tabId = $(this).attr('href');
+				var tabId = $(this).attr('name');
 				var url = $(this).data('url');
-				$(tabId).load(url);
+				$("#"+ tabId).load(url);
 			});
+
 		});
-	</script>
+	</script> *@
 }
 <div class="row">
 	<div class="col-12 col-lg-10 mx-auto">
-		<div class="card">
+		<div class="card" id="tapPanehider">
 			<div class="card-body">
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist" id="ulTicketContainer">
 					<li class="nav-item">
-						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitGeneralSetting" data-url="@Url.Action("RecruitGeneralSetting", "RecruitGeneralSetting")" role="tab">General Settings</a>
+						<a class="nav-link active fw-semibold pt-0" data-bs-toggle="tab" name="RecruitGeneralSetting" data-url="@Url.Action("RecruitGeneralSetting", "RecruitGeneralSetting")" role="tab">General Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitFooterSetting" data-url="@Url.Action("RecruitFooterSetting", "RecruitFooterSetting")" role="tab">Footer Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" name="tbRecruitFooterSetting" data-url="@Url.Action("RecruitFooterSetting", "RecruitFooterSetting")" role="tab">Footer Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruiterSetting" data-url="@Url.Action("RecruiterSetting", "RecruiterSetting")" role="tab">Recruiter Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" name="tbRecruiterSetting" data-url="@Url.Action("RecruiterSetting", "RecruiterSetting")" role="tab">Recruiter Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitNotificationSetting" data-url="@Url.Action("RecruitNotificationSetting", "RecruitNotificationSetting")" role="tab">Notification Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab"  name="tbRecruitNotificationSetting" data-url="@Url.Action("RecruitNotificationSetting", "RecruitNotificationSetting")" role="tab">Notification Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitJobApplicationStatusSetting" data-url="@Url.Action("RecruitJobApplicationStatusSetting", "RecruitJobApplicationStatusSetting")" role="tab">Job Application Status Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab"  name="tbRecruitJobApplicationStatusSetting" data-url="@Url.Action("RecruitJobApplicationStatusSetting", "RecruitJobApplicationStatusSetting")" role="tab">Job Application Status Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab" href="#tbRecruitCustomQuestionSetting" data-url="@Url.Action("RecruitCustomQuestionSetting", "RecruitCustomQuestionSetting")" role="tab">Custom Question Settings</a>
+						<a class="nav-link fw-semibold pt-0" data-bs-toggle="tab"  name="tbRecruitCustomQuestionSetting" data-url="@Url.Action("RecruitCustomQuestionSetting", "RecruitCustomQuestionSetting")" role="tab">Custom Question Settings</a>
 					</li>
 				</ul>
 			</div><!--end card-body-->
 			<div class="card-body pt-0">
 				<!-- Tab panes -->
 				<div class="tab-content">
-					<div class="tab-pane active show" id="tbRecruitGeneralSetting" role="tabpanel">
+					<div class="tab-pane active show" id="RecruitGeneralSetting" role="tabpanel">
 					</div>
-					<div class="tab-pane" id="tbRecruitFooterSetting" role="tabpanel">
+					<div class="tab-pane" id="RecruitFooterSetting" role="tabpanel">
 					</div>
-					<div class="tab-pane" id="tbRecruiterSetting" role="tabpanel">
+					<div class="tab-pane" id="RecruiterSetting" role="tabpanel">
 					</div>
-					<div class="tab-pane show" id="tbRecruitNotificationSetting" role="tabpanel">
+					<div class="tab-pane show" id="RecruitNotificationSetting" role="tabpanel">
 					</div>
-					<div class="tab-pane" id="tbRecruitJobApplicationStatusSetting" role="tabpanel">
+					<div class="tab-pane" id="RecruitJobApplicationStatusSetting" role="tabpanel">
 					</div>
-					<div class="tab-pane" id="tbRecruitCustomQuestionSetting" role="tabpanel">
+					<div class="tab-pane" id="RecruitCustomQuestionSetting" role="tabpanel">
 					</div>
 				</div>
 			</div><!--end card-body-->
