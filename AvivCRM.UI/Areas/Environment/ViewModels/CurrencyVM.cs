@@ -11,12 +11,12 @@ public class CurrencyVM
     public string? CurrencyName { get; set; } = default!;
 
     [Required(ErrorMessage = " CurrencySymbol should not be empty")]
-    [MaxLength(5, ErrorMessage = " CurrencySymbol must not exceed 25 characters")]
+    [MaxLength(5, ErrorMessage = " CurrencySymbol must not exceed 5 characters")]
     [MinLength(1, ErrorMessage = " CurrencySymbol should not be less than 1 characters")]
     public string? CurrencySymbol { get; set; } = default!;
 
     [Required(ErrorMessage = " CurrencyCode should not be empty")]
-    [MaxLength(5, ErrorMessage = " CurrencyCode must not exceed 25 characters")]
+    [MaxLength(5, ErrorMessage = " CurrencyCode must not exceed 5 characters")]
     [MinLength(1, ErrorMessage = " CurrencyCode should not be less than 1 characters")]
     public string? CurrencyCode { get; set; } = default!;
     public string? IsCryptocurrency { get; set; }

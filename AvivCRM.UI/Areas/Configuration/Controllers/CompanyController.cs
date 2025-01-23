@@ -69,10 +69,10 @@ public class CompanyController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(CompanyVM company)
     {
-        if (company.Id == 0)
-        {
-            return View();
-        }
+        //if (company.Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<CompanyVM>("Company/Update/", company);

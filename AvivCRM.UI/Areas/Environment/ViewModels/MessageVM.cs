@@ -1,7 +1,7 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
 public class MessageVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public bool AllowChatClientEmployee { get; set; }
     public bool All { get; set; }
     public bool OnlyProjectMembercanwithclient { get; set; }

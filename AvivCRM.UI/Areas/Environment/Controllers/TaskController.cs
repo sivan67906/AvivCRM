@@ -98,10 +98,10 @@ public class TaskController : Controller
             });
         }
 
-        if (task.Name == null)
-        {
-            task.Name = "";
-        }
+        //if (task.Name == null)
+        //{
+        //    task.Name = "";
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
@@ -187,7 +187,7 @@ public class TaskController : Controller
     /// Created: 12-Jan-2025 by Sivan T
     /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> Edit(TaskVM task)
+    public async Task<IActionResult> Edit(TaskVM tasks)
     {
         if (!ModelState.IsValid)
         {
@@ -198,20 +198,20 @@ public class TaskController : Controller
             });
         }
 
-        if (task.Name == null)
-        {
-            task.Name = "";
-        }
+        //if (task.Name == null)
+        //{
+        //    task.Name = "";
+        //}
 
         ApiResultResponse<TaskVM> resultTask = new();
 
-        if (GuidExtensions.IsNullOrEmpty(task.Id))
+        if (GuidExtensions.IsNullOrEmpty(tasks.Id))
         {
             return View();
         }
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
-        string? jsonTask = JsonConvert.SerializeObject(task);
+        string? jsonTask = JsonConvert.SerializeObject(tasks);
         StringContent? taskContent = new(jsonTask, Encoding.UTF8, "application/json");
         HttpResponseMessage? responseTask =
             await client.PutAsync("Task/update-task/", taskContent);

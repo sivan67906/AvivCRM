@@ -1,7 +1,7 @@
 namespace AvivCRM.UI.Areas.Environment.ViewModels;
 public class StateVM
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Code { get; set; }
     public required string Name { get; set; }
     public int CountryId { get; set; }

@@ -47,7 +47,7 @@ public class ApplicationController : Controller
         // fetch all the Applications
         applicationList =
                 await client.GetFromJsonAsync<ApiResultResponse<List<ApplicationVM>>>("Application/all-application");
-
+        ViewBag.DefaultCurrency = await client.GetFromJsonAsync<ApiResultResponse<List<CurrencyVM>>>("Currency/all-currency");
         return View(applicationList!.Data);
     }
     #endregion
@@ -98,10 +98,10 @@ public class ApplicationController : Controller
             });
         }
 
-        if (application.Name == null)
-        {
-            application.Name = "";
-        }
+        //if (application.Name == null)
+        //{
+        //    application.Name = "";
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
 
@@ -165,7 +165,12 @@ public class ApplicationController : Controller
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         application =
             await client.GetFromJsonAsync<ApiResultResponse<ApplicationVM>>("Application/byid-application/?Id=" + Id);
-
+        var currencies = await client.GetFromJsonAsync<ApiResultResponse<List<CurrencyVM>>>("Currency/all-currency");
+        ViewBag.DefaultCurrency = currencies?.Data.Select(c => new
+        {
+            Id = c.Id,
+            DisplayValue = $"{c.CurrencySymbol} - {c.CurrencyCode}"
+        }).ToList();
         if (!application!.IsSuccess)
         {
             return View();
@@ -198,10 +203,10 @@ public class ApplicationController : Controller
             });
         }
 
-        if (application.Name == null)
-        {
-            application.Name = "";
-        }
+        //if (application.Name == null)
+        //{
+        //    application.Name = "";
+        //}
 
         ApiResultResponse<ApplicationVM> resultApplication = new();
 
@@ -215,6 +220,7 @@ public class ApplicationController : Controller
         StringContent? applicationContent = new(jsonApplication, Encoding.UTF8, "application/json");
         HttpResponseMessage? responseApplication =
             await client.PutAsync("Application/update-application/", applicationContent);
+        ViewBag.DefaultCurrency = await client.GetFromJsonAsync<ApiResultResponse<List<CurrencyVM>>>("GetAll");
         if (responseApplication.IsSuccessStatusCode)
         {
             string? jsonResponseApplication = await responseApplication.Content.ReadAsStringAsync();

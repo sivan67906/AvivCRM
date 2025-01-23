@@ -144,10 +144,10 @@ public class BusinessLocationController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(BusinessLocationVM businessLocation)
     {
-        if (businessLocation.Id == 0)
-        {
-            return View();
-        }
+        //if (businessLocation.Id == 0)
+        //{
+        //    return View();
+        //}
 
         HttpClient? client = _httpClientFactory.CreateClient("ApiGatewayCall");
         await client.PutAsJsonAsync<BusinessLocationVM>("BusinessLocation/Update/", businessLocation);
