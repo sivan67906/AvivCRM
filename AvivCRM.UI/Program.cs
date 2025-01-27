@@ -8,7 +8,7 @@ builder.Services.AddHttpClient("ApiGatewayCall", client =>
     //client.BaseAddress = new Uri("http://localhost:6300/"); //Api Gateway
     //client.BaseAddress = new Uri("https://avivgateway.vysncapital.com/"); //ServerApi Gateway
     //client.BaseAddress = new Uri("http://localhost:6201/api/"); //Configuration WebApi
-    client.BaseAddress = new Uri("http://localhost:6301/api/"); //Environment WebApi
+    client.BaseAddress = new Uri("https://localhost:7121/api/"); //Environment WebApi
 });
 
 WebApplication? app = builder.Build();
